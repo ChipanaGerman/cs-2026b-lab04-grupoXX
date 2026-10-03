@@ -1,0 +1,67 @@
+@startuml
+skinparam dpi 200
+skinparam componentStyle rectangle
+skinparam defaultFontName Arial
+skinparam backgroundColor white
+skinparam ArrowColor #555555
+skinparam ComponentBorderColor #333333
+skinparam PackageBorderColor #666666
+
+title Alternativa A (descartada): PicanteríaYa con Monolito en Capas (n-tier)\nPuntaje en matriz: 3.65 / 5.00
+
+actor "Cliente\n(web / PWA)" as CL
+actor "Picantería\n(panel web)" as PI
+actor "Repartidor\n(app móvil)" as RE
+
+package "Capa de Presentación" {
+  [API REST\n(Django Views)] as VIEWS
+}
+
+package "Capa de Negocio" {
+  [Lógica de Menú] as LM
+  [Lógica de Pedidos] as LP
+  [Lógica de Pagos] as LPA
+  [Lógica de Repartidores] as LR
+  [Lógica de Notificaciones] as LN
+}
+
+package "Capa de Datos" {
+  [Repositorios ORM] as ORM
+}
+
+database "PostgreSQL" as DB
+cloud "Culqi / Niubiz\n(pasarela Yape)" as CULQI
+cloud "Google Maps API" as GMAPS
+cloud "WhatsApp / FCM" as NOTIFEXT
+
+CL --> VIEWS
+PI --> VIEWS
+RE --> VIEWS
+VIEWS --> LM
+VIEWS --> LP
+VIEWS --> LPA
+VIEWS --> LR
+VIEWS --> LN
+LM --> ORM
+LP --> ORM
+LPA --> ORM
+LR --> ORM
+LN --> ORM
+ORM --> DB
+LPA --> CULQI
+LR --> GMAPS
+LN --> NOTIFEXT
+
+note bottom of LP
+  DESCARTADA — Puntaje: 3.65
+  Problema principal: las capas quedan
+  acopladas entre sí (LP llama a LPA
+  directamente). Ante el pico dominical
+  (×8 carga), no hay mecanismo de cola
+  para absorber pedidos — la API bloquea
+  esperando pago y asignación. Viola QA-01.
+  El equipo eligió el Monolito Modular + Cola
+  (puntaje 4.20) para resolver este problema.
+end note
+
+@enduml
