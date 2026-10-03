@@ -1,0 +1,48 @@
+flowchart TB
+    CL["🧑‍💻 Cliente<br/>(app web / PWA)"]
+    PI["🍲 Picantería<br/>(panel web)"]
+    RE["🛵 Repartidor<br/>(app móvil)"]
+
+    subgraph APP["PicanteríaYa — Monolito Modular (un solo despliegue en VPS)"]
+        API["Capa de Presentación<br/>API REST (Django REST Framework)<br/>WebSocket (Django Channels)"]
+
+        subgraph MODULOS["Módulos de Dominio"]
+            M1["📋 Menú<br/>y Catálogo"]
+            M2["📦 Pedidos"]
+            M3["💳 Pagos"]
+            M4["🛵 Repartidores<br/>y GPS"]
+            M5["🔔 Notificaciones"]
+        end
+
+        INF["Capa de Infraestructura<br/>(repositorios, adaptadores externos)"]
+        COLA["🔴 Cola Redis<br/>+ Workers Celery<br/>(procesamiento asíncrono)"]
+    end
+
+    DB[("🐘 PostgreSQL<br/>(esquema por módulo)")]
+    CACHE[("⚡ Redis<br/>(caché de menús)")]
+    CULQI["💰 Culqi / Niubiz<br/>(pasarela Yape)"]
+    GMAPS["🗺️ Google Maps API<br/>(seguimiento GPS)"]
+    NOTIF["📱 FCM / WhatsApp API<br/>(notificaciones push)"]
+
+    CL & PI & RE --> API
+    API --> M1 & M2 & M3 & M4 & M5
+    M2 --> COLA
+    COLA --> M3 & M4 & M5
+    M1 & M2 & M3 & M4 & M5 --> INF
+    INF --> DB
+    INF --> CACHE
+    INF --> CULQI
+    INF --> GMAPS
+    INF --> NOTIF
+
+    classDef mod fill:#FFF3E0,stroke:#E65100,color:#000
+    classDef ext fill:#F3E5F5,stroke:#6A1B9A,color:#000,stroke-dasharray: 4 3
+    classDef usr fill:#E3F2FD,stroke:#1565C0,color:#000
+    classDef infra fill:#E8F5E9,stroke:#2E7D32,color:#000
+    classDef cola fill:#FFEBEE,stroke:#C62828,color:#000
+
+    class M1,M2,M3,M4,M5 mod
+    class CULQI,GMAPS,NOTIF ext
+    class CL,PI,RE usr
+    class INF,DB,CACHE infra
+    class COLA cola
