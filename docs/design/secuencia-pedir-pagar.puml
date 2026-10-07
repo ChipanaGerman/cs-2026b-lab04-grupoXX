@@ -1,0 +1,69 @@
+@startuml secuencia-pedir-pagar
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam SequenceBoxBackgroundColor #FFF8F0
+skinparam SequenceBoxBorderColor #8B2500
+skinparam ArrowColor #5C1800
+skinparam LifeLineBorderColor #8B2500
+autonumber
+
+title PicanteríaYa — Secuencia: Pedir el menú del día y pagar con Yape
+
+actor Cliente
+participant "App Móvil\n/ PWA" as UI
+participant "PedidoController" as C
+participant "ServicioPedidos" as S
+participant "RepositorioPedidos" as R
+participant "Pedido" as P
+participant "PasarelaPago\n(CulqiYapeAdapter)" as G
+participant "ColaMensajes\n(Celery)" as Q
+participant "Notificador" as N
+
+Cliente -> UI : Ver menú y seleccionar platos
+UI -> C : POST /pedidos/ {picanteriaId, lineas[]}
+C -> S : pedirYPagar(clienteId, picanteriaId, lineas, YAPE)
+S -> R : buscarOCrear(clienteId, picanteriaId)
+R --> S : pedido (estado=RECIBIDO)
+
+loop por cada línea del pedido
+    S -> P : agregarLinea(plato, cantidad)
+    P -> P : plato.hayStock(cantidad)
+    alt sin stock suficiente
+        P --> S : StockInsuficienteError
+        S --> C : 409 Stock insuficiente
+        C --> UI : Lista de platos sin stock
+        UI --> Cliente : Aviso de platos no disponibles
+    end
+end
+
+S -> P : calcularTotal()
+P --> S : total
+
+S -> G : cobrar(total, cliente.telefono, pedidoId)
+
+alt pago aprobado
+    G --> S : pago (aprobado=true)
+    S -> P : registrarPago(pago)
+    S -> P : confirmar()
+    note right of P : estado → PAGADO
+    S -> R : guardar(pedido)
+    S ->> Q : encolarAsignacionRepartidor(pedidoId)
+    note right of Q : asíncrono — no bloquea\nla respuesta al cliente
+    S ->> N : notificarConfirmacion(pedido)
+    note right of N : asíncrono — push/SMS
+    S --> C : pedido PAGADO
+    C --> UI : 200 OK {pedidoId, estado}
+else pago rechazado o sin respuesta (10 min)
+    G --> S : pago (aprobado=false)
+    S -> P : cancelar("pago rechazado")
+    note right of P : estado → CANCELADO\nstock liberado
+    S -> R : guardar(pedido)
+    S ->> N : notificarCancelacion(pedido, motivo)
+    S --> C : pedido CANCELADO
+    C --> UI : 402 Pago rechazado
+end
+
+UI --> Cliente : Muestra el resultado del pedido
+
+@enduml

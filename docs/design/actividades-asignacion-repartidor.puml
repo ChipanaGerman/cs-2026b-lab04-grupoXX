@@ -1,0 +1,87 @@
+@startuml actividades-asignacion-repartidor
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ActivityBackgroundColor #FFF8F0
+skinparam ActivityBorderColor #8B2500
+skinparam ActivityDiamondBackgroundColor #FFE4CC
+skinparam ArrowColor #5C1800
+skinparam PartitionBorderColor #8B2500
+skinparam PartitionBackgroundColor #FFF0E6
+
+title PicanteríaYa — Asignación del repartidor más cercano
+
+|Sistema (Worker Celery)|
+start
+:Recibe evento pedido_pagado\ncon pedidoId desde la cola Redis;
+
+:Consulta coordenadas de la\npicantería origen del pedido;
+
+:Busca repartidores disponibles\nen un radio de 5 km;
+
+if (¿Hay repartidores disponibles?) then (sí)
+    :Calcula distancia de cada\nrepartidor a la picantería\n(Google Maps API o Haversine);
+    :Ordena repartidores\npor distancia ascendente;
+
+    :Selecciona el repartidor\nmás cercano disponible;
+
+    |Repartidor|
+    :Recibe notificación push\ndel nuevo pedido asignado;
+
+    if (¿Acepta el pedido?) then (acepta)
+        |Sistema (Worker Celery)|
+        :Marca repartidor como\nno disponible;
+        :Actualiza Pedido:\nmarcarPreparando();
+
+        fork
+            |Sistema (Worker Celery)|
+            :Notifica al Cliente:\n"Repartidor en camino";
+        fork again
+            |Picantería|
+            :Recibe confirmación de\nrepartidor asignado;
+            :Comienza preparación\ndel pedido;
+        end fork
+
+        |Sistema (Worker Celery)|
+        :Registra asignación\nen base de datos;
+        stop
+
+    else (rechaza o sin respuesta en 2 min)
+        |Sistema (Worker Celery)|
+        :Marca al repartidor como\nno disponible temporalmente;
+        :Elimina al repartidor\nde la lista de candidatos;
+        :Busca al siguiente\nrepartidor en la lista;
+        if (¿Quedan candidatos?) then (sí)
+            :Selecciona el siguiente\nrepartidor más cercano;
+            |Repartidor|
+            :Recibe notificación push\ndel nuevo pedido asignado;
+            note right
+                Se repite el ciclo
+                de aceptación
+            end note
+        else (no)
+            |Sistema (Worker Celery)|
+            :Amplía radio de búsqueda\na 10 km;
+            if (¿Hay repartidores\nen radio extendido?) then (sí)
+                :Selecciona repartidor\nmás cercano en radio extendido;
+            else (no)
+                :Marca pedido como CANCELADO\n(sin repartidor disponible);
+                :Notifica al Cliente\ny a la Picantería;
+                stop
+            endif
+        endif
+    endif
+
+else (no)
+    |Sistema (Worker Celery)|
+    :Reencola evento con\nretraso de 2 minutos;
+    :Notifica al Cliente:\n"Buscando repartidor...";
+    if (¿Tiempo de espera\nsupera 15 min?) then (sí)
+        :Cancela el pedido\ny notifica al Cliente;
+        stop
+    else (no)
+        :Espera y reintenta\nbúsqueda de repartidor;
+        stop
+    endif
+endif
+
+@enduml

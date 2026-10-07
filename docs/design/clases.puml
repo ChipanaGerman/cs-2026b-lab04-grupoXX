@@ -1,0 +1,169 @@
+@startuml clases-picanteria
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam classBackgroundColor #FFF8F0
+skinparam classBorderColor #8B2500
+skinparam classHeaderBackgroundColor #8B2500
+skinparam classHeaderFontColor #FFFFFF
+skinparam ArrowColor #5C1800
+skinparam nodesep 30
+skinparam ranksep 50
+
+title PicanteríaYa — Módulos Pedidos y Pagos (diseño detallado)
+
+' ─────────────────────────────────────────
+' Enumeraciones
+' ─────────────────────────────────────────
+enum EstadoPedido {
+    RECIBIDO
+    PAGADO
+    PREPARANDO
+    EN_CAMINO
+    ENTREGADO
+    CANCELADO
+}
+
+enum MedioPago {
+    YAPE
+}
+
+' ─────────────────────────────────────────
+' Entidades del dominio
+' ─────────────────────────────────────────
+class Cliente {
+    - id: UUID
+    - nombre: String
+    - telefono: String
+    - distrito: String
+    + realizarPedido(picanteria: Picanteria): Pedido
+}
+
+class Picanteria {
+    - id: UUID
+    - nombre: String
+    - direccion: String
+    - distrito: String
+    - telefono: String
+    + publicarMenu(menu: Menu): void
+}
+
+class Menu {
+    - id: UUID
+    - fecha: Date
+    - activo: bool
+    + activar(): void
+    + desactivar(): void
+    + obtenerPlatosDisponibles(): List<Plato>
+}
+
+class Plato {
+    - id: UUID
+    - nombre: String
+    - descripcion: String
+    - precioUnitario: Decimal
+    - stockDisponible: int
+    + reservar(cantidad: int): void
+    + liberar(cantidad: int): void
+    + hayStock(cantidad: int): bool
+}
+
+class Pedido {
+    - id: UUID
+    - fecha: DateTime
+    - estado: EstadoPedido
+    - totalCalculado: Decimal
+    + agregarLinea(plato: Plato, cantidad: int): void
+    + calcularTotal(): Decimal
+    + confirmar(): void
+    + registrarPago(pago: Pago): void
+    + cancelar(motivo: String): void
+    + marcarPreparando(): void
+    + marcarEnCamino(): void
+    + confirmarEntrega(): void
+}
+
+class LineaPedido {
+    - cantidad: int
+    - precioUnitario: Decimal
+    + subtotal(): Decimal
+}
+
+class Pago {
+    - id: UUID
+    - monto: Decimal
+    - medio: MedioPago
+    - codigoOperacion: String
+    - aprobado: bool
+    - fechaHora: DateTime
+}
+
+class Repartidor {
+    - id: UUID
+    - nombre: String
+    - telefono: String
+    - latitud: float
+    - longitud: float
+    - disponible: bool
+    + actualizarPosicion(lat: float, lon: float): void
+    + asignarPedido(pedido: Pedido): void
+}
+
+' ─────────────────────────────────────────
+' Servicio de aplicación
+' ─────────────────────────────────────────
+class ServicioPedidos <<servicio>> {
+    + pedirYPagar(clienteId: UUID, picanteriaId: UUID, lineas: List, medio: MedioPago): Pedido
+    + cancelarPedido(pedidoId: UUID, motivo: String): void
+}
+
+' ─────────────────────────────────────────
+' Puertos (interfaces)
+' ─────────────────────────────────────────
+interface PasarelaPago <<puerto>> {
+    + cobrar(monto: Decimal, telefono: String, referencia: String): Pago
+}
+
+interface RepositorioPedidos <<puerto>> {
+    + buscar(id: UUID): Pedido
+    + guardar(p: Pedido): void
+}
+
+interface ColaMensajes <<puerto>> {
+    + encolarAsignacionRepartidor(pedidoId: UUID): void
+}
+
+interface Notificador <<puerto>> {
+    + notificarConfirmacion(pedido: Pedido): void
+    + notificarCancelacion(pedido: Pedido, motivo: String): void
+}
+
+' ─────────────────────────────────────────
+' Adaptadores
+' ─────────────────────────────────────────
+class CulqiYapeAdapter <<adaptador>>
+class CeleryColaMensajesAdapter <<adaptador>>
+
+' ─────────────────────────────────────────
+' Relaciones
+' ─────────────────────────────────────────
+Cliente "1" -- "0..*" Pedido : realiza >
+Picanteria "1" -- "1..*" Menu : publica >
+Menu "1" *-- "1..*" Plato
+Pedido "1" *-- "1..*" LineaPedido
+LineaPedido "0..*" --> "1" Plato
+Pedido "1" -- "0..1" Pago
+Pedido --> EstadoPedido
+Pago --> MedioPago
+Repartidor "0..1" -- "0..1" Pedido : atiende >
+
+PasarelaPago <|.. CulqiYapeAdapter
+ColaMensajes <|.. CeleryColaMensajesAdapter
+
+ServicioPedidos ..> Pedido
+ServicioPedidos ..> RepositorioPedidos
+ServicioPedidos ..> PasarelaPago
+ServicioPedidos ..> ColaMensajes
+ServicioPedidos ..> Notificador
+
+@enduml
