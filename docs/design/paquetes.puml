@@ -1,0 +1,45 @@
+@startuml paquetes
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam PackageBackgroundColor #FFF8F0
+skinparam PackageBorderColor #8B2500
+skinparam ArrowColor #5C1800
+
+title PicanteríaYa — Paquetes del monolito modular (vista de desarrollo)
+
+package "picanteraya" {
+    package "menu" as MENU
+    package "pedidos" as PED
+    package "pagos" as PAG
+    package "repartidores" as REP
+    package "notificaciones" as NOT
+    package "compartido" as COM
+}
+
+PED ..> MENU : usa Plato, Menu
+PED ..> PAG : usa PasarelaPago\n(puerto)
+PED ..> REP : usa ColaMensajes\n(puerto → asignación asíncrona)
+PED ..> NOT : usa Notificador\n(puerto)
+REP ..> NOT : notifica posición GPS
+MENU ..> COM
+PED ..> COM
+PAG ..> COM
+REP ..> COM
+NOT ..> COM
+
+note bottom of PAG
+    Regla (ADR-001): sin dependencias cíclicas.
+    pagos NO depende de pedidos.
+    Interfaz PasarelaPago es un puerto:
+    solo pedidos conoce esta interfaz.
+end note
+
+note bottom of REP
+    Regla (ADR-001): repartidores NO
+    depende de pedidos directamente.
+    La asignación se encola via
+    ColaMensajes (Redis/Celery).
+end note
+
+@enduml

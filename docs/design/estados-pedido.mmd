@@ -1,0 +1,35 @@
+---
+title: PicanteríaYa — Ciclo de vida del Pedido
+---
+stateDiagram-v2
+    [*] --> RECIBIDO : agregarLinea() [stock suficiente]
+
+    RECIBIDO --> PAGADO : registrarPago() [pago aprobado]
+    RECIBIDO --> CANCELADO : cancelar() [stock insuficiente\no pago rechazado / 10 min sin respuesta]
+
+    PAGADO --> PREPARANDO : marcarPreparando() [repartidor asignado]
+    PREPARANDO --> EN_CAMINO : marcarEnCamino() [pedido listo para entrega]
+    EN_CAMINO --> ENTREGADO : confirmarEntrega() [cliente confirma recepción]
+
+    RECIBIDO --> CANCELADO : cancelar() [cliente cancela antes de pagar]
+    PAGADO --> CANCELADO : cancelar() [picantería sin capacidad]
+
+    ENTREGADO --> [*]
+    CANCELADO --> [*]
+
+    note right of PAGADO
+        Al entrar: encolar asignación
+        de repartidor más cercano
+        (Cola Redis/Celery — asíncrono)
+    end note
+
+    note right of PREPARANDO
+        Al entrar: notificar al cliente
+        que su pedido está en preparación
+    end note
+
+    note right of EN_CAMINO
+        Al entrar: compartir posición
+        GPS del repartidor en tiempo real
+        (Django Channels / WebSocket)
+    end note
