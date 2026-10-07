@@ -124,9 +124,96 @@ El aprendizaje central: **la IA es un excelente generador de borradores y listas
 
 ---
 
+## Diseño UML (Lab 05)
+
+> **Laboratorio 05:** UML como código — Diagramas de diseño detallado del módulo Pedidos
+>
+> Historia crítica modelada: **HU-01 — Pedir el menú del día y pagar con Yape**
+
+### Diagrama de estados del Pedido (E3)
+
+```mermaid
+---
+title: PicanteríaYa — Ciclo de vida del Pedido
+---
+stateDiagram-v2
+    [*] --> RECIBIDO : agregarLinea() [stock suficiente]
+
+    RECIBIDO --> PAGADO : registrarPago() [pago aprobado]
+    RECIBIDO --> CANCELADO : cancelar() [stock insuficiente\no pago rechazado / 10 min sin respuesta]
+
+    PAGADO --> PREPARANDO : marcarPreparando() [repartidor asignado]
+    PREPARANDO --> EN_CAMINO : marcarEnCamino() [pedido listo para entrega]
+    EN_CAMINO --> ENTREGADO : confirmarEntrega() [cliente confirma recepción]
+
+    RECIBIDO --> CANCELADO : cancelar() [cliente cancela antes de pagar]
+    PAGADO --> CANCELADO : cancelar() [picantería sin capacidad]
+
+    ENTREGADO --> [*]
+    CANCELADO --> [*]
+
+    note right of PAGADO
+        Al entrar: encolar asignación
+        de repartidor más cercano
+        (Cola Redis/Celery — asíncrono)
+    end note
+
+    note right of PREPARANDO
+        Al entrar: notificar al cliente
+        que su pedido está en preparación
+    end note
+
+    note right of EN_CAMINO
+        Al entrar: compartir posición
+        GPS del repartidor en tiempo real
+        (Django Channels / WebSocket)
+    end note
+```
+
+### Índice de diagramas y documentos de diseño
+
+| Entregable | Archivo | Descripción |
+|------------|---------|-------------|
+| E1 | [historia.md](docs/design/historia.md) | Historia HU-01 con 3 criterios de aceptación |
+| E1 | [clases.puml](docs/design/clases.puml) | Diagrama de clases — módulo Pedidos (PlantUML) |
+| E2 | [secuencia-pedir-pagar.puml](docs/design/secuencia-pedir-pagar.puml) | Secuencia: pedir menú + pagar con Yape (PlantUML) |
+| E3 | [estados-pedido.mmd](docs/design/estados-pedido.mmd) | Máquina de estados del Pedido (Mermaid) |
+| E4 | [actividades-asignacion-repartidor.puml](docs/design/actividades-asignacion-repartidor.puml) | Actividades: asignación del repartidor más cercano (PlantUML) |
+| E5 | [paquetes.puml](docs/design/paquetes.puml) | Diagrama de paquetes del monolito modular (PlantUML) |
+| E6 | [src/pedidos/dominio.py](src/pedidos/dominio.py) | Esqueleto de código Python generado desde el diagrama de clases |
+| E6 | [round-trip.md](docs/design/round-trip.md) | Tabla de diferencias: diagrama ↔ código (ingeniería inversa) |
+| E7 | [consistencia.md](docs/design/consistencia.md) | Hallazgos C1–C5 con falso positivo identificado |
+| E7 | [bitacora-ia.md](docs/design/bitacora-ia.md) | Bitácora: 5 interacciones con IA verificadas |
+
+### Estructura del repositorio (Lab 05)
+
+```
+cs-2026b-lab04-grupoXX/
+├── README.md                              ← E8: sección Diseño UML agregada
+├── docs/
+│   ├── architecture/                      ← Lab 04 (sin cambios)
+│   └── design/                            ← Lab 05 (nuevo)
+│       ├── historia.md                    ← E1
+│       ├── clases.puml                    ← E1
+│       ├── secuencia-pedir-pagar.puml     ← E2
+│       ├── estados-pedido.mmd             ← E3
+│       ├── actividades-asignacion-repartidor.puml ← E4
+│       ├── paquetes.puml                  ← E5
+│       ├── round-trip.md                  ← E6
+│       ├── consistencia.md                ← E7
+│       ├── bitacora-ia.md                 ← E7
+│       └── img/                           ← PNG/SVG de todos los diagramas
+└── src/
+    └── pedidos/
+        └── dominio.py                     ← E6: esqueleto Python
+```
+
+---
+
 ## Recursos y herramientas
 
 - Editor Mermaid en línea: https://mermaid.live
 - Editor PlantUML en línea: https://www.plantuml.com/plantuml
 - Python Diagrams: https://diagrams.mingrammer.com/
-- Guía de la práctica: `Guia_Lab04_Fundamentos_Arquitectura_Software_2026B.pdf`
+- Guía Lab 04: `Guia_Lab04_Fundamentos_Arquitectura_Software_2026B.pdf`
+- Guía Lab 05: `Guia_Lab05_Diagramas_Diseno_UML_2026B.pdf`
