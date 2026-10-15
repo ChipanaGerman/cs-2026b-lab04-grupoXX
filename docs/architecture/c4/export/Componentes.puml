@@ -3,7 +3,7 @@
 skinparam dpi 180
 
 title Componentes de la API PicanteriaYa
-caption Nivel 3 - Modulos del monolito modular (coherente con paquetes.puml del Lab 05)
+caption Nivel 3 - Modulos del monolito modular (coherente con paquetes.puml del Lab 05)\nVerificacion E3: 5 componentes coherentes con paquetes.puml. Sin ciclos: Pagos no depende de Pedidos, Notificaciones no depende de Pedidos.
 
 ContainerDb_Ext(db, "Base de datos", "PostgreSQL 16", "Lee y escribe segun el modulo.")
 ContainerQueue_Ext(cola, "Cola y cache", "Redis 7", "Cola de tareas y cache de menus.")
