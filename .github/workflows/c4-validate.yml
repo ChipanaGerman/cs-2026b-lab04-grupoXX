@@ -1,0 +1,75 @@
+name: "C4 Validate & Export"
+
+on:
+  push:
+    paths:
+      - "docs/architecture/c4/workspace.dsl"
+      - ".github/workflows/c4-validate.yml"
+  pull_request:
+    paths:
+      - "docs/architecture/c4/workspace.dsl"
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────
+  # JOB 1: Validar workspace.dsl con Structurizr CLI
+  # El push/PR falla si el modelo tiene errores de sintaxis o semánticos
+  # ─────────────────────────────────────────────────────────────────
+  validate-c4:
+    name: "Validar workspace.dsl"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout del repositorio"
+        uses: actions/checkout@v4
+
+      - name: "Validar modelo C4 con Structurizr CLI"
+        uses: docker://structurizr/cli:latest
+        with:
+          args: validate -w docs/architecture/c4/workspace.dsl
+
+  # ─────────────────────────────────────────────────────────────────
+  # JOB 2: Exportar vistas a C4-PlantUML y generar PNG con PlantUML
+  # Solo corre en push a main (no en PRs), después de validación exitosa
+  # ─────────────────────────────────────────────────────────────────
+  export-and-render:
+    name: "Exportar vistas y generar PNG"
+    needs: validate-c4
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: "Checkout del repositorio"
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Exportar vistas a C4-PlantUML con Structurizr CLI"
+        uses: docker://structurizr/cli:latest
+        with:
+          args: export -w docs/architecture/c4/workspace.dsl -f plantuml/c4plantuml -o docs/architecture/c4/export
+
+      - name: "Generar PNG de todas las vistas con PlantUML"
+        uses: docker://plantuml/plantuml:latest
+        with:
+          args: -tpng -charset UTF-8 -o /github/workspace/docs/architecture/c4/img /github/workspace/docs/architecture/c4/export/*.puml
+
+      - name: "Verificar que se generaron imágenes"
+        run: |
+          echo "Imágenes generadas:"
+          ls -lh docs/architecture/c4/img/
+          count=$(ls docs/architecture/c4/img/*.png 2>/dev/null | wc -l)
+          if [ "$count" -lt 5 ]; then
+            echo "ERROR: Se esperaban al menos 5 PNG, solo hay $count"
+            exit 1
+          fi
+          echo "OK: $count imágenes generadas"
+
+      - name: "Commit automático de las vistas exportadas y PNG actualizados"
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/architecture/c4/export/ docs/architecture/c4/img/
+          if git diff --cached --quiet; then
+            echo "Sin cambios en las vistas exportadas."
+          else
+            git commit -m "ci: regenerar vistas C4 exportadas y PNG [skip ci]"
+            git push
+          fi
