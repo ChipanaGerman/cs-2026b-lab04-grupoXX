@@ -1,0 +1,26 @@
+@startuml contexto-manual-picanteriaYa
+!include <C4/C4_Context>
+skinparam dpi 180
+LAYOUT_LEFT_RIGHT()
+
+title Contexto de PicanteriaYa (C4-PlantUML escrito a mano)
+
+Person(cliente, "Cliente", "Persona que consulta el menu del dia, realiza pedidos y paga con Yape desde su celular.")
+Person(picanteria, "Picanteria", "Negocio que publica su menu diario con stock y atiende pedidos asignados.")
+Person(repartidor, "Repartidor", "Persona que recibe la asignacion del pedido y lo entrega al cliente.")
+
+System(pya, "PicanteriaYa", "Plataforma de delivery de picanterias arequipenas: menu, pedidos, pagos Yape y seguimiento GPS en tiempo real.")
+
+System_Ext(culqi, "Culqi (Pasarela de pagos)", "Proveedor intermediario para cobros con Yape. Requerido por restriccion R-05 (Yape sin API publica).")
+System_Ext(gmaps, "Google Maps API", "API de mapas para calcular distancias y mostrar seguimiento del repartidor.")
+System_Ext(notif, "WhatsApp / FCM", "Mensajeria y notificaciones push al cliente y a la picanteria.")
+
+Rel(cliente, pya, "Consulta menu, realiza pedidos y paga")
+Rel(picanteria, pya, "Publica y actualiza el menu diario")
+Rel(repartidor, pya, "Recibe asignaciones y actualiza posicion GPS")
+Rel(pya, culqi, "Solicita cobros con Yape", "HTTPS/JSON")
+Rel(pya, gmaps, "Calcula distancias y rutas", "HTTPS/JSON")
+Rel(pya, notif, "Envia notificaciones de estado del pedido", "HTTPS/JSON")
+
+SHOW_LEGEND()
+@enduml

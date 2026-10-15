@@ -210,10 +210,63 @@ cs-2026b-lab04-grupoXX/
 
 ---
 
+## Arquitectura C4 (Lab 06)
+
+> Modelo generado desde `docs/architecture/c4/workspace.dsl` con Structurizr DSL. Todas las vistas son coherentes con el ADR-001 (Monolito Modular) y los diagramas UML del Laboratorio 05.
+
+### Nivel 1 — Diagrama de contexto
+
+```mermaid
+C4Context
+    title Contexto de PicanteriaYa
+    Person(cliente, "Cliente", "Consulta el menu, realiza pedidos y paga con Yape.")
+    Person(picanteria, "Picanteria", "Publica el menu diario y atiende pedidos.")
+    Person(repartidor, "Repartidor", "Recibe asignaciones y entrega pedidos.")
+    System(pya, "PicanteriaYa", "Plataforma de delivery: menu, pedidos, pagos Yape y seguimiento GPS.")
+    System_Ext(culqi, "Culqi (Pasarela de pagos)", "Procesa cobros con Yape. Externo.")
+    System_Ext(gmaps, "Google Maps API", "Calcula distancias y muestra el mapa. Externo.")
+    System_Ext(notif, "WhatsApp / FCM", "Notificaciones push y mensajes. Externo.")
+    Rel(cliente, pya, "Consulta menu, pide y paga")
+    Rel(picanteria, pya, "Publica el menu diario")
+    Rel(repartidor, pya, "Recibe asignaciones y actualiza GPS")
+    Rel(pya, culqi, "Solicita cobros con Yape", "HTTPS/JSON")
+    Rel(pya, gmaps, "Calcula distancias y rutas", "HTTPS/JSON")
+    Rel(pya, notif, "Envia notificaciones de estado", "HTTPS/JSON")
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+```
+
+### Vistas del modelo C4
+
+| Vista | Archivo fuente | Descripción |
+|-------|----------------|-------------|
+| **Nivel 1: Contexto** | [workspace.dsl](docs/architecture/c4/workspace.dsl) · [img](docs/architecture/c4/img/) | Sistema, personas y sistemas externos |
+| **Nivel 2: Contenedores** | [workspace.dsl](docs/architecture/c4/workspace.dsl) · [img](docs/architecture/c4/img/) | PWA, App Repartidor, API, Worker, BD, Redis, WebSocket |
+| **Nivel 3: Componentes** | [workspace.dsl](docs/architecture/c4/workspace.dsl) · [img](docs/architecture/c4/img/) | Menú, Pedidos, Pagos, Repartidores, Notificaciones |
+| **Dinámica: Pedir y pagar** | [workspace.dsl](docs/architecture/c4/workspace.dsl) · [img](docs/architecture/c4/img/) | Flujo del caso de uso crítico (8 pasos) |
+| **Despliegue: Producción** | [workspace.dsl](docs/architecture/c4/workspace.dsl) · [img](docs/architecture/c4/img/) | VPS Ubuntu, Docker Compose, dispositivos |
+| **Contexto manual (C4-PlantUML)** | [contexto-manual.puml](docs/architecture/c4/contexto-manual.puml) | Versión escrita a mano para comparación (E6) |
+
+### Documentos del Lab 06
+
+| Entregable | Archivo | Contenido |
+|------------|---------|-----------|
+| E1 | [inventario.md](docs/architecture/c4/inventario.md) | Tabla de todos los elementos con tipo C4 y origen |
+| E6 | [comparacion.md](docs/architecture/c4/comparacion.md) | Structurizr DSL vs. C4-PlantUML manual |
+| E7 | [revision-c4.md](docs/architecture/c4/revision-c4.md) | Lista de revisión oficial + hallazgos IA |
+| E7 | [explicacion.md](docs/architecture/c4/explicacion.md) | Explicación para público no técnico (≤120 palabras) |
+| E7 | [bitacora-ia.md](docs/architecture/c4/bitacora-ia.md) | 5 interacciones con la IA documentadas |
+
+**Tag de entrega:** `v0.6-c4`
+
+---
+
 ## Recursos y herramientas
 
 - Editor Mermaid en línea: https://mermaid.live
 - Editor PlantUML en línea: https://www.plantuml.com/plantuml
+- Structurizr DSL: https://docs.structurizr.com/dsl
+- C4 model: https://c4model.com
 - Python Diagrams: https://diagrams.mingrammer.com/
 - Guía Lab 04: `Guia_Lab04_Fundamentos_Arquitectura_Software_2026B.pdf`
 - Guía Lab 05: `Guia_Lab05_Diagramas_Diseno_UML_2026B.pdf`
+- Guía Lab 06: `Guia_Lab06_Modelo_C4_2026B.pdf`
