@@ -1,0 +1,43 @@
+@startuml
+!include <C4/C4_Container>
+skinparam dpi 180
+
+title Contenedores de PicanteriaYa
+caption Nivel 2 - Unidades desplegables, tecnologias y protocolos
+
+Person(cliente, "Cliente", "Consulta el menu, realiza pedidos y paga con Yape.")
+Person(picanteria, "Picanteria", "Publica el menu diario y atiende pedidos.")
+Person(repartidor, "Repartidor", "Recibe asignaciones y actualiza posicion GPS.")
+
+System_Ext(culqi, "Culqi (Pasarela de pagos)", "Procesa cobros con Yape. Externo.")
+System_Ext(gmaps, "Google Maps API", "Calcula distancias y rutas. Externo.")
+System_Ext(notif, "WhatsApp / FCM", "Notificaciones push y mensajeria. Externo.")
+
+System_Boundary(pya, "PicanteriaYa") {
+    Container(pwa, "App Cliente / PWA", "React + Service Worker", "Interfaz web progresiva para consultar el menu, pedir y seguir al repartidor en el mapa. Funciona con conectividad intermitente.")
+    Container(appRepartidor, "App Repartidor", "React Native", "Aplicacion movil para recibir asignaciones, ver la ruta a la picanteria y actualizar la posicion GPS.")
+    Container(api, "API PicanteriaYa", "Python / Django REST Framework", "Monolito modular que implementa todos los casos de uso mediante REST y WebSocket.")
+    Container(worker, "Worker de tareas", "Celery 5.3", "Ejecuta asincrona la asignacion de repartidores, notificaciones y reintentos de pago.")
+    ContainerDb(db, "Base de datos", "PostgreSQL 16", "Almacena usuarios, picanterias, menus, pedidos, pagos y repartidores. Esquema por modulo.")
+    ContainerQueue(cola, "Cola y cache", "Redis 7", "Cola de tareas Celery y cache de menus del dia para reducir consultas en el pico dominical.")
+    Container(wsGPS, "Canal WebSocket / GPS", "Django Channels + Redis", "Canal WebSocket que envia actualizaciones de posicion GPS del repartidor al cliente en tiempo real.")
+}
+
+Rel(cliente, pwa, "Usa para consultar menu, pedir y seguir al repartidor", "HTTPS")
+Rel(picanteria, pwa, "Usa para publicar el menu y ver pedidos", "HTTPS")
+Rel(repartidor, appRepartidor, "Usa para recibir pedidos y actualizar GPS", "HTTPS")
+Rel(pwa, api, "Llama a la API REST", "HTTPS/JSON")
+Rel(appRepartidor, api, "Envia actualizaciones de posicion GPS", "HTTPS/JSON")
+Rel(pwa, wsGPS, "Suscribe para seguimiento en tiempo real", "WebSocket")
+Rel(api, db, "Lee y escribe datos de todos los modulos", "SQL/TCP")
+Rel(api, cola, "Encola tareas de asignacion y lee cache de menus", "Redis protocol")
+Rel(api, wsGPS, "Publica actualizaciones de posicion GPS", "Redis protocol")
+Rel(api, culqi, "Solicita cobro inicial con Yape", "HTTPS/JSON")
+Rel(api, gmaps, "Calcula distancia repartidor-picanteria", "HTTPS/JSON")
+Rel(worker, cola, "Consume y procesa tareas asincronas", "Redis protocol")
+Rel(worker, db, "Lee y escribe datos de asignacion", "SQL/TCP")
+Rel(worker, culqi, "Reintenta cobros fallidos", "HTTPS/JSON")
+Rel(worker, notif, "Envia mensajes y notificaciones push", "HTTPS/JSON")
+
+SHOW_LEGEND()
+@enduml

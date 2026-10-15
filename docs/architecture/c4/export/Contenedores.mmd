@@ -1,0 +1,32 @@
+---
+title: Contenedores de PicanteriaYa
+---
+C4Container
+    title Contenedores de PicanteriaYa (Nivel 2)
+    Person(cliente, "Cliente", "Consulta el menu y paga con Yape.")
+    Person(repartidor, "Repartidor", "Recibe asignaciones y actualiza GPS.")
+    System_Ext(culqi, "Culqi", "Pasarela Yape. Externo.")
+    System_Ext(gmaps, "Google Maps API", "Distancias y rutas. Externo.")
+    System_Ext(notif, "WhatsApp / FCM", "Notificaciones. Externo.")
+    System_Boundary(pya, "PicanteriaYa") {
+        Container(pwa, "App Cliente / PWA", "React + Service Worker", "Interfaz web progresiva para pedidos y seguimiento.")
+        Container(appRep, "App Repartidor", "React Native", "App movil para asignaciones y actualizacion de GPS.")
+        Container(api, "API PicanteriaYa", "Python / Django REST Framework", "Monolito modular REST y WebSocket.")
+        Container(worker, "Worker de tareas", "Celery 5.3", "Procesamiento asincrono de asignaciones y notificaciones.")
+        ContainerDb(db, "Base de datos", "PostgreSQL 16", "Datos de pedidos, menus, pagos y usuarios.")
+        ContainerQueue(cola, "Cola y cache", "Redis 7", "Cola de tareas y cache de menus.")
+        Container(wsGPS, "Canal WebSocket", "Django Channels", "Seguimiento GPS en tiempo real.")
+    }
+    Rel(cliente, pwa, "Usa", "HTTPS")
+    Rel(repartidor, appRep, "Usa", "HTTPS")
+    Rel(pwa, api, "Llama a", "HTTPS/JSON")
+    Rel(appRep, api, "Envia posicion GPS", "HTTPS/JSON")
+    Rel(pwa, wsGPS, "Suscribe seguimiento", "WebSocket")
+    Rel(api, db, "Lee y escribe", "SQL/TCP")
+    Rel(api, cola, "Encola tareas y lee cache", "Redis protocol")
+    Rel(api, wsGPS, "Publica posicion GPS", "Redis protocol")
+    Rel(api, culqi, "Solicita cobro Yape", "HTTPS/JSON")
+    Rel(api, gmaps, "Calcula distancias", "HTTPS/JSON")
+    Rel(worker, cola, "Consume tareas", "Redis protocol")
+    Rel(worker, notif, "Envia mensajes", "HTTPS/JSON")
+    UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="1")

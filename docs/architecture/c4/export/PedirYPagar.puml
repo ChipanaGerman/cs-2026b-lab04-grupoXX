@@ -1,0 +1,31 @@
+@startuml
+!include <C4/C4_Dynamic>
+skinparam dpi 180
+
+title Vista dinamica: Pedir menu y pagar con Yape
+caption Flujo critico de PicanteriaYa — equivalente de alto nivel del diagrama de secuencia del Lab 05
+
+ContainerDb_Ext(culqi, "Culqi (Pasarela de pagos)", "HTTPS/JSON", "Procesa cobros con Yape.")
+
+Container_Boundary(api, "API PicanteriaYa") {
+    Component(modMenu, "Modulo Menu", "Django app", "")
+    Component(modPedidos, "Modulo Pedidos", "Django app", "")
+    Component(modPagos, "Modulo Pagos", "Django app", "")
+    Component(modRepartidores, "Modulo Repartidores", "Django app", "")
+    Component(modNotificaciones, "Modulo Notificaciones", "Django app", "")
+}
+
+Container(pwa, "App Cliente / PWA", "React + Service Worker", "")
+ContainerQueue(cola, "Cola y cache", "Redis 7", "")
+
+Rel(pwa, modMenu, "1. Consulta menu y platos disponibles", "HTTPS/JSON")
+Rel(pwa, modPedidos, "2. POST /pedidos/ con lineas seleccionadas", "HTTPS/JSON")
+Rel(modPedidos, modMenu, "3. Reserva el stock de cada plato")
+Rel(modPedidos, modPagos, "4. Solicita el cobro al confirmar")
+Rel(modPagos, culqi, "5. Cobra con Yape via Culqi", "HTTPS/JSON")
+Rel(modPedidos, modRepartidores, "6. Solicita asignacion de repartidor")
+Rel(modRepartidores, cola, "7. Encola tarea de asignacion asincrona", "Redis protocol")
+Rel(modPedidos, modNotificaciones, "8. Pide notificar al cliente y picanteria")
+
+SHOW_LEGEND()
+@enduml

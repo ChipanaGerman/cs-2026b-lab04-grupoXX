@@ -1,0 +1,33 @@
+@startuml
+!include <C4/C4_Component>
+skinparam dpi 180
+
+title Componentes de la API PicanteriaYa
+caption Nivel 3 - Modulos del monolito modular (coherente con paquetes.puml del Lab 05)
+
+ContainerDb_Ext(db, "Base de datos", "PostgreSQL 16", "Lee y escribe segun el modulo.")
+ContainerQueue_Ext(cola, "Cola y cache", "Redis 7", "Cola de tareas y cache de menus.")
+System_Ext(culqi, "Culqi (Pasarela de pagos)", "Procesa cobros con Yape.")
+System_Ext(gmaps, "Google Maps API", "Calcula distancias.")
+
+Container_Boundary(api, "API PicanteriaYa — Python / Django REST Framework") {
+    Component(modMenu, "Modulo Menu", "Django app", "Publica y actualiza el menu diario de cada picanteria con su stock disponible. Sirve el catalogo al cliente.")
+    Component(modPedidos, "Modulo Pedidos", "Django app", "Gestiona el carrito, la confirmacion y el ciclo de vida del pedido (RECIBIDO, PAGADO, PREPARANDO, EN_CAMINO, ENTREGADO, CANCELADO).")
+    Component(modPagos, "Modulo Pagos", "Django app", "Procesa el cobro con Yape a traves del puerto PasarelaPago hacia Culqi. Registra el resultado.")
+    Component(modRepartidores, "Modulo Repartidores", "Django app + Django Channels", "Asigna el repartidor disponible mas cercano a la picanteria. Encola la tarea de asignacion.")
+    Component(modNotificaciones, "Modulo Notificaciones", "Django app", "Envia notificaciones push al cliente y mensajes WhatsApp a la picanteria.")
+}
+
+Rel(modPedidos, modMenu, "Reserva stock de platos al confirmar")
+Rel(modPedidos, modPagos, "Solicita el cobro al confirmar el pedido")
+Rel(modPedidos, modRepartidores, "Solicita asignacion de repartidor tras pago exitoso")
+Rel(modPedidos, modNotificaciones, "Pide notificar al cliente y picanteria")
+Rel(modPagos, culqi, "Cobra con Yape via Culqi", "HTTPS/JSON")
+Rel(modRepartidores, cola, "Encola la tarea de asignacion del repartidor mas cercano", "Redis protocol")
+Rel(modRepartidores, gmaps, "Calcula distancia entre repartidores disponibles y la picanteria", "HTTPS/JSON")
+Rel(modNotificaciones, cola, "Encola mensajes para envio asincrono", "Redis protocol")
+Rel(modMenu, db, "Lee y escribe menus y stock", "SQL")
+Rel(modPedidos, db, "Lee y escribe pedidos y lineas de pedido", "SQL")
+
+SHOW_LEGEND()
+@enduml

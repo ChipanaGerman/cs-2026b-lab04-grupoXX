@@ -1,0 +1,37 @@
+@startuml
+!include <C4/C4_Deployment>
+skinparam dpi 180
+
+title Despliegue en Produccion de PicanteriaYa
+caption Vista de despliegue — coherente con la restriccion R-03: VPS unico ~20 USD/mes
+
+Deployment_Node(userDevice, "Celular o navegador del cliente", "Android / iOS / navegador web moderno") {
+    Container(pwa, "App Cliente / PWA", "React + Service Worker", "Interfaz web progresiva.")
+}
+
+Deployment_Node(repDevice, "Celular del repartidor", "Android") {
+    Container(appRepartidor, "App Repartidor", "React Native", "App movil para asignaciones y GPS.")
+}
+
+Deployment_Node(vps, "VPS en la nube", "Ubuntu 24.04 LTS, 2 vCPU, 4 GB RAM, ~20 USD/mes (DigitalOcean / Linode)") {
+    Deployment_Node(dockerCompose, "Docker Compose", "Docker 27 + Docker Compose v2") {
+        Deployment_Node(djangoNode, "Contenedor Django + Gunicorn", "Python 3.12, Gunicorn 21") {
+            Container(api, "API PicanteriaYa", "Python / Django REST Framework", "Monolito modular REST.")
+        }
+        Deployment_Node(channelsNode, "Contenedor Django Channels + Daphne", "Daphne 4, WebSocket") {
+            Container(wsGPS, "Canal WebSocket / GPS", "Django Channels + Redis", "Seguimiento GPS en tiempo real.")
+        }
+        Deployment_Node(celeryNode, "Contenedor Celery Worker", "Celery 5.3") {
+            Container(worker, "Worker de tareas", "Celery 5.3", "Asignacion de repartidores y notificaciones.")
+        }
+        Deployment_Node(pgNode, "Contenedor PostgreSQL", "PostgreSQL 16") {
+            ContainerDb(db, "Base de datos", "PostgreSQL 16", "Esquema por modulo.")
+        }
+        Deployment_Node(redisNode, "Contenedor Redis", "Redis 7") {
+            ContainerQueue(cola, "Cola y cache", "Redis 7", "Cola de tareas y cache de menus.")
+        }
+    }
+}
+
+SHOW_LEGEND()
+@enduml

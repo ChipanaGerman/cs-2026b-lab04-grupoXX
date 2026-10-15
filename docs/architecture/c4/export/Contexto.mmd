@@ -1,0 +1,19 @@
+---
+title: Contexto de PicanteriaYa
+---
+C4Context
+    title Contexto de PicanteriaYa (Nivel 1)
+    Person(cliente, "Cliente", "Consulta el menu del dia, realiza pedidos y paga con Yape.")
+    Person(picanteria, "Picanteria", "Publica el menu diario con stock y atiende pedidos.")
+    Person(repartidor, "Repartidor", "Recibe asignaciones y entrega pedidos a domicilio.")
+    System(pya, "PicanteriaYa", "Plataforma de delivery: menu, pedidos, pagos Yape y seguimiento GPS.")
+    System_Ext(culqi, "Culqi (Pasarela de pagos)", "Procesa cobros con Yape. Externo.")
+    System_Ext(gmaps, "Google Maps API", "Calcula distancias y muestra el mapa. Externo.")
+    System_Ext(notif, "WhatsApp / FCM", "Notificaciones push y mensajeria. Externo.")
+    Rel(cliente, pya, "Consulta menu, realiza pedidos y paga")
+    Rel(picanteria, pya, "Publica y actualiza el menu diario")
+    Rel(repartidor, pya, "Recibe asignaciones y actualiza GPS")
+    Rel(pya, culqi, "Solicita cobros con Yape", "HTTPS/JSON")
+    Rel(pya, gmaps, "Calcula distancias y rutas", "HTTPS/JSON")
+    Rel(pya, notif, "Envia notificaciones de estado del pedido", "HTTPS/JSON")
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
