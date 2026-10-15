@@ -3,7 +3,7 @@
 skinparam dpi 180
 
 title Despliegue en Produccion de PicanteriaYa
-caption Vista de despliegue — coherente con la restriccion R-03: VPS unico ~20 USD/mes
+caption Vista de despliegue — coherente con R-03 del drivers.md: VPS unico ~20 USD/mes.\nTodos los contenedores del nivel 2 tienen containerInstance en un nodo. Docker Compose no es contenedor C4.
 
 Deployment_Node(userDevice, "Celular o navegador del cliente", "Android / iOS / navegador web moderno") {
     Container(pwa, "App Cliente / PWA", "React + Service Worker", "Interfaz web progresiva.")
