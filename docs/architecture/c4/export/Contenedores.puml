@@ -3,7 +3,7 @@
 skinparam dpi 180
 
 title Contenedores de PicanteriaYa
-caption Nivel 2 - Unidades desplegables, tecnologias y protocolos
+caption Nivel 2 - Unidades desplegables, tecnologias y protocolos\nVerificacion: Contenedores coherentes con ADR-001 (monolito modular, Celery, PostgreSQL 16, Redis 7, Django Channels). Ningun contenedor se llama Docker, servidor o nube.
 
 Person(cliente, "Cliente", "Consulta el menu, realiza pedidos y paga con Yape.")
 Person(picanteria, "Picanteria", "Publica el menu diario y atiende pedidos.")
