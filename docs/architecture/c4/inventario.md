@@ -38,3 +38,14 @@
 - **Google Maps API como sistema externo**: se usa solo lectura con control de costos (R-06); no se despliega como contenedor propio.
 - **Docker Compose no es un contenedor C4**: es infraestructura de despliegue; aparece como nodo en la vista de despliegue.
 - **App Repartidor** es un contenedor separado porque tiene ciclo de vida de despliegue independiente (app móvil) respecto a la PWA del cliente.
+
+---
+
+## Lista de verificación E1 (diagrama de contexto)
+
+- [x] El diagrama de contexto **no muestra tecnologías internas** (sin Django, Redis, PostgreSQL en nivel 1)
+- [x] Cada flecha tiene un **verbo de intención** ("Solicita cobros con Yape", "Calcula distancias y rutas", "Envía notificaciones de estado del pedido")
+- [x] 3 personas identificadas (Cliente, Picantería, Repartidor)
+- [x] 1 sistema propio (PicanteríaYa)
+- [x] 3 sistemas externos con etiqueta "Externo" (Culqi, Google Maps API, WhatsApp/FCM)
+- [x] Todos los sistemas externos justificados en el ADR-001 o drivers.md
