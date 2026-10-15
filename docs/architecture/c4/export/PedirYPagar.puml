@@ -3,7 +3,7 @@
 skinparam dpi 180
 
 title Vista dinamica: Pedir menu y pagar con Yape
-caption Flujo critico de PicanteriaYa — equivalente de alto nivel del diagrama de secuencia del Lab 05
+caption Flujo critico de PicanteriaYa — 8 pasos. Equivalente alto nivel de secuencia-pedir-pagar.puml (Lab 05).\nCada paso corresponde a una relacion declarada en workspace.dsl. Ver comparacion detallada en comparacion.md.
 
 ContainerDb_Ext(culqi, "Culqi (Pasarela de pagos)", "HTTPS/JSON", "Procesa cobros con Yape.")
 
