@@ -270,3 +270,70 @@ C4Context
 - Guía Lab 04: `Guia_Lab04_Fundamentos_Arquitectura_Software_2026B.pdf`
 - Guía Lab 05: `Guia_Lab05_Diagramas_Diseno_UML_2026B.pdf`
 - Guía Lab 06: `Guia_Lab06_Modelo_C4_2026B.pdf`
+- Guía Lab 07: `Guia_Lab07_Patrones_Diseno_2026B.pdf`
+- refactoring.guru: https://refactoring.guru/es/design-patterns
+
+---
+
+## Patrones de diseño — Lab 07
+
+> Tag de entrega: **`v0.7-patrones`** · Plazo: 24/10/2026 · ADR: [005-patrones-de-diseno.md](docs/architecture/adr/005-patrones-de-diseno.md)
+>
+> [![Patrones CI](../../actions/workflows/patrones-ci.yml/badge.svg)](../../actions/workflows/patrones-ci.yml)
+
+### Flujo refactorizado: `confirmar_y_pagar()` — módulo Pedidos
+
+Se refactorizó el flujo crítico modelado en el Lab 05 aplicando **7 patrones GoF**. La complejidad ciclomática máxima bajó de **14 (C)** a **4 (A)**.
+
+### Tabla: olor → patrón → prueba
+
+| Olor detectado | Patrón(es) | Archivo | Prueba que lo demuestra |
+|----------------|-----------|---------|------------------------|
+| `if/elif` por medio de pago que crece con cada nuevo método | **Strategy + Factory** | `pagos.py` | `test_open_closed_nuevo_medio_sin_modificar_el_servicio` |
+| El servicio conoce detalles de cada SDK (dict, céntimos, tupla) | **Adapter** | `pagos.py` | `test_yape_adapter_traduce_dict_a_resultado_pago` |
+| Bloque de reintentos duplicado para Yape y Culqi | **Decorator** (`ConReintentos`) | `pagos.py` | `test_con_reintentos_reintenta_ante_timeout` |
+| Condicionales anidados sobre `pedido.estado` | **State** | `estados.py` | `test_state_impide_transicion_invalida_entregado_cancelar` |
+| Notificaciones WhatsApp "a mano" en el servicio | **Observer** | `eventos.py` | `test_observer_nuevo_suscriptor_sin_tocar_el_servicio` |
+| Lógica transversal (GPS) mezclada en suscriptores | **Decorator** (`ConSeguimientoGPS`) | `eventos.py` | `test_con_seguimiento_gps_agrega_log_sin_modificar_suscriptor` |
+| IA acoplada: if/elif por proveedor + validaciones mezcladas | **Strategy + Adapter + Decorator + Chain of Responsibility** | `ia.py` | `test_sugerir_descripcion_bloquea_respuesta_con_precio` |
+
+### Tabla de métricas (radon)
+
+| Métrica | Antes | Después | Cambio |
+|---------|-------|---------|--------|
+| Complejidad máxima | 14 (C) | 4 (A) | −71 % |
+| Complejidad promedio | 5.5 (B) | 1.65 (A) | −70 % |
+| SLOC | 112 | 328 | +193 % |
+| Pruebas | 0 | **50** | +50 |
+
+### Error de la IA detectado por las pruebas
+
+La primera versión de `ConReintentos` generada por IA capturaba `Exception` en lugar de `TimeoutError`, causando reintentos en pagos rechazados (riesgo de cobro duplicado). La prueba `test_con_reintentos_no_reintenta_pago_rechazado` falló y se corrigió manualmente.
+
+### Estructura del módulo refactorizado
+
+```
+src/pedidos/
+├── antes/servicio.py          # E1: versión ingenua (se conserva)
+├── externos.py                # E1: SDKs simulados con interfaces distintas
+├── pagos.py                   # E2: Strategy + Adapter + Factory + Decorator
+├── estados.py                 # E3: State (implementa estados-pedido.mmd Lab05)
+├── eventos.py                 # E4: Observer + Decorator GPS
+├── ia.py                      # E5: Strategy + Adapter + Decorator caché + Chain
+└── servicio.py                # Servicio refactorizado (complejidad 2)
+tests/
+├── test_comportamiento.py     # E1: 12 pruebas de caracterización
+└── test_patrones.py           # E2–E5: 38 pruebas de patrones
+docs/design/patrones/
+├── olores.md                  # E1: tabla de olores con decisiones
+├── metricas.md                # E6: radon antes/después + trade-off
+├── pagos-strategy-adapter-factory.puml   # E7
+├── estados-state.puml                    # E7
+├── eventos-observer-decorator.puml       # E7
+├── ia-strategy-decorator-chain.puml      # E7
+├── img/                                  # E7: PNGs generados
+└── bitacora-ia.md                        # E7: 5 interacciones con IA
+docs/architecture/adr/
+└── 005-patrones-de-diseno.md  # E8: ADR con patrones adoptados y rechazados
+```
+

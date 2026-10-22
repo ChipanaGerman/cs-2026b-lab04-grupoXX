@@ -1,0 +1,69 @@
+name: "Patrones: pytest + radon (complejidad)"
+
+on:
+  push:
+    paths:
+      - "src/**"
+      - "tests/**"
+      - ".github/workflows/patrones-ci.yml"
+  pull_request:
+    paths:
+      - "src/**"
+      - "tests/**"
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────
+  # JOB 1: Ejecutar pytest — el push/PR falla si alguna prueba falla
+  # ─────────────────────────────────────────────────────────────────
+  test:
+    name: "pytest (50 tests)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Configurar Python 3.12"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Instalar dependencias"
+        run: pip install pytest radon
+
+      - name: "Ejecutar todas las pruebas"
+        run: python -m pytest tests/ -v --tb=short
+
+  # ─────────────────────────────────────────────────────────────────
+  # JOB 2: Reto opcional B — radon cc --min C
+  # Falla si algún método supera complejidad 10 (clase C o superior)
+  # ─────────────────────────────────────────────────────────────────
+  complejidad:
+    name: "radon: complejidad ≤ 10 por metodo"
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Configurar Python 3.12"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: "Instalar radon"
+        run: pip install radon
+
+      - name: "Verificar complejidad ciclomática (falla si > 10)"
+        run: |
+          echo "=== Complejidad ciclomática por método ==="
+          python -m radon cc -s -a src/
+
+          echo ""
+          echo "=== Verificando que ningun metodo supere complejidad 10 ==="
+          # radon cc --min C devuelve los bloques con complejidad >= C (11+)
+          # Si hay salida, hay métodos demasiado complejos → falla el CI
+          RESULTADO=$(python -m radon cc --min C src/ 2>&1)
+          if [ -n "$RESULTADO" ]; then
+            echo "ERROR: Los siguientes métodos superan complejidad 10:"
+            echo "$RESULTADO"
+            exit 1
+          fi
+          echo "OK: todos los métodos tienen complejidad <= 10"
