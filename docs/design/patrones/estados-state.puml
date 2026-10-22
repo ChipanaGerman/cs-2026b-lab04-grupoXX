@@ -1,0 +1,79 @@
+@startuml estados-state
+skinparam dpi 150
+skinparam classAttributeIconSize 0
+
+title State — Ciclo de vida del Pedido\nPicanteríaYa · Lab 07 (implementa estados-pedido.mmd del Lab 05)
+
+abstract class EstadoPedido <<State>> {
+    + nombre: str
+    + registrar_pago(pedido): void {throws ValueError}
+    + cancelar(pedido, motivo): void {throws ValueError}
+    + marcar_preparando(pedido): void {throws ValueError}
+    + marcar_en_camino(pedido): void {throws ValueError}
+    + confirmar_entrega(pedido): void {throws ValueError}
+}
+
+class Recibido <<ConcreteState>> {
+    + nombre = "RECIBIDO"
+    + registrar_pago(pedido): void
+    + cancelar(pedido, motivo): void
+}
+
+class Pagado <<ConcreteState>> {
+    + nombre = "PAGADO"
+    + marcar_preparando(pedido): void
+    + cancelar(pedido, motivo): void
+}
+
+class Preparando <<ConcreteState>> {
+    + nombre = "PREPARANDO"
+    + marcar_en_camino(pedido): void
+}
+
+class EnCamino <<ConcreteState>> {
+    + nombre = "EN_CAMINO"
+    + confirmar_entrega(pedido): void
+}
+
+class Entregado <<ConcreteState>> {
+    + nombre = "ENTREGADO"
+}
+
+class Cancelado <<ConcreteState>> {
+    + nombre = "CANCELADO"
+}
+
+class Pedido <<Context>> {
+    + id: int
+    + celular: str
+    - _estado: EstadoPedido
+    + estado: str
+    + registrar_pago(pago): void
+    + cancelar(motivo): void
+    + marcar_preparando(): void
+    + marcar_en_camino(): void
+    + confirmar_entrega(): void
+    - _cambiar_estado(nuevo): void
+}
+
+EstadoPedido <|-- Recibido
+EstadoPedido <|-- Pagado
+EstadoPedido <|-- Preparando
+EstadoPedido <|-- EnCamino
+EstadoPedido <|-- Entregado
+EstadoPedido <|-- Cancelado
+Pedido o-- EstadoPedido : _estado
+
+note right of Pedido
+  El Context delega TODAS las
+  transiciones al estado actual.
+  Una transición inválida es
+  imposible por construcción.
+end note
+
+note bottom of Recibido
+  registrar_pago():
+    pago.aprobado → Pagado
+    !pago.aprobado → Cancelado
+end note
+@enduml

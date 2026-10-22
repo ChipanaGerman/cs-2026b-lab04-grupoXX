@@ -1,0 +1,84 @@
+@startuml ia-strategy-decorator-chain
+skinparam dpi 150
+skinparam classAttributeIconSize 0
+
+title Strategy + Adapter + Decorator + Chain of Responsibility — IA\nPicanteríaYa · Lab 07
+
+interface ProveedorLLM <<Strategy>> {
+    + completar(prompt: str): str
+}
+
+class GeminiAdapter <<Adapter>> {
+    - _api_key: Optional[str]
+    + completar(prompt): str
+}
+
+class OpenAIAdapter <<Adapter>> {
+    - _api_key: Optional[str]
+    + completar(prompt): str
+}
+
+class ClienteLLMFalso <<Strategy (doble de prueba)>> {
+    - _respuesta: str
+    + llamadas: List[str]
+    + completar(prompt): str
+}
+
+class ConCache <<Decorator>> {
+    - _interno: ProveedorLLM
+    - _cache: dict
+    + completar(prompt): str
+}
+
+abstract class Guardrail <<Chain of Responsibility>> {
+    - _siguiente: Optional[Guardrail]
+    + validar(texto: str): str
+    # _aplicar(texto: str): str {abstract}
+}
+
+class SinPrecios <<ConcreteHandler>> {
+    # _aplicar(texto): str
+}
+
+class SinAfirmacionesProhibidas <<ConcreteHandler>> {
+    + PROHIBIDAS: list
+    # _aplicar(texto): str
+}
+
+class LongitudMaxima <<ConcreteHandler>> {
+    - _maximo: int
+    # _aplicar(texto): str
+}
+
+class ServicioDescripcionPlato {
+    - _proveedor: ConCache
+    - _guardrails: Guardrail
+    + sugerir_descripcion(nombre_plato: str): str
+}
+
+ProveedorLLM <|.. GeminiAdapter
+ProveedorLLM <|.. OpenAIAdapter
+ProveedorLLM <|.. ClienteLLMFalso
+ProveedorLLM <|.. ConCache
+ConCache o-- ProveedorLLM : envuelve
+
+Guardrail <|-- SinPrecios
+Guardrail <|-- SinAfirmacionesProhibidas
+Guardrail <|-- LongitudMaxima
+Guardrail o-- Guardrail : _siguiente
+
+ServicioDescripcionPlato --> ConCache : usa
+ServicioDescripcionPlato --> Guardrail : valida con
+
+note right of ConCache
+  Decorator: si el prompt ya fue
+  respondido, retorna del cache.
+  Evita llamadas API repetidas.
+end note
+
+note bottom of SinPrecios
+  Guardrail 1: bloquea "S/ 8.50"
+  Guardrail 2: bloquea "garantizado"
+  Guardrail 3: trunca > 400 chars
+end note
+@enduml

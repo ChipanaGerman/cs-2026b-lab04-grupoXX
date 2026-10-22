@@ -1,0 +1,77 @@
+@startuml pagos-strategy-adapter-factory
+skinparam dpi 150
+skinparam classAttributeIconSize 0
+
+title Strategy + Adapter + Factory + Decorator — Módulo Pagos\nPicanteríaYa · Lab 07
+
+interface PasarelaPago <<Strategy>> {
+    + cobrar(monto: Decimal, celular: str): ResultadoPago
+}
+
+class YapeAdapter <<Adapter>> {
+    - _sdk: YapeSDK
+    + cobrar(monto, celular): ResultadoPago
+}
+
+class CulqiAdapter <<Adapter>> {
+    - _cliente: CulqiHTTP
+    + cobrar(monto, celular): ResultadoPago
+}
+
+class ConReintentos <<Decorator>> {
+    - _interna: PasarelaPago
+    - _intentos: int
+    + cobrar(monto, celular): ResultadoPago
+}
+
+class ConLog <<Decorator>> {
+    - _interna: PasarelaPago
+    - _bitacora: list
+    + cobrar(monto, celular): ResultadoPago
+}
+
+class FabricaPasarelas <<Factory>> {
+    - _creadores: dict
+    + registrar(medio: str, creador): void
+    + crear(medio: str): PasarelaPago
+}
+
+class ResultadoPago <<ValueObject>> {
+    + aprobado: bool
+    + operacion: Optional[str]
+}
+
+class YapeSDK <<External SDK>> {
+    + realizar_cobro(celular, monto_soles): dict
+}
+
+class CulqiHTTP <<External SDK>> {
+    + charge(monto_centimos, celular): tuple
+}
+
+PasarelaPago <|.. YapeAdapter
+PasarelaPago <|.. CulqiAdapter
+PasarelaPago <|.. ConReintentos
+PasarelaPago <|.. ConLog
+ConReintentos o-- PasarelaPago : envuelve
+ConLog o-- PasarelaPago : envuelve
+YapeAdapter --> YapeSDK : traduce
+CulqiAdapter --> CulqiHTTP : traduce
+FabricaPasarelas ..> PasarelaPago : crea
+FabricaPasarelas ..> ConReintentos : envuelve en
+YapeAdapter ..> ResultadoPago : retorna
+CulqiAdapter ..> ResultadoPago : retorna
+
+note right of ConReintentos
+  Solo reintenta ante TimeoutError.
+  Error de la IA detectado por las pruebas:
+  la primera versión reintentaba
+  también los pagos rechazados.
+end note
+
+note bottom of FabricaPasarelas
+  Agregar Plin: fabrica.registrar("PLIN", ...)
+  El servicio NO se modifica.
+  (principio Open/Closed)
+end note
+@enduml

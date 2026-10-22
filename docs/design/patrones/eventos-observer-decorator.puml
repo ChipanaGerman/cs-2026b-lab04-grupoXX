@@ -1,0 +1,65 @@
+@startuml eventos-observer-decorator
+skinparam dpi 150
+skinparam classAttributeIconSize 0
+
+title Observer + Decorator — Notificaciones\nPicanteríaYa · Lab 07
+
+interface Suscriptor <<Observer>> {
+    + actualizar(evento: str, datos: dict): void
+}
+
+class PublicadorEventos <<Subject>> {
+    - _suscriptores: Dict[str, List[Suscriptor]]
+    + suscribir(evento: str, suscriptor: Suscriptor): void
+    + desuscribir(evento: str, suscriptor: Suscriptor): void
+    + publicar(evento: str, datos: dict): void
+}
+
+class NotificadorWhatsApp <<ConcreteObserver>> {
+    - _sdk: WhatsAppSDK
+    - _bandeja: List[str]
+    + actualizar(evento, datos): void
+}
+
+class RegistradorReportes <<ConcreteObserver>> {
+    - _bandeja: List[str]
+    + actualizar(evento, datos): void
+}
+
+class NotificadorPicanteria <<ConcreteObserver>> {
+    - _bandeja: List[str]
+    + actualizar(evento, datos): void
+}
+
+class ConSeguimientoGPS <<Decorator>> {
+    - _interno: Suscriptor
+    - _log_gps: List[str]
+    + actualizar(evento, datos): void
+}
+
+class WhatsAppSDK <<External>> {
+    + send_message(phone, template, params): str
+}
+
+Suscriptor <|.. NotificadorWhatsApp
+Suscriptor <|.. RegistradorReportes
+Suscriptor <|.. NotificadorPicanteria
+Suscriptor <|.. ConSeguimientoGPS
+
+PublicadorEventos o-- Suscriptor : notifica a
+
+ConSeguimientoGPS o-- Suscriptor : envuelve
+NotificadorWhatsApp --> WhatsAppSDK : usa
+
+note right of PublicadorEventos
+  Agregar un nuevo suscriptor
+  (ej. AuditoriaContable) NO
+  requiere modificar el servicio.
+  (principio Open/Closed)
+end note
+
+note bottom of ConSeguimientoGPS
+  Decorator: agrega log GPS
+  sin modificar el suscriptor base.
+end note
+@enduml
