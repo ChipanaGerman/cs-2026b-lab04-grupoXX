@@ -337,3 +337,61 @@ docs/architecture/adr/
 └── 005-patrones-de-diseno.md  # E8: ADR con patrones adoptados y rechazados
 ```
 
+---
+
+## Diseño de la arquitectura (Lab 08)
+
+[![fitness-functions](https://github.com/ChipanaGerman/cs-2026b-lab04-grupoXX/actions/workflows/fitness.yml/badge.svg)](https://github.com/ChipanaGerman/cs-2026b-lab04-grupoXX/actions/workflows/fitness.yml)
+
+**Escenario de crecimiento:** "Día de la Picantería" — 10× más pedidos en 3 horas + seguimiento GPS cada 5 s.
+
+### Árbol de utilidad
+
+9 escenarios cubriendo 4 atributos · ver [arbol.dot](docs/architecture/utilidad/arbol.dot) + [arbol.png](docs/architecture/utilidad/arbol.png)
+
+| ID | Atributo | Escenario | Calificación | Guía iteración ADD |
+|----|----------|-----------|-------------|-------------------|
+| QA-01 | Rendimiento | 400 clientes consultan menú → p95 ≤ 1 s | **(H,H)** | Iteración 1 |
+| QA-02 | Rendimiento | 10× pedidos en 3 h → p95 confirmación ≤ 4 s | **(H,H)** | Iteración 1 |
+| QA-03 | Rendimiento | GPS cada 5 s → WebSocket ≤ 500 ms | **(H,M)** | — |
+| QA-04 | Disponibilidad | Pasarela caída 20 min → 0 pedidos perdidos | **(H,H)** | Iteración 2 |
+| QA-05 | Disponibilidad | Falla servidor → recuperación ≤ 30 s | **(H,M)** | — |
+| QA-06 | Seguridad | Datos personales expuestos → 0 filas | **(M,L)** ⚠️ IA propuso (H,H) | — |
+| QA-07 | Seguridad | Repartidor A ve pedidos de Picantería B → 0 filas ajenas | **(H,M)** | Iteración 3 |
+| QA-08 | Modificabilidad | Nuevo distrito → ≤ 1 día-persona, 0 módulos tocados | **(H,L)** | Iteración 3 |
+| QA-09 | Modificabilidad | Nueva pasarela de pago → ≤ 2 h-persona | **(M,L)** | — |
+
+### Iteraciones ADD y evidencia
+
+| Iteración | Escenario objetivo | Táctica adoptada | Rechazada | Evidencia | p95 antes | p95 después | ¿Cumple? |
+|-----------|-------------------|-----------------|-----------|-----------|-----------|-------------|---------|
+| [1](docs/architecture/add/iteracion-1.md) | QA-01 + QA-02 | Índice `plato(picanteria_id, activo)` + caché Redis TTL=30 s | Microservicios + K8s (IA) | Simulación M/G/c | 97 ms | **26 ms** (QA-01) / **219 ms** (QA-02) | ✅ |
+| [2](docs/architecture/add/iteracion-2.md) | QA-04 | Circuit Breaker + outbox PostgreSQL | Cola en Redis (IA) | Monte Carlo | 31 perdidos | **9 llamadas en caída** | ✅ |
+| [3](docs/architecture/add/iteracion-3.md) | QA-07 + QA-08 | RLS PostgreSQL + `picanteria_id` | BD por picantería (IA) | Análisis comparativo | — | RLS verificado en CI | ✅ |
+
+### ADRs producidos
+
+| ADR | Decisión | Evidencia |
+|-----|---------|-----------|
+| [ADR-006](docs/architecture/adr/006-tacticas-rendimiento.md) | Índice + caché Redis TTL=30 s | Simulación M/G/c: p95 = 26 ms a 400 req/h |
+| [ADR-007](docs/architecture/adr/007-disponibilidad-pago.md) | CB + outbox PostgreSQL | Monte Carlo: 9 llamadas al proveedor caído vs 93 |
+| [ADR-008](docs/architecture/adr/008-seguridad-modificabilidad.md) | RLS + `picanteria_id` + tabla `distrito_reparto` | Análisis comparativo + fitness function FF-06 |
+
+### Fitness functions (E5)
+
+| ID | Tipo | Qué verifica | Herramienta | ¿Pasa? |
+|----|------|-------------|-------------|-------|
+| FF-01a/b | Estructural | `estados` y `eventos` no importan `externos` directamente | import-linter | ✅ |
+| FF-02/02b | Estructural | `estados` no depende de `pagos`; `eventos` no depende de `estados` | import-linter | ✅ |
+| FF-03 | Calidad (rendimiento) | p95 menú ≤ 1 000 ms en pico 400 req/h | pytest + simulación | ✅ 26 ms |
+| FF-04 | Calidad (rendimiento) | p95 confirmación ≤ 4 000 ms en Día Picantería (10×) | pytest + simulación | ✅ 219 ms |
+| FF-05 | Calidad (disponibilidad) | CB reduce llamadas al proveedor caído vs solo reintentos | pytest + Monte Carlo | ✅ 9 vs 93 |
+| FF-06 | Aislamiento | ADR-008 menciona RLS; iteración 3 documenta `picanteria_id` | pytest (AST + archivos) | ✅ |
+
+> **Degradación que detecta cada FF:**
+> - FF-01/02: alguien agrega un `import` directo que viola la separación de capas → CI falla.
+> - FF-03/04: alguien elimina el índice o la caché → p95 sube por encima del presupuesto → CI falla.
+> - FF-05: alguien desactiva el Circuit Breaker → más llamadas al proveedor caído → CI falla.
+> - FF-06: ADR-008 o iteración-3 no documentan RLS/`picanteria_id` → CI falla.
+
+
