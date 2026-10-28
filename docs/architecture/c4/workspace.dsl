@@ -21,23 +21,23 @@ workspace "PicanteriaYa" "Modelo C4 de la plataforma de delivery de picanterias 
 
             appRepartidor = container "App Repartidor" "Aplicacion movil que recibe la asignacion del pedido, muestra la ruta a la picanteria y permite actualizar la posicion GPS." "React Native" "Mobile App"
 
-            api = container "API PicanteriaYa" "Monolito modular Django REST Framework que implementa todos los casos de uso mediante una API REST y WebSocket." "Python / Django REST Framework" {
+            api = container "API PicanteriaYa" "Monolito modular Django REST Framework. [QA-01, QA-02] Con indice en plato(picanteria_id, activo) y cache Redis TTL=30s, p95 menu = 26 ms a 400 req/h." "Python / Django REST Framework" {
 
                 # Nivel 3: Componentes del contenedor principal
-                modMenu = component "Modulo Menu" "Publica y actualiza el menu diario de cada picanteria con su stock disponible. Sirve el catalogo al cliente." "Django app"
-                modPedidos = component "Modulo Pedidos" "Gestiona el carrito, la confirmacion y el ciclo de vida del pedido (RECIBIDO, PAGADO, PREPARANDO, EN_CAMINO, ENTREGADO, CANCELADO)." "Django app"
-                modPagos = component "Modulo Pagos" "Procesa el cobro con Yape a traves del puerto PasarelaPago hacia Culqi. Registra el resultado en el pedido." "Django app"
-                modRepartidores = component "Modulo Repartidores" "Asigna el repartidor disponible mas cercano a la picanteria. Encola la tarea de asignacion en Celery." "Django app + Django Channels"
+                modMenu = component "Modulo Menu" "Publica y actualiza el menu diario. [QA-01] Cache Redis de 30 s reduce la carga en BD; indice en plato.picanteria_id garantiza p95 ≤ 1 s en cache fria." "Django app"
+                modPedidos = component "Modulo Pedidos" "Gestiona el ciclo de vida del pedido (RECIBIDO → PAGADO → PREPARANDO → EN_CAMINO → ENTREGADO). [QA-02] p95 confirmacion = 219 ms a 10x carga." "Django app"
+                modPagos = component "Modulo Pagos" "[QA-04] ConReintentos + ConCircuitBreaker (Decorator sobre PasarelaPago). Cuando CB abierto, escribe en tabla pago_pendiente (outbox PostgreSQL)." "Django app"
+                modRepartidores = component "Modulo Repartidores" "[QA-03] Django Channels WebSocket: posicion GPS cada 5 s. [QA-08] Nuevo distrito = INSERT en distrito_reparto, 0 codigo cambia." "Django app + Django Channels"
                 modNotificaciones = component "Modulo Notificaciones" "Envia notificaciones push al cliente y mensajes WhatsApp a la picanteria sobre el estado del pedido." "Django app"
             }
 
-            worker = container "Worker de tareas" "Ejecuta de forma asincrona la asignacion de repartidores, el reintento de notificaciones y la limpieza de pedidos expirados." "Celery"
+            worker = container "Worker de tareas" "[QA-04] Procesa tabla outbox pago_pendiente: reintenta cobros diferidos al recuperarse la pasarela. Tambien asignacion de repartidores y notificaciones." "Celery"
 
-            db = container "Base de datos" "Almacena usuarios, picanterias, menus, pedidos, pagos y repartidores. Esquema separado por modulo para respetar los limites del ADR-001." "PostgreSQL 16" "Database"
+            db = container "Base de datos" "[QA-07] RLS de PostgreSQL + columna picanteria_id: aislamiento entre picanterias. [QA-04] Tabla pago_pendiente (outbox transaccional)." "PostgreSQL 16" "Database"
 
-            cola = container "Cola y cache" "Cola de tareas Celery para el procesamiento asincrono del pico dominical (hasta 400 pedidos/hora). Cache de menus del dia para reducir consultas a la base de datos." "Redis 7" "Queue"
+            cola = container "Cola y cache" "[QA-01] Cache de menus del dia (TTL=30 s). [QA-02] Cola Celery para asignacion asincrona de repartidores en el pico." "Redis 7" "Queue"
 
-            wsGPS = container "Canal WebSocket / GPS" "Canal WebSocket gestionado por Django Channels que envia actualizaciones de posicion GPS del repartidor al cliente en tiempo real." "Django Channels + Redis" "Queue"
+            wsGPS = container "Canal WebSocket / GPS" "[QA-03] Canal WebSocket (Django Channels + Daphne) que envia posicion GPS del repartidor cada 5 s al cliente." "Django Channels + Redis" "Queue"
         }
 
         # ─────────────────────────────────────────────────────────────────
