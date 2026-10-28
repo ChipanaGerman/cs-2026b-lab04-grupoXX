@@ -1,0 +1,33 @@
+name: fitness-functions
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  arquitectura:
+    name: "Fitness Functions — PicanteríaYa Lab 08"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install pytest import-linter
+
+      # FF-01 y FF-02 — Fitness functions estructurales (import-linter)
+      - name: "FF-01 y FF-02 — Verificar dependencias entre módulos (import-linter)"
+        run: lint-imports
+        # Falla si hay violaciones estructurales definidas en .importlinter
+
+      # FF-03 a FF-06 — Fitness functions de calidad y aislamiento (pytest)
+      - name: "FF-03 a FF-06 — Presupuesto de latencia, disponibilidad y aislamiento"
+        run: pytest -v tests/test_fitness.py
+        # Falla si p95 > presupuesto o CB no reduce llamadas en caída

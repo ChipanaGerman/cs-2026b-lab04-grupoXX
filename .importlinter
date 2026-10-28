@@ -1,0 +1,39 @@
+[importlinter]
+root_packages =
+    src
+    fitness
+
+# FF-01: Solo la fabrica/arranque instancia adaptadores — verificamos que
+# estados y eventos NO importan el modulo de externos directamente
+[importlinter:contract:FF-01-estados-no-externos]
+name = FF-01a estados no importa directamente externos (ADR-005)
+type = forbidden
+source_modules =
+    src.pedidos.estados
+forbidden_modules =
+    src.pedidos.externos
+
+[importlinter:contract:FF-01b-eventos-no-externos]
+name = FF-01b eventos no importa directamente externos (ADR-005)
+type = forbidden
+source_modules =
+    src.pedidos.eventos
+forbidden_modules =
+    src.pedidos.externos
+
+# FF-02: Capas del monolito sin dependencias prohibidas (ADR-001)
+[importlinter:contract:FF-02-capas]
+name = FF-02 estados no depende de pagos (ADR-001)
+type = forbidden
+source_modules =
+    src.pedidos.estados
+forbidden_modules =
+    src.pedidos.pagos
+
+[importlinter:contract:FF-02b-eventos-estados]
+name = FF-02b eventos no depende de estados (ADR-001)
+type = forbidden
+source_modules =
+    src.pedidos.eventos
+forbidden_modules =
+    src.pedidos.estados
