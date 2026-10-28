@@ -1,0 +1,89 @@
+digraph arbol_utilidad {
+    // --------------- ESTILO GLOBAL ---------------
+    graph [rankdir=LR, fontname="Helvetica", fontsize=11,
+           label="Árbol de Utilidad — PicanteríaYa 2.0\n«Día de la Picantería»: 10× pedidos en 3 h + seguimiento GPS cada 5 s",
+           labelloc=t, bgcolor="#F8F9FA"]
+    node  [fontname="Helvetica", fontsize=10, shape=box,
+           style="filled,rounded", fillcolor="#FFFFFF", color="#333333"]
+    edge  [fontname="Helvetica", fontsize=9, color="#555555"]
+
+    // -------- RAIZ --------
+    utilidad [label="Utilidad\ndel sistema", fillcolor="#2C3E50", fontcolor=white,
+              shape=ellipse, fontsize=12]
+
+    // -------- ATRIBUTOS (nivel 2) --------
+    rend   [label="Rendimiento",     fillcolor="#2980B9", fontcolor=white]
+    disp   [label="Disponibilidad",  fillcolor="#27AE60", fontcolor=white]
+    seg    [label="Seguridad",       fillcolor="#8E44AD", fontcolor=white]
+    mod    [label="Modificabilidad", fillcolor="#E67E22", fontcolor=white]
+
+    // -------- REFINAMIENTOS (nivel 3) --------
+    rend_menu    [label="Menú del día"]
+    rend_pedido  [label="Confirmación\nde pedido"]
+    rend_gps     [label="Seguimiento\nGPS tiempo real"]
+
+    disp_pago    [label="Tolerancia\na fallas de pago"]
+    disp_servidor[label="Recuperación\nante caídas"]
+
+    seg_datos    [label="Datos personales\ny de pago"]
+    seg_tenant   [label="Aislamiento\nentre picanterías"]
+
+    mod_picanteria [label="Nueva picantería\no distrito"]
+    mod_pago       [label="Nueva pasarela\nde pago"]
+
+    // -------- ESCENARIOS / HOJAS (nivel 4) --------
+    // Calificación: (Importancia, Dificultad) — H/M/L
+    // Corrección del equipo frente a la IA indicada con (*)
+
+    QA01 [label="QA-01 · Rendimiento — Menú\n400 clientes consultan simultáneamente\n→ p95 ≤ 1 s | (H,H)",
+          fillcolor="#AED6F1"]
+    QA02 [label="QA-02 · Rendimiento — Pedido\n10× pedidos en 3 h (Día Picantería)\n→ p95 confirmación ≤ 4 s, 0 perdidos | (H,H)",
+          fillcolor="#AED6F1"]
+    QA03 [label="QA-03 · GPS tiempo real\nCliente pide posición cada 5 s\n→ latencia WebSocket ≤ 500 ms | (H,M)",
+          fillcolor="#AED6F1"]
+    QA04 [label="QA-04 · Disponibilidad — Pago\nYape/Culqi caído 20 min durante pico\n→ 0 pedidos perdidos, diferir cobro | (H,H)",
+          fillcolor="#A9DFBF"]
+    QA05 [label="QA-05 · Disponibilidad — Servidor\nFalla proceso en domingo 13:00\n→ recuperación ≤ 30 s, ≥ 99.5 % uptime pico | (H,M)",
+          fillcolor="#A9DFBF"]
+    QA06 [label="QA-06 · Seguridad — Datos\nIntento de acceso a datos de otro cliente\n→ 0 filas expuestas, log de auditoría | (M,L)\n(*) IA propuso (H,H); HTTPS+disco cifrado ya existe",
+          fillcolor="#D7BDE2"]
+    QA07 [label="QA-07 · Seguridad — Aislamiento\nRepartidor A ve pedidos de Picantería B\n→ 0 pedidos ajenos visibles | (H,M)",
+          fillcolor="#D7BDE2"]
+    QA08 [label="QA-08 · Modificabilidad — Picantería\nAgregar nuevo distrito de reparto\n→ ≤ 1 día-persona, 0 módulos ajenos tocados | (H,L)",
+          fillcolor="#FAD7A0"]
+    QA09 [label="QA-09 · Modificabilidad — Pasarela\nAgregar Plin como medio de pago\n→ ≤ 2 horas-persona, 0 cambios en ServicioPedidos | (M,L)",
+          fillcolor="#FAD7A0"]
+
+    // -------- ARISTAS --------
+    utilidad -> rend
+    utilidad -> disp
+    utilidad -> seg
+    utilidad -> mod
+
+    rend -> rend_menu
+    rend -> rend_pedido
+    rend -> rend_gps
+
+    disp -> disp_pago
+    disp -> disp_servidor
+
+    seg -> seg_datos
+    seg -> seg_tenant
+
+    mod -> mod_picanteria
+    mod -> mod_pago
+
+    rend_menu     -> QA01
+    rend_pedido   -> QA02
+    rend_gps      -> QA03
+    disp_pago     -> QA04
+    disp_servidor -> QA05
+    seg_datos     -> QA06
+    seg_tenant    -> QA07
+    mod_picanteria -> QA08
+    mod_pago       -> QA09
+
+    // -------- LEYENDA --------
+    leyenda [shape=note, fillcolor="#FDFEFE",
+             label="Calificación: (Importancia, Dificultad)\nH=Alta  M=Media  L=Baja\n\nEscenarios prioritarios (H,H) o (H,M):\n→ Guían iteraciones 1-3 de ADD\n\n(*) Corrección del equipo frente a la IA"]
+}
