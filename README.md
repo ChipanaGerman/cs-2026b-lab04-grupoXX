@@ -394,4 +394,37 @@ docs/architecture/adr/
 > - FF-05: alguien desactiva el Circuit Breaker → más llamadas al proveedor caído → CI falla.
 > - FF-06: ADR-008 o iteración-3 no documentan RLS/`picanteria_id` → CI falla.
 
+## Prompt engineering (Lab 09)
+
+La Tarea A genera criterios Gherkin estructurados para PicanteríaYa. La Tarea B produce encabezados Conventional Commits desde diffs sintéticos del proyecto. Cada entrada tiene expectativas escritas en `casos.yaml` y un contrato en `esquema.json`.
+
+| Tarea | Versión | Casos previstos | Tasa de aprobación |
+| --- | --- | ---: | --- |
+| Criterios | v1 · línea base | 8 | Pendiente de capturas |
+| Criterios | v2 · contrato e INVEST | 8 | Pendiente de capturas |
+| Criterios | v3 · ejemplo y separación de datos | 8 | Pendiente de capturas |
+| Criterios | v3.1 · defensa en capas | 8 | Pendiente de capturas |
+| Commits | v1 · línea base | 8 | Pendiente de capturas |
+| Commits | v2 · convenciones | 8 | Pendiente de capturas |
+| Commits | v3 · ejemplo y fidelidad al diff | 8 | Pendiente de capturas |
+| Seguridad | v3 y v3.1 | 5 por versión | Pendiente de capturas |
+
+El gráfico de aprobación se genera tras capturar y evaluar. La ejecución inicial de Promptfoo detectó las respuestas faltantes. Un error de infraestructura o una grabación ausente no mide la calidad del prompt.
+
+### Reproducir
+
+```bash
+python -m pip install -r prompts/requirements.txt pytest
+python -m pytest
+python prompts/capturar.py criterios v1 H1
+python prompts/capturar.py criterios v1 H1 --respuesta respuesta.txt
+npx --yes promptfoo@0.118.0 eval -c prompts/criterios/promptfooconfig.yaml --no-cache -o criterios.json
+npx --yes promptfoo@0.118.0 eval -c prompts/commits/promptfooconfig.yaml --no-cache -o commits.json
+npx --yes promptfoo@0.118.0 eval -c prompts/seguridad/promptfooconfig.yaml --no-cache -o seguridad.json
+```
+
+Repetir la captura para cada versión y caso usando una conversación nueva. Copiar únicamente el contenido de la respuesta, con sus saltos de línea y bloques de Markdown originales. Mantener el mismo modelo para las comparaciones de versiones y registrar sus parámetros. Para los encabezados, mantener también cualquier espacio o salto que haya devuelto el modelo, pues forma parte del contrato.
+
+La historia HU-01 está documentada en el repositorio. Las otras cinco historias funcionales se derivaron del diseño. Sustituirlas o cotejarlas con la exportación de Scrum antes de presentar E1 como verificado. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
+
 
