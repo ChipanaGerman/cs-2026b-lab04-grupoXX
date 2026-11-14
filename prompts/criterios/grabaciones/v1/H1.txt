@@ -1,0 +1,72 @@
+## Criterios de aceptación – H1: Confirmar menú del día y pagar con Yape
+
+Historia de usuario:
+
+Como cliente quiero confirmar el menú del día y pagar con Yape. Si se aprueba veo el pedido pagado. Si se rechaza veo el pedido cancelado y el motivo.
+
+### CA01. Visualizar y confirmar el menú del día
+
+- Dado que el cliente ha seleccionado el menú del día.
+- Cuando ingresa a la pantalla de confirmación del pedido.
+- Entonces el sistema debe mostrar el detalle del menú, el precio total y la opción de confirmar el pedido.
+
+### CA02. Iniciar el pago con Yape
+
+- Dado que el cliente tiene un pedido pendiente de confirmación.
+- Cuando selecciona la opción de pagar con Yape.
+- Entonces el sistema debe iniciar el proceso de pago y mostrar la información necesaria para realizarlo.
+
+### CA03. Pago aprobado
+
+- Dado que el cliente ha iniciado el pago con Yape.
+- Cuando la operación es aprobada por el servicio de pago.
+- Entonces el sistema debe actualizar el estado del pedido a "Pagado".
+- Y debe mostrar al cliente la confirmación del pedido pagado.
+
+### CA04. Pago rechazado
+
+- Dado que el cliente ha iniciado el pago con Yape.
+- Cuando la operación es rechazada por el servicio de pago.
+- Entonces el sistema debe actualizar el estado del pedido a "Cancelado".
+- Y debe mostrar al cliente el motivo del rechazo informado por el servicio de pago.
+
+### CA05. Evitar confirmar pagos rechazados
+
+- Dado que el pago ha sido rechazado.
+- Cuando el cliente consulta el detalle de su pedido.
+- Entonces el sistema no debe mostrar el pedido como pagado.
+- Y debe mantener el estado "Cancelado" y el motivo del rechazo.
+
+### CA06. Actualización del estado del pedido
+
+- Dado que el pago ha sido procesado.
+- Cuando el sistema recibe la respuesta de Yape.
+- Entonces debe actualizar el estado del pedido de acuerdo con el resultado de la operación.
+- Y debe garantizar que el estado mostrado al cliente coincida con el resultado del pago.
+
+### CA07. Evitar pagos duplicados
+
+- Dado que el cliente ya realizó un intento de pago para su pedido.
+- Cuando se recibe nuevamente la misma notificación de aprobación o rechazo.
+- Entonces el sistema no debe duplicar el pago ni generar cambios inconsistentes en el estado del pedido.
+
+## Reglas de negocio y consideraciones
+
+- Los estados finales contemplados son:
+  - Pagado: cuando Yape aprueba la operación.
+  - Cancelado: cuando Yape rechaza la operación.
+- El motivo del rechazo debe ser visible para el cliente.
+- El sistema debe actualizar el pedido utilizando la respuesta del servicio de pago, no únicamente la acción del cliente.
+- Una misma operación de pago no debe procesarse más de una vez.
+
+## Escenarios principales de prueba
+
+| Escenario | Resultado esperado |
+| --- | --- |
+| Confirmar menú del día | Se muestra el detalle y precio |
+| Pagar con Yape | Se inicia el proceso de pago |
+| Yape aprueba | Pedido Pagado |
+| Yape rechaza | Pedido Cancelado + motivo |
+| Se recibe notificación duplicada | No se duplica la operación |
+
+Recomendación: Para completar la historia, sería conveniente definir qué sucede cuando el pago queda pendiente, expira o no se recibe respuesta de Yape. Estos casos evitarán que un pedido quede indefinidamente sin un estado claro.

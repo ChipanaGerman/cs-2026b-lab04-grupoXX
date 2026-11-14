@@ -400,7 +400,7 @@ La Tarea A genera criterios Gherkin estructurados para PicanteríaYa. La Tarea B
 
 | Tarea | Versión | Casos previstos | Tasa de aprobación |
 | --- | --- | ---: | --- |
-| Criterios | v1 · línea base | 8 | Pendiente de capturas |
+| Criterios | v1 · línea base | 8 | 0/3 en la muestra inicial. Faltan 5 casos |
 | Criterios | v2 · contrato e INVEST | 8 | Pendiente de capturas |
 | Criterios | v3 · ejemplo y separación de datos | 8 | Pendiente de capturas |
 | Criterios | v3.1 · defensa en capas | 8 | Pendiente de capturas |
@@ -425,6 +425,6 @@ npx --yes promptfoo@0.118.0 eval -c prompts/seguridad/promptfooconfig.yaml --no-
 
 Repetir la captura para cada versión y caso usando una conversación nueva. Copiar únicamente el contenido de la respuesta, con sus saltos de línea y bloques de Markdown originales. Mantener el mismo modelo para las comparaciones de versiones y registrar sus parámetros. Para los encabezados, mantener también cualquier espacio o salto que haya devuelto el modelo, pues forma parte del contrato.
 
-La historia HU-01 está documentada en el repositorio. Las otras cinco historias funcionales se derivaron del diseño. Sustituirlas o cotejarlas con la exportación de Scrum antes de presentar E1 como verificado. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
+El [backlog del Lab 09](prompts/criterios/backlog.md) reúne HU-01 y cinco historias nuevas derivadas del diseño. La muestra inicial de ChatGPT web anónimo contiene las capturas H1, H2 y H3. Las tres devolvieron Markdown, lo que motivó explicitar el contrato JSON en v2. La interfaz anónima no identifica el modelo exacto. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
 
 

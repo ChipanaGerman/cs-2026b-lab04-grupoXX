@@ -1,0 +1,61 @@
+## Criterios de aceptación – H3: Validación de platos agotados al confirmar
+
+Historia de usuario:
+
+Como cliente quiero saber qué plato se agotó al confirmar. Con todos los platos disponibles puedo pasar al pago. Si uno se agota, veo el nombre del plato y el pago no se procesa.
+
+### Criterios de aceptación
+
+CA01. Confirmación cuando todos los platos están disponibles
+
+- Dado que el cliente tiene platos disponibles en su carrito.
+- Cuando confirma su pedido.
+- Entonces el sistema debe validar la disponibilidad de todos los platos.
+- Y debe permitirle continuar al proceso de pago si todos están disponibles.
+
+CA02. Identificación de un plato agotado
+
+- Dado que el cliente tiene un pedido con uno o más platos en su carrito.
+- Cuando confirma su pedido y uno de los platos se encuentra agotado.
+- Entonces el sistema debe mostrar un mensaje indicando que el plato ya no está disponible.
+- Y debe mostrar el nombre del plato agotado.
+
+CA03. Bloqueo del proceso de pago
+
+- Dado que al menos un plato del pedido se encuentra agotado.
+- Cuando el cliente intenta confirmar su pedido.
+- Entonces el sistema debe impedir que continúe al pago.
+- Y no debe procesar ningún cobro.
+
+CA04. Identificación de varios platos agotados
+
+- Dado que el cliente tiene varios platos en su carrito.
+- Cuando confirma su pedido y dos o más platos están agotados.
+- Entonces el sistema debe mostrar el nombre de todos los platos que ya no están disponibles.
+- Y debe impedir que continúe al pago.
+
+CA05. Actualización del pedido
+
+- Dado que el sistema identifica uno o más platos agotados.
+- Cuando informa al cliente sobre los platos no disponibles.
+- Entonces debe permitirle modificar su carrito para retirar o reemplazar dichos platos.
+- Y debe permitirle volver a confirmar el pedido después de realizar los cambios.
+
+CA06. Validación de disponibilidad actualizada
+
+- Dado que un plato estaba disponible cuando el cliente lo agregó al carrito.
+- Cuando el cliente confirma el pedido y el plato se ha agotado mientras tanto.
+- Entonces el sistema debe validar su disponibilidad actualizada.
+- Y debe impedir que el pedido pase al pago.
+
+### Escenarios principales de prueba
+
+| Escenario | Resultado esperado |
+| --- | --- |
+| Todos los platos disponibles | Permite continuar al pago |
+| Un plato agotado | Muestra el nombre y bloquea el pago |
+| Varios platos agotados | Muestra todos los nombres y bloquea el pago |
+| Cliente elimina el plato agotado | Puede volver a confirmar |
+| Plato se agota antes de confirmar | Detecta el cambio de disponibilidad |
+
+Regla de negocio principal: Ningún pedido puede pasar al proceso de pago si contiene al menos un plato agotado.
