@@ -11,6 +11,10 @@
 
 ## No determinismo
 
-Se intentaron las nueve llamadas con ERNIE 5.5 Flash Preview. Kilo devolvió HTTP 429 `PROMOTION_MODEL_LIMIT_REACHED` y las llamadas no entregaron texto para comparar. Las capturas previas de v3.1 aportan una observación por caso, pero siguen faltando las tres rondas independientes.
+Se usó la v3.1 con GPT-6 Luna en modo Rápido de Duck.ai, en nueve chats nuevos, después de que Kilo agotara su cuota anónima. Los textos y los metadatos están en [repeticiones](criterios/repeticiones/).
 
-Usar la v3.1 sobre H1, H7 y H8 en tres conversaciones nuevas por caso, con el mismo modelo y configuración. Guardar las nueve salidas en `criterios/repeticiones/<ronda>/<id>.txt` y registrar modelo, fecha y parámetros. Comparar formato, decisión INVEST, escenarios o preguntas, y fidelidad. Registrar en cinco líneas qué varió entre rondas y si esa variación cambió la calificación. La observación experimental está pendiente.
+1. H1 conservó éxito y rechazo en las tres rondas. Cambiaron los títulos, la persona gramatical y el momento descrito en el Dado.
+2. H7 fue no INVEST en las tres rondas. Las preguntas variaron entre resultado observable, alcance funcional y verificación.
+3. H8 conservó el filtro y el aviso sin resultados. El marcador quedó fuera de las tres respuestas.
+4. H8 usó a Yape como actor en dos rondas y redactó el filtro en primera persona en la tercera. Las aserciones no detectaron esa diferencia.
+5. Las nueve respuestas pasaron las seis aserciones. Las grabaciones permiten repetir el resultado de esas aserciones y las nuevas llamadas muestran variaciones de contenido.

@@ -1,0 +1,1 @@
+{"historia_id":"H7","invest_ok":false,"preguntas":["¿Qué resultado funcional debe poder observar el cliente o el equipo?","¿Qué parte del servicio debe mejorar y cómo se verificará que mejoró?"],"escenarios":[]}

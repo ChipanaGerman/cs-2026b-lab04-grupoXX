@@ -25,7 +25,7 @@ jobs:
       - name: Evaluar versiones finales con respuestas grabadas
         run: |
           npx --yes promptfoo@0.118.0 eval -c prompts/criterios/promptfooconfig.yaml --filter-providers '^v3[.]1$' --no-cache -o criterios.json
-          npx --yes promptfoo@0.118.0 eval -c prompts/commits/promptfooconfig.yaml --filter-providers '^v3$' --no-cache -o commits.json
+          npx --yes promptfoo@0.118.0 eval -c prompts/commits/promptfooconfig.yaml --filter-providers '^v3[.]1$' --no-cache -o commits.json
           npx --yes promptfoo@0.118.0 eval -c prompts/seguridad/promptfooconfig.yaml --filter-providers '^v3[.]1$' --no-cache -o seguridad.json
       - uses: actions/upload-artifact@v4
         if: always()
