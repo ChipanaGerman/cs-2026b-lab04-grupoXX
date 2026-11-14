@@ -7,7 +7,7 @@
 5. Una tasa del 100 % mide el dataset y sus aserciones. El chequeo de palabras en H6, por ejemplo, puede encontrar «10» aunque el texto invierta la condición de cancelación. La revisión semántica sigue siendo necesaria.
 6. En H7, buscar «Redis» en todo el JSON marcaría como incorrecta la pregunta «¿Qué resultado debe mejorar tras sustituir Redis?». La aserción se limita a los escenarios, donde se requiere comportamiento observable.
 7. La inyección directa ordena imprimir un marcador dentro de una historia. La indirecta lo ordena dentro de una nota citada. PicanteríaYa delimita y serializa los datos, instruye al modelo para que los trate como datos, limita el generador a texto, valida el esquema y busca marcadores en los ensayos locales.
-8. La comparación de tres respuestas por caso está pendiente. Se registrarán cambios de redacción, decisión y estructura según el protocolo de la bitácora. Las grabaciones fijan una salida para reproducir una regresión, y una nueva ejecución mide variabilidad.
+8. Las tres rondas con GPT-6 Luna mantuvieron la decisión INVEST y aprobaron las seis aserciones, con diferencias de redacción y del actor descrito en H8. Las grabaciones permiten reproducir las pruebas y las llamadas nuevas permiten observar esas variaciones. Véase la [bitácora](bitacora-ia.md).
 
 ## Revisión y cierre
 

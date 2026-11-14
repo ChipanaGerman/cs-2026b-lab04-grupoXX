@@ -407,15 +407,15 @@ La Tarea A genera criterios Gherkin estructurados para PicanteríaYa. La Tarea B
 | Commits | v1 · línea base | 8 | 0/8 (0 %) |
 | Commits | v2 · convenciones | 8 | 7/8 (87,5 %) |
 | Commits | v3 · ejemplo y fidelidad al diff | 8 | 7/8 (87,5 %) |
-| Commits | v3.1 · clasificación de correcciones | 8 | Sin capturas |
+| Commits | v3.1 · clasificación de correcciones | 8 | 8/8 (100 %, GPT-6 Luna) |
 | Seguridad | v3 | 5 | 5/5 (100 %) |
-| Seguridad | v3.1 | 5 | 3/3 observados. Faltan S3 y S4 |
+| Seguridad | v3.1 | 5 | 5/5 (100 %, ERNIE y GPT-6 Luna) |
 
 ![Resultados de Promptfoo por versión](prompts/evidencia/resultados.svg)
 
 En criterios, v2 devolvió JSON dentro de bloques Markdown, por lo que el consumidor rechazó los ocho casos. v3 añadió un ejemplo completo, exigió un objeto sin bloques y separó las instrucciones de los datos. Aprobó los ocho casos, incluido el adversario H8. v3.1 mantuvo el resultado en el dataset principal. Un error de infraestructura o una grabación ausente no mide la calidad del prompt.
 
-En commits, v1 devolvió encabezados acompañados de Markdown o explicaciones. v2 y v3 alcanzaron la misma tasa y ambas clasificaron C7 como `feat` cuando el caso exige `fix`. v3.1 propone una regla para correcciones de visibilidad. El evaluador también se ajustó en C2 para reconocer «una sola vez» como evidencia de que se evita un cobro duplicado.
+En commits, v1 devolvió encabezados acompañados de Markdown o explicaciones. v2 y v3 alcanzaron la misma tasa y ambas clasificaron C7 como `feat` cuando el caso exige `fix`. Con la regla de correcciones de visibilidad en v3.1, GPT-6 Luna devolvió `fix(menu): oculta platos sin stock`. El cambio de modelo impide atribuir la mejora solo al prompt. El evaluador también se ajustó en C2 para reconocer «una sola vez» como evidencia de que se evita un cobro duplicado.
 
 ### Reproducir
 
@@ -431,6 +431,6 @@ npx --yes promptfoo@0.118.0 eval -c prompts/seguridad/promptfooconfig.yaml --no-
 
 Repetir la captura para cada versión y caso usando una conversación nueva. Copiar únicamente el contenido de la respuesta, con sus saltos de línea y bloques de Markdown originales. Mantener el mismo modelo para las comparaciones de versiones y registrar sus parámetros. Para los encabezados, mantener también cualquier espacio o salto que haya devuelto el modelo, pues forma parte del contrato.
 
-El [backlog del Lab 09](prompts/criterios/backlog.md) reúne HU-01 y cinco historias nuevas derivadas del diseño. La [muestra exploratoria de ChatGPT web](prompts/criterios/muestra-chatgpt/) contiene H1, H2 y H3. Las tasas oficiales usan el mismo modelo identificado, ERNIE 5.5 Flash Preview, para todas las versiones. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
+El [backlog del Lab 09](prompts/criterios/backlog.md) reúne HU-01 y cinco historias nuevas derivadas del diseño. La [muestra exploratoria de ChatGPT web](prompts/criterios/muestra-chatgpt/) contiene H1, H2 y H3. Las cuatro versiones de criterios usan ERNIE 5.5 Flash Preview. Ante el límite anónimo de Kilo, se usó GPT-6 Luna en Duck.ai para las capturas pendientes y para el reto. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
 
 
