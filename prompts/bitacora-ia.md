@@ -11,4 +11,6 @@
 
 ## No determinismo
 
+Se intentaron las nueve llamadas con ERNIE 5.5 Flash Preview. Kilo devolvió HTTP 429 `PROMOTION_MODEL_LIMIT_REACHED` y las llamadas no entregaron texto para comparar. Las capturas previas de v3.1 aportan una observación por caso, pero siguen faltando las tres rondas independientes.
+
 Usar la v3.1 sobre H1, H7 y H8 en tres conversaciones nuevas por caso, con el mismo modelo y configuración. Guardar las nueve salidas en `criterios/repeticiones/<ronda>/<id>.txt` y registrar modelo, fecha y parámetros. Comparar formato, decisión INVEST, escenarios o preguntas, y fidelidad. Registrar en cinco líneas qué varió entre rondas y si esa variación cambió la calificación. La observación experimental está pendiente.
