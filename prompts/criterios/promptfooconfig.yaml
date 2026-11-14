@@ -1,0 +1,37 @@
+description: PicanteríaYa · criterios
+prompts:
+  - '{{entrada}}'
+providers:
+  - id: file://../proveedor_grabado.py
+    label: v1
+    config: { tarea: criterios, version: v1 }
+  - id: file://../proveedor_grabado.py
+    label: v2
+    config: { tarea: criterios, version: v2 }
+  - id: file://../proveedor_grabado.py
+    label: v3
+    config: { tarea: criterios, version: v3 }
+  - id: file://../proveedor_grabado.py
+    label: v3.1
+    config: { tarea: criterios, version: v3.1 }
+tests: file://../casos_promptfoo.py:criterios
+defaultTest:
+  assert:
+    - type: python
+      metric: esquema
+      value: file://aserciones.py:esquema
+    - type: python
+      metric: identidad
+      value: file://aserciones.py:identidad
+    - type: python
+      metric: invest
+      value: file://aserciones.py:invest
+    - type: python
+      metric: observable
+      value: file://aserciones.py:observable
+    - type: python
+      metric: cobertura
+      value: file://aserciones.py:cobertura
+    - type: python
+      metric: integridad
+      value: file://aserciones.py:integridad
