@@ -12,6 +12,8 @@ def _casos(tarea):
     casos = yaml.safe_load((RAIZ / tarea / "casos.yaml").read_text(encoding="utf-8"))
     for caso in casos:
         variables = caso["vars"]
+        if "temas" in variables:
+            variables["temas"] = json.dumps(variables["temas"], ensure_ascii=False)
         campo = "diff" if tarea == "commits" else "historia"
         variables["entrada"] = json.dumps(
             {"id": variables["id"], campo: variables[campo]}, ensure_ascii=False,

@@ -1,0 +1,47 @@
+```json
+{
+  "historia_id": "H3",
+  "invest_ok": true,
+  "preguntas": [],
+  "escenarios": [
+    {
+      "titulo": "Todos los platos disponibles permiten pasar al pago",
+      "tipo": "exito",
+      "dado": [
+        "El cliente tiene un pedido con varios platos",
+        "Todos los platos del pedido están disponibles"
+      ],
+      "cuando": "El cliente confirma el pedido",
+      "entonces": [
+        "El cliente puede pasar al pago"
+      ]
+    },
+    {
+      "titulo": "Un plato agotado muestra su nombre y bloquea el pago",
+      "tipo": "error",
+      "dado": [
+        "El cliente tiene un pedido con varios platos",
+        "Uno de los platos del pedido está agotado"
+      ],
+      "cuando": "El cliente confirma el pedido",
+      "entonces": [
+        "El cliente ve el nombre del plato agotado",
+        "El pago no se procesa"
+      ]
+    },
+    {
+      "titulo": "Varios platos agotados muestran todos los nombres y bloquean el pago",
+      "tipo": "borde",
+      "dado": [
+        "El cliente tiene un pedido con varios platos",
+        "Más de un plato del pedido está agotado"
+      ],
+      "cuando": "El cliente confirma el pedido",
+      "entonces": [
+        "El cliente ve el nombre de cada plato agotado",
+        "El pago no se procesa"
+      ]
+    }
+  ]
+}
+```

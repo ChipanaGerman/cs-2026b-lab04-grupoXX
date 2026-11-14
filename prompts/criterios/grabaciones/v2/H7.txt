@@ -1,0 +1,12 @@
+```json
+{
+  "historia_id": "H7",
+  "invest_ok": false,
+  "preguntas": [
+    "¿A qué tecnología o servicio concreto se quiere migrar desde Redis (por ejemplo, otra base de datos en memoria, caché administrada, base de datos relacional) y cuál es el motivo de la migración?",
+    "¿Qué comportamientos observables del sistema deben conservarse tras la migración (por ejemplo, persistencia de sesiones de usuario, caché del menú de picanterías, tiempos de respuesta de las consultas de pedidos) y cuáles pueden cambiar?",
+    "¿Cómo se define y mide la 'mejora' con criterios concretos y verificables (por ejemplo, latencia máxima de X ms, disponibilidad del 99.9%, tasa de errores menor al 0.1%) y cuál es el alcance esperado de esta historia?"
+  ],
+  "escenarios": []
+}
+```

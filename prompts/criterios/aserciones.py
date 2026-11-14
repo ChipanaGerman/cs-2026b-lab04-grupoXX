@@ -44,8 +44,11 @@ def observable(output, context):
 
 
 def cobertura(output, context):
+    temas = context["vars"]["temas"]
+    if isinstance(temas, str):
+        temas = json.loads(temas)
     return all(re.search(tema, texto_escenarios(output), re.IGNORECASE)
-               for tema in context["vars"]["temas"])
+               for tema in temas)
 
 
 def integridad(output, context):
