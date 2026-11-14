@@ -400,16 +400,22 @@ La Tarea A genera criterios Gherkin estructurados para PicanteríaYa. La Tarea B
 
 | Tarea | Versión | Casos previstos | Tasa de aprobación |
 | --- | --- | ---: | --- |
-| Criterios | v1 · línea base | 8 | 0/3 en la muestra inicial. Faltan 5 casos |
-| Criterios | v2 · contrato e INVEST | 8 | Pendiente de capturas |
-| Criterios | v3 · ejemplo y separación de datos | 8 | Pendiente de capturas |
-| Criterios | v3.1 · defensa en capas | 8 | Pendiente de capturas |
-| Commits | v1 · línea base | 8 | Pendiente de capturas |
-| Commits | v2 · convenciones | 8 | Pendiente de capturas |
-| Commits | v3 · ejemplo y fidelidad al diff | 8 | Pendiente de capturas |
-| Seguridad | v3 y v3.1 | 5 por versión | Pendiente de capturas |
+| Criterios | v1 · línea base | 8 | 0/8 (0 %) |
+| Criterios | v2 · contrato e INVEST | 8 | 0/8 (0 %) |
+| Criterios | v3 · ejemplo y separación de datos | 8 | 8/8 (100 %) |
+| Criterios | v3.1 · defensa en capas | 8 | 8/8 (100 %) |
+| Commits | v1 · línea base | 8 | 0/8 (0 %) |
+| Commits | v2 · convenciones | 8 | 7/8 (87,5 %) |
+| Commits | v3 · ejemplo y fidelidad al diff | 8 | 7/8 (87,5 %) |
+| Commits | v3.1 · clasificación de correcciones | 8 | Sin capturas |
+| Seguridad | v3 | 5 | 5/5 (100 %) |
+| Seguridad | v3.1 | 5 | 3/3 observados. Faltan S3 y S4 |
 
-El gráfico de aprobación se genera tras capturar y evaluar. La ejecución inicial de Promptfoo detectó las respuestas faltantes. Un error de infraestructura o una grabación ausente no mide la calidad del prompt.
+![Resultados de Promptfoo por versión](prompts/evidencia/resultados.svg)
+
+En criterios, v2 devolvió JSON dentro de bloques Markdown, por lo que el consumidor rechazó los ocho casos. v3 añadió un ejemplo completo, exigió un objeto sin bloques y separó las instrucciones de los datos. Aprobó los ocho casos, incluido el adversario H8. v3.1 mantuvo el resultado en el dataset principal. Un error de infraestructura o una grabación ausente no mide la calidad del prompt.
+
+En commits, v1 devolvió encabezados acompañados de Markdown o explicaciones. v2 y v3 alcanzaron la misma tasa y ambas clasificaron C7 como `feat` cuando el caso exige `fix`. v3.1 propone una regla para correcciones de visibilidad. El evaluador también se ajustó en C2 para reconocer «una sola vez» como evidencia de que se evita un cobro duplicado.
 
 ### Reproducir
 
@@ -425,6 +431,6 @@ npx --yes promptfoo@0.118.0 eval -c prompts/seguridad/promptfooconfig.yaml --no-
 
 Repetir la captura para cada versión y caso usando una conversación nueva. Copiar únicamente el contenido de la respuesta, con sus saltos de línea y bloques de Markdown originales. Mantener el mismo modelo para las comparaciones de versiones y registrar sus parámetros. Para los encabezados, mantener también cualquier espacio o salto que haya devuelto el modelo, pues forma parte del contrato.
 
-El [backlog del Lab 09](prompts/criterios/backlog.md) reúne HU-01 y cinco historias nuevas derivadas del diseño. La muestra inicial de ChatGPT web anónimo contiene las capturas H1, H2 y H3. Las tres devolvieron Markdown, lo que motivó explicitar el contrato JSON en v2. La interfaz anónima no identifica el modelo exacto. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
+El [backlog del Lab 09](prompts/criterios/backlog.md) reúne HU-01 y cinco historias nuevas derivadas del diseño. La [muestra exploratoria de ChatGPT web](prompts/criterios/muestra-chatgpt/) contiene H1, H2 y H3. Las tasas oficiales usan el mismo modelo identificado, ERNIE 5.5 Flash Preview, para todas las versiones. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
 
 
