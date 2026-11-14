@@ -1,0 +1,37 @@
+name: Prompts Lab 09
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  evaluar:
+    runs-on: ubuntu-latest
+    env:
+      PROMPTFOO_DISABLE_TELEMETRY: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r prompts/requirements.txt pytest
+      - run: python -m pytest tests/test_generadores_prompts.py
+      - name: Evaluar versiones finales con respuestas grabadas
+        run: |
+          npx --yes promptfoo@0.118.0 eval -c prompts/criterios/promptfooconfig.yaml --filter-providers '^v3[.]1$' --no-cache -o criterios.json
+          npx --yes promptfoo@0.118.0 eval -c prompts/commits/promptfooconfig.yaml --filter-providers '^v3$' --no-cache -o commits.json
+          npx --yes promptfoo@0.118.0 eval -c prompts/seguridad/promptfooconfig.yaml --filter-providers '^v3[.]1$' --no-cache -o seguridad.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluacion-prompts
+          path: |
+            criterios.json
+            commits.json
+            seguridad.json
