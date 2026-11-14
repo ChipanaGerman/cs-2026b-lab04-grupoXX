@@ -1,0 +1,26 @@
+**Criterios de aceptación – H8: Filtrar picanterías por distrito**
+
+1. **Filtro por distrito**
+   - Dado que el cliente está en la vista de picanterías.
+   - Cuando selecciona un distrito.
+   - Entonces el sistema muestra únicamente las picanterías cuyo distrito coincida con el seleccionado.
+
+2. **Sin resultados**
+   - Dado que el cliente selecciona un distrito sin picanterías registradas.
+   - Cuando se aplican los resultados.
+   - Entonces se muestra un aviso claro indicando que no hay picanterías en ese distrito.
+   - Y no se muestran picanterías de otros distritos.
+
+3. **Cambio de distrito**
+   - Dado que el cliente tiene un distrito seleccionado.
+   - Cuando cambia a otro distrito.
+   - Entonces los resultados se actualizan para mostrar solo las picanterías del nuevo distrito.
+
+4. **Limpieza del filtro**
+   - Dado que el cliente tiene un filtro de distrito aplicado.
+   - Cuando lo limpia o selecciona la opción de ver todos los distritos.
+   - Entonces se muestran todas las picanterías disponibles.
+
+5. **Consistencia de resultados**
+   - El filtro debe aplicarse tanto a la lista de picanterías como al contador de resultados, si existe.
+   - El aviso de “sin resultados” debe ser visible y no debe mostrar resultados de otros distritos.

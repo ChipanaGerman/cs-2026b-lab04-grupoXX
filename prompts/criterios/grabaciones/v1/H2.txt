@@ -1,47 +1,95 @@
-## Criterios de aceptación – H2: Consultar el menú del día
+# Criterios de aceptación — H2: Consultar el menú del día
 
-Los siguientes criterios están redactados en formato Dado – Cuando – Entonces (Gherkin).
+**Como cliente quiero consultar el menú del día de una picantería para elegir mi almuerzo.**
 
-### CA01. Visualizar los platos publicados en el menú del día
+---
 
-- Dado que la picantería tiene uno o más platos publicados en su menú del día.
-- Cuando el cliente ingresa a consultar el menú del día.
-- Entonces el sistema muestra los nombres de todos los platos publicados.
+## Escenario principal
 
-### CA02. Mostrar mensaje cuando no hay platos disponibles
+**CA-1 — Menú con platos publicados**
+- **Dado** que una picantería tiene al menos un plato publicado para el menú de hoy
+- **Cuando** el cliente abre la pantalla del menú del día
+- **Entonces** se muestra la lista de platos publicados con el **nombre** de cada uno (y precio, si aplica)
+- **Y** el orden de la lista es el definido por la picantería (o alfabético si no hay orden definido)
 
-- Dado que la picantería no tiene platos publicados en el menú del día.
-- Cuando el cliente ingresa a consultar el menú del día.
-- Entonces el sistema muestra el mensaje: "El menú del día aún no está disponible".
+**CA-2 — Menú sin platos publicados**
+- **Dado** que una picantería no tiene platos publicados para el menú de hoy
+- **Cuando** el cliente abre la pantalla del menú del día
+- **Entonces** se muestra el mensaje **"El menú aún no está disponible"**
+- **Y** no se muestra una lista vacía, un error técnico ni un botón de "reintentar" innecesario
 
-### CA03. Mostrar únicamente los platos publicados
+---
 
-- Dado que la picantería tiene platos registrados, pero algunos no están publicados en el menú del día.
-- Cuando el cliente consulta el menú.
-- Entonces el sistema muestra únicamente los nombres de los platos publicados.
-- Y no muestra los platos que aún no han sido publicados.
+## Reglas de negocio
 
-### CA04. Identificar la picantería consultada
+**CA-3 — Solo se ven los platos publicados**
+- **Dado** que el menú de hoy contiene platos en estado *publicado* y platos en *borrador* u *oculto*
+- **Cuando** el cliente consulta el menú
+- **Entonces** solo aparecen los platos publicados; los demás no son visibles ni accesibles
 
-- Dado que el cliente selecciona una picantería.
-- Cuando accede a la sección del menú del día.
-- Entonces el sistema muestra el menú correspondiente a la picantería seleccionada.
-- Y no muestra platos pertenecientes a otras picanterías.
+**CA-4 — El menú corresponde al día actual**
+- **Dado** que la picantería tiene menús registrados para otras fechas
+- **Cuando** el cliente consulta el menú del día
+- **Entonces** se muestran únicamente los platos del menú de la fecha actual (según la zona horaria del negocio)
 
-### CA05. Actualizar la visualización según la disponibilidad del menú
+**CA-5 — Acceso sin autenticación**
+- **Dado** un cliente que no ha iniciado sesión
+- **Cuando** accede al menú del día de una picantería
+- **Entonces** puede visualizarlo sin restricciones (el menú es información pública)
 
-- Dado que el estado de publicación del menú del día ha cambiado.
-- Cuando el cliente vuelve a consultar el menú.
-- Entonces el sistema muestra los platos publicados actualmente o el mensaje de que el menú aún no está disponible, según corresponda.
+---
 
-## Resumen de criterios
+## Estados de la interfaz
 
-| Código | Criterio | Prioridad |
-| --- | --- | --- |
-| CA01 | Visualizar platos publicados | Alta |
-| CA02 | Mostrar mensaje sin menú disponible | Alta |
-| CA03 | Mostrar solo platos publicados | Alta |
-| CA04 | Mostrar menú de la picantería seleccionada | Alta |
-| CA05 | Actualizar visualización del menú | Media |
+**CA-6 — Estado de carga**
+- **Dado** que la consulta del menú está en proceso
+- **Cuando** el cliente abre la pantalla
+- **Entonces** se muestra un indicador de carga (skeleton/spinner)
+- **Y** no se muestra el mensaje "menú no disponible" antes de recibir la respuesta
 
-Nota: Los criterios se mantienen dentro del alcance de la historia H2: consultar el menú del día. No incluyen seleccionar platos, realizar pedidos ni efectuar pagos.
+**CA-7 — Error de consulta**
+- **Dado** que el servicio falla o no hay conexión al consultar el menú
+- **Cuando** el cliente abre la pantalla
+- **Entonces** se muestra un mensaje de error genérico con opción **"Reintentar"**
+- **Y** no se confunde con el estado "menú no disponible"
+
+**CA-8 — Actualización del menú**
+- **Dado** que el cliente está viendo el menú y la picantería publica o retira un plato
+- **Cuando** el cliente recarga la pantalla (pull-to-refresh o reingreso)
+- **Entonces** la lista refleja los cambios sin necesidad de reiniciar la app
+
+---
+
+## Calidad y accesibilidad
+
+**CA-9 — Visualización por plato**
+- Cada ítem de la lista muestra como mínimo: **nombre del plato** y **precio**. Opcionalmente: descripción, foto y estado de disponibilidad (ej. "Agotado").
+
+**CA-10 — Accesibilidad**
+- Los textos cumplen contraste mínimo AA.
+- La lista es navegable con lector de pantalla (cada plato se anuncia con su nombre y precio).
+- Áreas táctiles de al menos 44×44 px.
+
+**CA-11 — Responsive**
+- La pantalla se adapta correctamente a pantallas pequeñas (mínimo 320 px de ancho) sin scroll horizontal.
+
+**CA-12 — Rendimiento**
+- El menú se muestra en **≤ 2 s** en condiciones normales de red (3G).
+
+---
+
+## Fuera de alcance (para esta historia)
+
+- Selección de platos y armado del pedido (historia posterior).
+- Filtros, búsqueda o categorías dentro del menú.
+- Calificaciones o reseñas de platos.
+- Menú de días anteriores o programados (solo se consulta el día actual).
+
+---
+
+## Checklist de Definition of Done
+
+- [ ] CA-1 a CA-12 implementados y verificados.
+- [ ] Pruebas unitarias y de integración del caso "con platos" y "sin platos".
+- [ ] Revisión de diseño y accesibilidad aprobada.
+- [ ] Textos de la interfaz revisados y en español.

@@ -1,0 +1,54 @@
+## Criterios de aceptación — H4: Consulta de asignación de repartidor
+
+Estados definidos para el pedido (usados en los criterios): `Pendiente de asignación`, `Repartidor asignado`, `Sin repartidores disponibles`.
+
+### Escenario 1: Asignación exitosa
+- **Dado** un pedido en estado `Pagado` y al menos un repartidor disponible en la zona de reparto
+- **Cuando** el cliente abre el detalle de su pedido
+- **Entonces** el sistema muestra el estado `Repartidor asignado` con: nombre del repartidor, calificación promedio, tipo de vehículo, placa (si aplica), tiempo estimado de llegada (ETA) y botón de contacto (llamada o chat)
+- **Y** el pedido queda registrado con el `id` del repartidor, fecha/hora de asignación y el estado visible para el cliente coincide con el estado interno del pedido
+
+### Escenario 2: Sin repartidores disponibles
+- **Dado** un pedido en estado `Pagado` y ningún repartidor disponible en la zona de reparto
+- **Cuando** el cliente consulta el estado de su pedido
+- **Entonces** el sistema muestra el estado `Pendiente de asignación` con el mensaje "Estamos buscando un repartidor para tu pedido"
+- **Y** no se muestra ningún dato de repartidor (nombre, placa ni contacto)
+- **Y** el pedido no se marca como fallido ni se cancela automáticamente
+
+### Escenario 3: Actualización sin recargar
+- **Dado** un pedido en estado `Pendiente de asignación` que el cliente está visualizando
+- **Cuando** un repartidor se asigna al pedido
+- **Entonces** la pantalla cambia a `Repartidor asignado` en un máximo de 10 segundos, sin que el cliente recargue la página
+- **Y** se envía una notificación push al dispositivo del cliente
+
+### Escenario 4: El pedido no está pagado
+- **Dado** un pedido en estado `Pendiente de pago`
+- **Cuando** el cliente consulta el estado de asignación
+- **Entonces** el sistema muestra el estado de pago y no ejecuta la búsqueda de repartidor
+
+### Escenario 5: El repartidor asignado cancela o se desconecta
+- **Dado** un pedido con estado `Repartidor asignado`
+- **Cuando** el repartidor rechaza la entrega, cancela o queda inactivo por más de 2 minutos
+- **Entonces** el pedido vuelve a `Pendiente de asignación` y se reintenta la asignación automáticamente
+- **Y** el cliente ve el cambio de estado y recibe una notificación informando la nueva búsqueda
+
+### Escenario 6: Tiempo máximo de espera
+- **Dado** un pedido que permanece en `Pendiente de asignación` por más de 15 minutos
+- **Entonces** el sistema escala el pedido a la central/operador y muestra al cliente el mensaje "Un operador está gestionando tu pedido"
+- **Y** el cliente puede optar por esperar o solicitar la cancelación con reembolso total
+
+### Escenario 7: Consulta de un pedido ajeno
+- **Dado** un cliente autenticado
+- **Cuando** solicita el estado de asignación de un pedido que no le pertenece
+- **Entonces** el sistema responde con error 404 (sin revelar existencia del pedido) y no expone datos del repartidor
+
+### Criterios no funcionales
+- La consulta de estado responde en menos de 2 segundos (p95) con 500 pedidos concurrentes.
+- El estado mostrado al cliente nunca contradice el estado persistido del pedido (sin datos en caché obsoletos por más de 10 segundos).
+- Los datos personales del repartidor visibles al cliente se limitan a nombre, calificación, vehículo y placa; teléfono enmascarado o mediado por la plataforma.
+- La interfaz cumple WCAG 2.1 AA: el estado no se comunica solo por color y los cambios de estado se anuncian por lector de pantalla (`aria-live`).
+
+### Supuestos a confirmar con negocio
+- Tiempo máximo de espera antes de escalar (asumido: 15 min).
+- Si el cliente puede cancelar el pedido mientras está `Pendiente de asignación` sin penalidad.
+- Si el radio de búsqueda de repartidores es configurable por zona/demanda.

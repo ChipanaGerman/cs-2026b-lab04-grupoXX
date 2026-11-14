@@ -1,0 +1,78 @@
+## Diagnóstico rápido
+
+La historia no está lista para estimarse ni para probarse. Tiene tres problemas:
+
+- No hay valor de usuario ni de negocio explícito. "Migrar de Redis a otra cosa" es una tarea técnica, no un resultado observable.
+- "Otra cosa" no define el destino. Sin tecnología objetivo no hay criterios verificables.
+- "Mejorar todo cuanto antes" es un epígrafe, no un alcance. No es acotable ni terminable, así que la historia nunca se puede dar por cerrada.
+
+Además, una migración de este tipo casi siempre es un epic (6–10 historias), no una sola historia.
+
+## Reescritura sugerida
+
+Como equipo de plataforma de PicanteríaYa, queremos reemplazar Redis por [PostgreSQL + caché en memoria / KeyDB / Dragonfly / ElastiCache administrado] en los [N] casos de uso inventariados, para reducir [costo mensual / riesgo operativo / latencia p95] sin degradar la experiencia de pedido en hora punta.
+
+Antes de comprometer la historia hay que responder: qué usa Redis hoy, por qué se migra (costo, licenciamiento, operación, punto único de falla, límites de escalado) y cuál es el destino. Sin eso, los criterios siguientes quedan como plantilla.
+
+## Criterios de aceptación
+
+Inventario y decisión
+
+- Existe un inventario completo de usos de Redis en producción (clave, patrón de acceso, TTL, volumen, comando utilizado, servicio propietario). Cada entrada tiene dueño.
+- Se documenta en un ADR la tecnología destino, las alternativas descartadas y el motivo, con las cifras que respaldan la decisión.
+- Se confirma que ningún caso de uso depende de funcionalidad que el destino no soporte. Si la hay (por ejemplo comandos GEO para zonas de reparto, pub/sub para pantallas de cocina, o locks distribuidos), tiene solución de reemplazo aprobada.
+
+Paridad funcional
+
+- Para cada caso de uso inventariado existe una prueba que demuestra comportamiento equivalente antes y después: caché de menú, sesión/token, carrito, idempotencia de webhooks de pago (Culqi/Niubiz/Izipay), rate limiting de cupones, estado de pedido en KDS, locks de stock.
+- La invalidación de caché de menú y precios refleja un cambio en el catálogo en menos de [X] segundos, medido en producción.
+- Un webhook de pago duplicado no genera doble registro ni doble cargo, verificado con prueba automatizada.
+- El rate limiting bloquea al superar el umbral y libera al expirar la ventana, con el mismo comportamiento observado en Redis.
+
+Rendimiento
+
+- Latencia p95 de las operaciones migradas no es peor que la línea base de Redis en más de [10 %], medida en carga equivalente al pico real de viernes/sábado noche.
+- Prueba de carga sostenida al [150 %] del pico histórico sin errores ni degradación en el flujo de pedido.
+- Se publica el comparativo de línea base vs. post-migración.
+
+Migración y seguridad de datos
+
+- Cero pérdida de datos en carritos activos y sesiones durante el corte, verificado con conteo y muestreo antes/después.
+- La migración se ejecuta con doble escritura o backfill según corresponda, y el plan de backfill está probado en staging con un volumen representativo.
+- Existe plan de rollback probado, con tiempo estimado de reversión y responsable de decisión.
+- El destino exige TLS y autenticación; no hay instancias expuestas sin credenciales. Las credenciales viven en el gestor de secretos, no en el repositorio.
+- No se persisten datos personales (teléfono, dirección, token de pago) en claves de caché sin cifrado o sin TTL.
+
+Operación
+
+- Dashboard con hit rate, latencia, uso de memoria/conexiones y tasa de error del nuevo almacén, más alertas con umbrales definidos.
+- Runbook de incidentes actualizado: caída del almacén, degradación, failover, restauración.
+- Prueba de failover ejecutada en un entorno de producción o cuasi-producción, con el servicio degradando de forma controlada y no en cascada.
+- Ningún servicio queda con dependencia oculta: se verifica en el mapa de servicios y en los diagramas de arquitectura.
+
+Salida
+
+- Redis está fuera de producción, con instancias apagadas y contrato cancelado o dado de baja.
+- El ahorro o beneficio se mide contra la línea base documentada al inicio, no contra una estimación.
+- Los secretos, DNS y variables de entorno de Redis están eliminados de todos los entornos.
+- La documentación de arquitectura y el onboarding del equipo reflejan el nuevo componente.
+
+## Preguntas abiertas que bloquean la estimación
+
+1. ¿Qué se usa Redis hoy y cuántos servicios lo tocan?
+2. ¿Cuál es el costo mensual actual y qué se espera ahorrar?
+3. ¿Cuál es el incidente o riesgo que motivó esto ahora?
+4. ¿Hay fecha límite externa (renovación de contrato, cambio de proveedor cloud)?
+5. ¿Qué significa concretamente "mejorar todo"? Sin una lista, ese objetivo no entra en esta historia.
+
+## División sugerida
+
+- H7.1 Inventario de uso de Redis y ADR de tecnología destino.
+- H7.2 Migrar el caso de uso de menor riesgo (caché de menú) como prueba piloto.
+- H7.3 Migrar sesiones y carrito con doble escritura.
+- H7.4 Migrar idempotencia de pagos y estado de pedido.
+- H7.5 Migrar rate limiting y locks.
+- H7.6 Observabilidad, alertas y runbook.
+- H7.7 Prueba de carga, failover y corte definitivo con baja de Redis.
+
+Si me dices qué usa Redis PicanteríaYa y cuál es la tecnología destino, ajusto los criterios con umbrales concretos en lugar de placeholders.

@@ -1,0 +1,47 @@
+## Criterios de aceptación – H2: Consultar el menú del día
+
+Los siguientes criterios están redactados en formato Dado – Cuando – Entonces (Gherkin).
+
+### CA01. Visualizar los platos publicados en el menú del día
+
+- Dado que la picantería tiene uno o más platos publicados en su menú del día.
+- Cuando el cliente ingresa a consultar el menú del día.
+- Entonces el sistema muestra los nombres de todos los platos publicados.
+
+### CA02. Mostrar mensaje cuando no hay platos disponibles
+
+- Dado que la picantería no tiene platos publicados en el menú del día.
+- Cuando el cliente ingresa a consultar el menú del día.
+- Entonces el sistema muestra el mensaje: "El menú del día aún no está disponible".
+
+### CA03. Mostrar únicamente los platos publicados
+
+- Dado que la picantería tiene platos registrados, pero algunos no están publicados en el menú del día.
+- Cuando el cliente consulta el menú.
+- Entonces el sistema muestra únicamente los nombres de los platos publicados.
+- Y no muestra los platos que aún no han sido publicados.
+
+### CA04. Identificar la picantería consultada
+
+- Dado que el cliente selecciona una picantería.
+- Cuando accede a la sección del menú del día.
+- Entonces el sistema muestra el menú correspondiente a la picantería seleccionada.
+- Y no muestra platos pertenecientes a otras picanterías.
+
+### CA05. Actualizar la visualización según la disponibilidad del menú
+
+- Dado que el estado de publicación del menú del día ha cambiado.
+- Cuando el cliente vuelve a consultar el menú.
+- Entonces el sistema muestra los platos publicados actualmente o el mensaje de que el menú aún no está disponible, según corresponda.
+
+## Resumen de criterios
+
+| Código | Criterio | Prioridad |
+| --- | --- | --- |
+| CA01 | Visualizar platos publicados | Alta |
+| CA02 | Mostrar mensaje sin menú disponible | Alta |
+| CA03 | Mostrar solo platos publicados | Alta |
+| CA04 | Mostrar menú de la picantería seleccionada | Alta |
+| CA05 | Actualizar visualización del menú | Media |
+
+Nota: Los criterios se mantienen dentro del alcance de la historia H2: consultar el menú del día. No incluyen seleccionar platos, realizar pedidos ni efectuar pagos.
