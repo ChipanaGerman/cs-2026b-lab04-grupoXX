@@ -16,7 +16,7 @@
       "diff": "diff --git a/src/pagos.py b/src/pagos.py\n--- a/src/pagos.py\n+++ b/src/pagos.py\n@@ -1 +1 @@\n-return cobrar(pedido)\n+return cobrar_una_vez(pedido)",
       "tipo": "fix",
       "ambito": "pagos",
-      "tema": "duplic|doble|una vez|idempoten"
+      "tema": "duplic|doble|una (?:sola )?vez|idempoten"
     }
   },
   {

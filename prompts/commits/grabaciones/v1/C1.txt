@@ -1,0 +1,13 @@
+**Mensaje sugerido:**
+
+```
+feat(pagos): agregar Yape como medio de pago
+```
+
+**Alternativas según el estilo del repo:**
+
+- `feat(pagos): soportar pagos con Yape`
+- `feat: añadir Yape a los medios de pago disponibles`
+- `chore(pagos): incluir Yape en la lista de medios` (si lo consideras un ajuste menor de configuración)
+
+El cambio es de una sola línea y solo amplía la lista `medios`, así que `feat` con el scope `pagos` describe bien la intención sin exagerar el alcance.

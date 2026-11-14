@@ -11,6 +11,9 @@ providers:
   - id: file://../proveedor_grabado.py
     label: v3
     config: { tarea: commits, version: v3 }
+  - id: file://../proveedor_grabado.py
+    label: v3.1
+    config: { tarea: commits, version: v3.1 }
 tests: file://../casos_promptfoo.py:commits
 defaultTest:
   assert:

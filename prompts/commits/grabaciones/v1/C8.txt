@@ -1,0 +1,18 @@
+El `diff` que enviaste está vacío (`"diff": ""`), así que no hay cambios que analizar y cualquier mensaje que proponga sería inventado.
+
+¿Puedes pegar el contenido real del diff (o al menos el resumen de archivos modificados)? Con eso te propongo un mensaje concreto siguiendo Conventional Commits, por ejemplo:
+
+```
+feat(picanteria): <descripción del cambio>
+
+- <detalle 1>
+- <detalle 2>
+```
+
+Mientras tanto, si solo necesitas una plantilla genérica para ese ID `C8`:
+
+```
+chore(picanteria): actualización C8
+```
+
+Pero te recomiendo esperar al diff para que el mensaje describa de verdad lo que cambió.

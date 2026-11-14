@@ -1,0 +1,15 @@
+**Mensaje sugerido:**
+
+```
+perf(reparto): usar caché de ubicaciones en lugar de buscar_ubicacion
+
+Se sustituye la llamada a buscar_ubicacion(pedido) por el acceso directo
+a cache_ubicaciones[pedido], evitando la búsqueda repetida por pedido.
+```
+
+**Alternativas más cortas:**
+
+- `refactor(reparto): leer ubicación desde caché en vez de buscarla`
+- `perf: evitar búsqueda de ubicación usando cache_ubicaciones`
+
+Un detalle a considerar: el acceso directo con `[pedido]` lanzará `KeyError` si el pedido no está en la caché, mientras que `buscar_ubicacion` probablemente devolvía un valor por defecto o consultaba la fuente. Si eso importa, quizá convenga mencionarlo en el cuerpo del commit o usar `.get()` con un fallback.

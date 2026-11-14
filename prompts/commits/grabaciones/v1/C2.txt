@@ -1,0 +1,18 @@
+**Mensaje sugerido:**
+
+```
+fix(pagos): usar cobrar_una_vez para evitar cobros duplicados
+```
+
+**Alternativas según la intención real del cambio:**
+
+- Si es solo un renombrado de la función:
+  ```
+  refactor(pagos): renombrar cobrar a cobrar_una_vez
+  ```
+- Si el cambio corrige un comportamiento observable (doble cobro):
+  ```
+  fix(pagos): cobrar el pedido una sola vez
+  ```
+
+**Nota:** el diff solo muestra el cambio en el *call site* (`src/pagos.py`), no la definición de `cobrar_una_vez`. Si la función nueva no existe aún en el código, el commit no compilaría; conviene verificar que la definición esté incluida en el mismo cambio o en uno previo. Si `cobrar_una_vez` es idempotente por diseño, el mensaje `fix` es el más informativo; si es un simple alias, usa `refactor`.
