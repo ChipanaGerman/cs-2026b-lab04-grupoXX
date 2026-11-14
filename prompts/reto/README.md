@@ -1,12 +1,16 @@
 # Reto adicional · Comparación de modelos
 
-La opción A compara Qwen2.5 3B y Llama 3.2 3B mediante Ollama. Ambos reciben la v3.1 con el mismo dataset, temperatura 0, sin caché y con concurrencia 1. Ejecutar en el mismo equipo y registrar el identificador exacto de cada modelo (`ollama list`), el hardware y si el primer caso incluyó carga en frío.
+La opción A usa dos modelos alojados de Kilo sin credenciales ni descargas, ERNIE 5.5 Flash Preview y Liquid LFM 3 1.7B. Ambos reciben la v3.1 con el mismo dataset y temperatura 0. La latencia registrada es el tiempo de la solicitud de inferencia completa. Las capturas de ERNIE se reutilizaron de la evaluación principal, que utilizó hasta tres llamadas en paralelo. Esta diferencia de concurrencia puede afectar la comparación.
 
 ```bash
-ollama pull qwen2.5:3b
-ollama pull llama3.2:3b
-npx --yes promptfoo@0.118.0 eval -c prompts/reto/promptfooconfig.yaml --no-cache -j 1 -o reto-resultados.json
-python prompts/reto/comparar.py reto-resultados.json
+python prompts/capturar_kilo.py reto
+npx --yes promptfoo@0.118.0 eval -c prompts/reto/promptfooconfig.yaml --no-cache -j 1 -o prompts/evidencia/reto.json
+python prompts/reto/comparar.py prompts/evidencia/reto.json
 ```
 
-El costo de API es USD 0 para inferencia local. El costo de cómputo y energía requiere medición independiente. Conservar el JSON de Promptfoo como evidencia. La tasa y la latencia quedan pendientes hasta disponer de los dos modelos y ejecutar las llamadas.
+El costo proviene del campo `usage.cost` de Kilo. Promptfoo evalúa el texto capturado y el comparador toma la latencia de los metadatos de inferencia. Kilo devolvió HTTP 429 `PROMOTION_MODEL_LIMIT_REACHED` al ejecutar Liquid sobre el dataset. Queda pendiente completar la comparación cuando el proveedor vuelva a admitir llamadas anónimas.
+
+| Modelo | Aprobación | Mediana | Costo medio de API |
+| --- | ---: | ---: | ---: |
+| ERNIE 5.5 Flash Preview | 8/8 | 5.901 ms | USD 0 por caso |
+| Liquid LFM 3 1.7B | Sin capturas evaluables | Pendiente | Pendiente |

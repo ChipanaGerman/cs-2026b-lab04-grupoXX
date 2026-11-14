@@ -1,11 +1,13 @@
-description: Reto Lab 09 · mismo prompt de criterios con dos modelos locales
+description: Reto Lab 09 · evaluación reproducible de dos modelos
 prompts:
   - file://../criterios/v3.1.txt
 providers:
-  - id: ollama:chat:qwen2.5:3b
-    config: { temperature: 0 }
-  - id: ollama:chat:llama3.2:3b
-    config: { temperature: 0 }
+  - id: file://../proveedor_grabado.py
+    label: ernie
+    config: { tarea: reto, version: ernie }
+  - id: file://../proveedor_grabado.py
+    label: liquid
+    config: { tarea: reto, version: liquid }
 tests: file://../casos_promptfoo.py:criterios
 defaultTest:
   assert:

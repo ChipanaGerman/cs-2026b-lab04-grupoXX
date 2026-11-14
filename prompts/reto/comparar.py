@@ -24,8 +24,12 @@ def main():
     print("| --- | ---: | ---: | ---: | ---: |")
     for proveedor, filas in grupos.items():
         exitos = sum(bool(fila["success"]) for fila in filas)
-        latencias = [fila["latencyMs"] for fila in filas]
-        costo = sum(fila.get("cost") or fila["response"].get("cost") or 0 for fila in filas)
+        evidencias = [json.loads(
+            (Path(__file__).parent / "grabaciones" / proveedor / f'{fila["vars"]["id"]}.json')
+            .read_text(encoding="utf-8")
+        ) for fila in filas]
+        latencias = [evidencia["latencia_ms"] for evidencia in evidencias]
+        costo = sum(evidencia["costo_usd"] for evidencia in evidencias)
         print(f"| {proveedor} | {exitos}/{len(filas)} | {exitos / len(filas):.1%} | "
               f"{median(latencias):.0f} | {costo / len(filas):.6f} |")
 
