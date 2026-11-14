@@ -6,8 +6,8 @@ providers:
     label: ernie
     config: { tarea: reto, version: ernie }
   - id: file://../proveedor_grabado.py
-    label: liquid
-    config: { tarea: reto, version: liquid }
+    label: luna
+    config: { tarea: reto, version: luna }
 tests: file://../casos_promptfoo.py:criterios
 defaultTest:
   assert:

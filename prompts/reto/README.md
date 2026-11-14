@@ -1,16 +1,17 @@
 # Reto adicional · Comparación de modelos
 
-La opción A usa dos modelos alojados de Kilo sin credenciales ni descargas, ERNIE 5.5 Flash Preview y Liquid LFM 3 1.7B. Ambos reciben la v3.1 con el mismo dataset y temperatura 0. La latencia registrada es el tiempo de la solicitud de inferencia completa. Las capturas de ERNIE se reutilizaron de la evaluación principal, que utilizó hasta tres llamadas en paralelo. Esta diferencia de concurrencia puede afectar la comparación.
+La opción A compara ERNIE 5.5 Flash Preview en Kilo con GPT-6 Luna en Duck.ai, sin credenciales ni descargas. Ambos recibieron los mismos ocho casos con el prompt v3.1. ERNIE usó temperatura 0 y hasta tres llamadas en paralelo. Luna usó el modo Rápido, un chat nuevo por caso y ejecución secuencial. Liquid se sustituyó por Luna cuando Kilo agotó su cuota anónima.
 
 ```bash
-python prompts/capturar_kilo.py reto
 npx --yes promptfoo@0.118.0 eval -c prompts/reto/promptfooconfig.yaml --no-cache -j 1 -o prompts/evidencia/reto.json
 python prompts/reto/comparar.py prompts/evidencia/reto.json
 ```
 
-El costo proviene del campo `usage.cost` de Kilo. Promptfoo evalúa el texto capturado y el comparador toma la latencia de los metadatos de inferencia. Kilo devolvió HTTP 429 `PROMOTION_MODEL_LIMIT_REACHED` al ejecutar Liquid sobre el dataset. Queda pendiente completar la comparación cuando el proveedor vuelva a admitir llamadas anónimas.
+Promptfoo evalúa el texto de las capturas. El costo de ERNIE proviene de `usage.cost`. Para Luna se registra el costo directo del acceso web gratuito. Las latencias incluyen el tiempo de la solicitud a Kilo o el tiempo desde el envío hasta que Duck.ai mostró la respuesta completa. La concurrencia y el canal difieren, por lo que estos tiempos describen la experiencia observada y no aíslan la velocidad de cada modelo.
 
 | Modelo | Aprobación | Mediana | Costo medio de API |
 | --- | ---: | ---: | ---: |
 | ERNIE 5.5 Flash Preview | 8/8 | 5.901 ms | USD 0 por caso |
-| Liquid LFM 3 1.7B | Sin capturas evaluables | Pendiente | Pendiente |
+| GPT-6 Luna | 8/8 | 4.085 ms | USD 0 por caso en Duck.ai |
+
+La revisión manual encontró que Luna nombró a Yape como actor en H4, H5 y H8. Las aserciones de esquema y vocabulario no penalizan esa sustitución. El resultado automático mide los criterios cubiertos por las aserciones.
