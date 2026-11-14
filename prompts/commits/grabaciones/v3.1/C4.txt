@@ -1,0 +1,1 @@
+test(menu): comprueba el plato agotado rocoto
