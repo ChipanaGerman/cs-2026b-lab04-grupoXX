@@ -60,7 +60,8 @@ jobs:
           echo "=== Verificando que ningun metodo supere complejidad 10 ==="
           # radon cc --min C devuelve los bloques con complejidad >= C (11+)
           # Si hay salida, hay métodos demasiado complejos → falla el CI
-          RESULTADO=$(python -m radon cc --min C src/ 2>&1)
+          # La versión histórica "antes" se conserva como referencia del refactor.
+          RESULTADO=$(python -m radon cc --min C --exclude '*/antes/*' src/ 2>&1)
           if [ -n "$RESULTADO" ]; then
             echo "ERROR: Los siguientes métodos superan complejidad 10:"
             echo "$RESULTADO"
