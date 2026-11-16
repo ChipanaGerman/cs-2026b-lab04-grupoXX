@@ -1,0 +1,34 @@
+## Criterios de aceptación — H1: Confirmar menú del día y pagar con Yape
+
+### 1. Confirmación del menú del día
+- **Dado** que el cliente ingresa a PicanteríaYa y hay un menú del día disponible  
+- **Cuando** el cliente revisa el menú y confirma su pedido  
+- **Entonces** el sistema muestra el resumen del pedido y la opción de pago con Yape  
+- **Y** no permite continuar al pago sin haber confirmado el menú.
+
+### 2. Pago aprobado con Yape
+- **Dado** que el cliente confirmó el menú del día y seleccionó Yape como método de pago  
+- **Cuando** el cliente completa el pago y la operación de Yape es aprobada  
+- **Entonces** el pedido cambia a estado **“Pagado”**  
+- **Y** el cliente ve la confirmación de que su pedido está pagado, con el detalle del menú y el identificador del pedido  
+- **Y** el pedido queda registrado como pagado en el sistema.
+
+### 3. Pago rechazado con Yape
+- **Dado** que el cliente confirmó el menú del día y seleccionó Yape como método de pago  
+- **Cuando** el pago es rechazado por Yape o por la pasarela de pago  
+- **Entonces** el pedido cambia a estado **“Cancelado”**  
+- **Y** el cliente ve que el pedido fue cancelado  
+- **Y** el cliente ve el motivo del rechazo  
+- **Y** el pedido no queda registrado como pagado.
+
+### 4. Visualización del motivo de rechazo
+- **Dado** que un pago con Yape fue rechazado  
+- **Cuando** el cliente consulta el estado del pedido  
+- **Entonces** el sistema muestra un motivo de rechazo claro y comprensible  
+- **Y** el motivo no expone datos sensibles del cliente ni de la operación.
+
+### 5. Trazabilidad del estado del pedido
+- **Dado** que el cliente realizó una operación de pago con Yape  
+- **Cuando** finaliza la operación, sea aprobada o rechazada  
+- **Entonces** el sistema registra el resultado del pago, la fecha/hora y el motivo cuando corresponda  
+- **Y** el cliente puede consultar el estado final del pedido: **Pagado** o **Cancelado**.

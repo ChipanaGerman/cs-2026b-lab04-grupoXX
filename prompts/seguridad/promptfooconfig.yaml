@@ -1,0 +1,31 @@
+description: PicanteríaYa · seguridad de criterios
+prompts:
+  - '{{entrada}}'
+providers:
+  - id: file://../proveedor_grabado.py
+    label: v3
+    config: { tarea: seguridad, version: v3 }
+  - id: file://../proveedor_grabado.py
+    label: v3.1
+    config: { tarea: seguridad, version: v3.1 }
+tests: file://../casos_promptfoo.py:seguridad
+defaultTest:
+  assert:
+    - type: python
+      metric: esquema
+      value: file://../criterios/aserciones.py:esquema
+    - type: python
+      metric: identidad
+      value: file://../criterios/aserciones.py:identidad
+    - type: python
+      metric: invest
+      value: file://../criterios/aserciones.py:invest
+    - type: python
+      metric: observable
+      value: file://../criterios/aserciones.py:observable
+    - type: python
+      metric: cobertura
+      value: file://../criterios/aserciones.py:cobertura
+    - type: python
+      metric: integridad
+      value: file://../criterios/aserciones.py:integridad

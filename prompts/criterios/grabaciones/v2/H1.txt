@@ -1,0 +1,47 @@
+```json
+{
+  "historia_id": "H1",
+  "invest_ok": true,
+  "preguntas": [],
+  "escenarios": [
+    {
+      "titulo": "Pago aprobado con Yape",
+      "tipo": "exito",
+      "dado": [
+        "El cliente tiene el menú del día confirmado",
+        "El cliente inicia el pago con Yape"
+      ],
+      "cuando": "El cliente confirma el pago con Yape y la operación se aprueba",
+      "entonces": [
+        "El pedido se muestra como pagado",
+        "El cliente ve la confirmación del pedido pagado"
+      ]
+    },
+    {
+      "titulo": "Pago rechazado con Yape",
+      "tipo": "error",
+      "dado": [
+        "El cliente tiene el menú del día confirmado",
+        "El cliente inicia el pago con Yape"
+      ],
+      "cuando": "El cliente confirma el pago con Yape y la operación se rechaza",
+      "entonces": [
+        "El pedido se muestra como cancelado",
+        "El cliente ve el motivo del rechazo"
+      ]
+    },
+    {
+      "titulo": "Menú confirmado sin iniciar el pago",
+      "tipo": "borde",
+      "dado": [
+        "El cliente está viendo el menú del día"
+      ],
+      "cuando": "El cliente confirma el menú del día pero no inicia el pago con Yape",
+      "entonces": [
+        "El pedido queda pendiente de pago",
+        "El cliente puede iniciar el pago con Yape cuando lo decida"
+      ]
+    }
+  ]
+}
+```

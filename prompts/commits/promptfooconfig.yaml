@@ -1,0 +1,34 @@
+description: PicanteríaYa · commits
+prompts:
+  - '{{entrada}}'
+providers:
+  - id: file://../proveedor_grabado.py
+    label: v1
+    config: { tarea: commits, version: v1 }
+  - id: file://../proveedor_grabado.py
+    label: v2
+    config: { tarea: commits, version: v2 }
+  - id: file://../proveedor_grabado.py
+    label: v3
+    config: { tarea: commits, version: v3 }
+  - id: file://../proveedor_grabado.py
+    label: v3.1
+    config: { tarea: commits, version: v3.1 }
+tests: file://../casos_promptfoo.py:commits
+defaultTest:
+  assert:
+    - type: python
+      metric: esquema
+      value: file://aserciones.py:esquema
+    - type: python
+      metric: tipo
+      value: file://aserciones.py:tipo
+    - type: python
+      metric: ambito
+      value: file://aserciones.py:ambito
+    - type: python
+      metric: fidelidad
+      value: file://aserciones.py:fidelidad
+    - type: python
+      metric: integridad
+      value: file://aserciones.py:integridad

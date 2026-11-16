@@ -1,0 +1,48 @@
+```json
+{
+  "historia_id": "H6",
+  "invest_ok": true,
+  "preguntas": [],
+  "escenarios": [
+    {
+      "titulo": "Yape aprueba el pago dentro del plazo",
+      "tipo": "exito",
+      "dado": [
+        "El cliente tiene un pedido con pago pendiente por Yape",
+        "Han transcurrido menos de 10 minutos desde que quedó pendiente el pago"
+      ],
+      "cuando": "Yape aprueba el pago antes de que se cumplan los 10 minutos",
+      "entonces": [
+        "El cliente ve el pedido como pagado",
+        "El pedido deja de mostrar el estado de pago pendiente"
+      ]
+    },
+    {
+      "titulo": "No hay respuesta de Yape y vence el plazo",
+      "tipo": "error",
+      "dado": [
+        "El cliente tiene un pedido con pago pendiente por Yape",
+        "No llega ninguna respuesta de aprobación de Yape"
+      ],
+      "cuando": "Transcurren 10 minutos sin respuesta de Yape",
+      "entonces": [
+        "El cliente ve el pedido como cancelado",
+        "El cliente ve el motivo de la cancelación"
+      ]
+    },
+    {
+      "titulo": "Aprobación de Yape justo en el límite de tiempo",
+      "tipo": "borde",
+      "dado": [
+        "El cliente tiene un pedido con pago pendiente por Yape",
+        "Están por cumplirse los 10 minutos sin respuesta"
+      ],
+      "cuando": "Yape aprueba el pago justo antes de cumplirse los 10 minutos",
+      "entonces": [
+        "El cliente ve el pedido como pagado",
+        "No se muestra la cancelación del pedido"
+      ]
+    }
+  ]
+}
+```

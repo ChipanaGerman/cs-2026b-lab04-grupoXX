@@ -1,0 +1,48 @@
+```json
+{
+  "historia_id": "H8",
+  "invest_ok": true,
+  "preguntas": [],
+  "escenarios": [
+    {
+      "titulo": "Filtrar por distrito con resultados",
+      "tipo": "exito",
+      "dado": [
+        "Existen picanterías registradas en distintos distritos",
+        "El cliente está en la pantalla de búsqueda de picanterías"
+      ],
+      "cuando": "El cliente selecciona un distrito que tiene picanterías disponibles",
+      "entonces": [
+        "El listado muestra únicamente las picanterías del distrito elegido",
+        "No aparecen picanterías de otros distritos"
+      ]
+    },
+    {
+      "titulo": "Filtrar por distrito sin resultados",
+      "tipo": "error",
+      "dado": [
+        "El cliente está en la pantalla de búsqueda de picanterías",
+        "El distrito seleccionado no tiene picanterías registradas"
+      ],
+      "cuando": "El cliente selecciona ese distrito sin picanterías",
+      "entonces": [
+        "Se muestra un aviso indicando que no hay resultados",
+        "No se muestra ningún listado de picanterías"
+      ]
+    },
+    {
+      "titulo": "Cambiar el distrito ya filtrado",
+      "tipo": "borde",
+      "dado": [
+        "El cliente ya aplicó un filtro por un distrito con resultados",
+        "El listado muestra las picanterías de ese distrito"
+      ],
+      "cuando": "El cliente cambia la selección a otro distrito distinto",
+      "entonces": [
+        "El listado se actualiza para mostrar solo las picanterías del nuevo distrito",
+        "Las picanterías del distrito anterior dejan de mostrarse"
+      ]
+    }
+  ]
+}
+```

@@ -1,0 +1,45 @@
+```json
+{
+  "historia_id": "H4",
+  "invest_ok": true,
+  "preguntas": [],
+  "escenarios": [
+    {
+      "titulo": "Asignación de repartidor cuando hay disponibilidad",
+      "tipo": "exito",
+      "dado": [
+        "que el cliente tiene un pedido pagado",
+        "que existe al menos un repartidor disponible"
+      ],
+      "cuando": "el cliente consulta el estado de asignación de su pedido",
+      "entonces": [
+        "el sistema muestra que se asignó un repartidor al pedido"
+      ]
+    },
+    {
+      "titulo": "Asignación pendiente cuando no hay repartidores disponibles",
+      "tipo": "error",
+      "dado": [
+        "que el cliente tiene un pedido pagado",
+        "que no hay ningún repartidor disponible"
+      ],
+      "cuando": "el cliente consulta el estado de asignación de su pedido",
+      "entonces": [
+        "el sistema muestra que la asignación sigue pendiente"
+      ]
+    },
+    {
+      "titulo": "Estado pendiente justo después del pago sin asignación aún",
+      "tipo": "borde",
+      "dado": [
+        "que el cliente acaba de completar el pago de su pedido",
+        "que todavía no se ha asignado ningún repartidor"
+      ],
+      "cuando": "el cliente consulta el estado de asignación de su pedido",
+      "entonces": [
+        "el sistema muestra que la asignación sigue pendiente"
+      ]
+    }
+  ]
+}
+```

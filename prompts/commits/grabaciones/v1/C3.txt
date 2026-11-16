@@ -1,0 +1,17 @@
+**Mensaje sugerido:**
+
+```
+docs(pedidos): aclarar que el pedido se confirma antes de pagar con Yape
+```
+
+**Alternativas:**
+
+- `docs: precisar el paso de confirmación del pedido antes del pago con Yape`
+- `docs(pedidos): actualizar instrucción de confirmación de pedido`
+
+El cambio es solo documental y de una línea, así que un `docs` con el alcance `pedidos` y una descripción breve en imperativo es suficiente. Si el equipo usa un cuerpo descriptivo, podrías añadir:
+
+```
+El texto anterior no dejaba claro en qué momento se confirma el pedido;
+ahora se indica explícitamente que debe hacerse antes de pagar con Yape.
+```

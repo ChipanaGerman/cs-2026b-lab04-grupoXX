@@ -1,0 +1,1 @@
+{"historia_id":"H7","invest_ok":false,"preguntas":["¿Qué resultado funcional debe obtener el cliente con este cambio?","¿Cómo se comprobará que ese resultado se alcanzó?"],"escenarios":[]}

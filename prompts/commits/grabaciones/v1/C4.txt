@@ -1,0 +1,13 @@
+**Mensaje sugerido:**
+
+```
+test(menu): verificar disponibilidad y lista de agotados
+```
+
+**Alternativa más descriptiva:**
+
+```
+test(menu): comprobar que el menú esté disponible y que los agotados sean ['rocoto']
+```
+
+El cambio solo refuerza una aserción existente en `tests/test_menu.py`, así que un mensaje corto centrado en el test es suficiente.

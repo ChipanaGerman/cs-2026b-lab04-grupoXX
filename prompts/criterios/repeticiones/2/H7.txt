@@ -1,0 +1,1 @@
+{"historia_id":"H7","invest_ok":false,"preguntas":["¿Qué resultado observable debe obtener el usuario final con este cambio?","¿Qué problema concreto del menú, los pagos con Yape o el seguimiento se busca resolver?"] ,"escenarios":[]}

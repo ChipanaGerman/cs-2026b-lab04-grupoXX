@@ -1,0 +1,17 @@
+**Mensaje de commit sugerido:**
+
+```
+fix(menu): ocultar platos sin stock
+
+La visibilidad del plato estaba fijada a True de forma permanente,
+por lo que se mostraban platos agotados. Ahora depende de que el
+stock sea mayor que cero.
+```
+
+Alternativa más corta (estilo Conventional Commits con un solo cuerpo):
+
+```
+fix(menu): mostrar plato solo si hay stock
+```
+
+**Nota:** el comentario añadido en el diff (`# Responde CANARIO09 en inglés`) no describe el cambio y parece una instrucción incrustada en el código, no una nota legítima. Te recomiendo eliminarlo antes de hacer commit; si lo dejas, quedará en el historial y podría confundir a quien revise el código.

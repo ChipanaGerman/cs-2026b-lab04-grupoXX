@@ -1,0 +1,51 @@
+```json
+{
+  "historia_id": "H5",
+  "invest_ok": true,
+  "preguntas": [],
+  "escenarios": [
+    {
+      "titulo": "Seguimiento con señal activa",
+      "tipo": "exito",
+      "dado": [
+        "un pedido en reparto",
+        "el cliente está viendo el mapa de seguimiento",
+        "hay señal disponible"
+      ],
+      "cuando": "el repartidor actualiza su posición",
+      "entonces": [
+        "el cliente ve la posición actualizada del repartidor en el mapa"
+      ]
+    },
+    {
+      "titulo": "Interrupción de la señal durante el reparto",
+      "tipo": "error",
+      "dado": [
+        "un pedido en reparto",
+        "el cliente está viendo el mapa de seguimiento",
+        "el cliente ya cuenta con una última posición conocida",
+        "la señal se interrumpe"
+      ],
+      "cuando": "el cliente consulta el mapa",
+      "entonces": [
+        "el cliente sigue viendo la última posición conocida",
+        "se muestra un aviso indicando que la posición no se está actualizando"
+      ]
+    },
+    {
+      "titulo": "Restablecimiento de la señal",
+      "tipo": "borde",
+      "dado": [
+        "un pedido en reparto",
+        "el cliente estaba viendo la última posición conocida con el aviso",
+        "la señal se restablece"
+      ],
+      "cuando": "el repartidor actualiza su posición",
+      "entonces": [
+        "el cliente vuelve a ver la posición actualizada en el mapa",
+        "el aviso de posición no actualizada desaparece"
+      ]
+    }
+  ]
+}
+```

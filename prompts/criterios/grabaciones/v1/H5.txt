@@ -1,0 +1,56 @@
+## Criterios de aceptación — H5: Seguimiento del reparto en el mapa
+
+### CA-1. Visualización inicial del seguimiento
+**Dado** que un cliente tiene un pedido en reparto  
+**Cuando** abre la pantalla de seguimiento  
+**Entonces** debe ver un mapa con la ruta del reparto y el marcador del repartidor, junto con el estado del pedido y la hora de la última actualización de ubicación.
+
+### CA-2. Actualización de posición con señal disponible
+**Dado** que el cliente está siguiendo el reparto  
+**Y** hay señal/conexión disponible y el repartidor está enviando ubicación  
+**Cuando** el sistema recibe una nueva posición  
+**Entonces** el mapa debe actualizarse automáticamente con la posición actual del repartidor, sin necesidad de recargar la pantalla, y debe actualizarse la hora de última actualización.
+
+### CA-3. Pérdida de señal: conservar última posición conocida
+**Dado** que el cliente está viendo el seguimiento  
+**Y** se interrumpe la señal/conexión o deja de recibirse la ubicación del repartidor  
+**Cuando** ocurre la interrupción  
+**Entonces** el mapa debe seguir mostrando la última posición conocida del repartidor, sin borrarla ni mostrar un mapa vacío, y debe mostrar un aviso visible del tipo:  
+> “Sin señal. Mostrando la última ubicación conocida a las HH:MM.”
+
+### CA-4. Aviso claro y persistente durante la interrupción
+**Dado** que se está mostrando la última posición conocida por pérdida de señal  
+**Cuando** la interrupción continúa  
+**Entonces** el aviso debe permanecer visible y legible, indicando que la ubicación no está actualizada en tiempo real y mostrando la hora de la última posición recibida.
+
+### CA-5. Recuperación de la señal
+**Dado** que el cliente está viendo la última posición conocida por una interrupción  
+**Cuando** se restablece la señal y llega una nueva ubicación del repartidor  
+**Entonces** el mapa debe actualizarse con la nueva posición, actualizar la hora de última actualización y quitar o actualizar el aviso de pérdida de señal.
+
+### CA-6. Sin ubicación inicial disponible
+**Dado** que el pedido está en reparto  
+**Y** todavía no se ha recibido ninguna ubicación del repartidor  
+**Cuando** el cliente abre el seguimiento  
+**Entonces** debe mostrarse un mensaje claro como “Aún no hay ubicación disponible” y no debe mostrarse un marcador falso o una posición inventada.  
+**Y** cuando llegue la primera ubicación, debe mostrarse en el mapa.
+
+### CA-7. Persistencia del estado al navegar o volver a la pantalla
+**Dado** que el cliente sale de la pantalla de seguimiento y vuelve a entrar  
+**Cuando** regresa  
+**Entonces** debe conservarse la última posición conocida y, si corresponde, el aviso de pérdida de señal, sin perder el estado del seguimiento.
+
+### CA-8. Claridad y accesibilidad del aviso
+**Dado** que se muestra un aviso de pérdida de señal  
+**Cuando** el cliente lo visualiza  
+**Entonces** el aviso debe ser visible, comprensible y no depender únicamente del color; debe indicar que la ubicación mostrada es la última conocida y, preferentemente, la hora de esa última actualización.
+
+### CA-9. No mostrar datos obsoletos como actuales
+**Dado** que no hay señal o no se reciben nuevas ubicaciones  
+**Cuando** el cliente observa el mapa  
+**Entonces** el sistema no debe presentar la última posición conocida como si fuera una ubicación actualizada en tiempo real sin mostrar el aviso correspondiente.
+
+### CA-10. Comportamiento ante recuperación parcial o intermitente
+**Dado** que la señal se pierde y se recupera de forma intermitente  
+**Cuando** llegan nuevas ubicaciones  
+**Entonces** el mapa debe actualizarse con la última ubicación recibida, mantener visible la hora de actualización y mostrar el aviso solo mientras no haya una ubicación reciente válida.

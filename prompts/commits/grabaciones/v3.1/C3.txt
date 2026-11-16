@@ -1,0 +1,1 @@
+docs(pedidos): aclara que se confirma el pedido antes de pagar con Yape

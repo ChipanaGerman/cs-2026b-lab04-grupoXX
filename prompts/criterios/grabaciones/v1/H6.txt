@@ -1,0 +1,73 @@
+## Criterios de aceptación — H6: Resultado del pago pendiente
+
+**Formato:** Given / When / Then. Se asume un pedido con método de pago Yape en estado `PAGO_PENDIENTE`.
+
+---
+
+### CA-1 — Aprobación dentro de la ventana (antes de 10 min)
+
+**Given** un pedido en estado `PAGO_PENDIENTE` con pago por Yape
+**And** han transcurrido menos de 10 minutos desde la creación del intento de pago
+**When** Yape confirma la aprobación del pago
+**Then** el pedido cambia a estado `PAGADO`
+**And** el cliente ve el mensaje "Pago confirmado" junto al monto y los últimos 4 dígitos del celular Yape
+**And** el pedido pasa automáticamente a `EN_PREPARACION` (o al siguiente estado del flujo operativo) sin acción del cliente
+**And** el cambio de estado se refleja sin necesidad de cerrar y reabrir la app (polling o push en un máximo de 10 segundos)
+
+### CA-2 — Timeout sin respuesta (10 min)
+
+**Given** un pedido en estado `PAGO_PENDIENTE`
+**And** han transcurrido 10 minutos o más sin confirmación de Yape
+**When** el sistema evalúa el estado del pago
+**Then** el pedido cambia a estado `CANCELADO`
+**And** el cliente ve el mensaje "Pago no confirmado" con el motivo **"Tiempo de espera agotado (10 min)"**
+**And** no se envía el pedido a cocina
+**And** el cliente puede iniciar un nuevo pedido desde la misma pantalla con un CTA "Volver a intentar"
+
+### CA-3 — Estado intermedio (mientras se espera)
+
+**Given** un pedido en estado `PAGO_PENDIENTE`
+**When** el cliente abre el detalle del pedido
+**Then** ve el estado "Pago pendiente" con un contador o leyenda del tiempo restante ("Te quedan X min para confirmar")
+**And** la pantalla se actualiza sola al cambiar el estado, sin requerir refresco manual
+
+### CA-4 — Confirmación tardía (Yape responde después de los 10 min)
+
+**Given** un pedido ya `CANCELADO` por timeout
+**When** llega la confirmación de pago de Yape
+**Then** el pedido **no** vuelve a `PAGADO` ni se prepara
+**And** se registra el evento de pago cobrado para conciliación
+**And** se dispara la alerta al equipo de operaciones/soporte para gestionar el reembolso o la reapertura manual
+**And** el cliente recibe una notificación informando que el pago se registró fuera de tiempo y que su caso está en revisión
+
+### CA-5 — Idempotencia y consistencia
+
+**Given** un pedido con pago pendiente
+**When** Yape envía la notificación de aprobación más de una vez (reintentos del webhook)
+**Then** el pedido se marca `PAGADO` una sola vez y no se generan registros duplicados ni doble cargo
+
+### CA-6 — Trazabilidad
+
+**Given** cualquier pedido con pago por Yape
+**When** el cliente o soporte consulta el detalle
+**Then** existe un historial con marca de tiempo de: creación del intento, confirmación (o timeout), cambio de estado y motivo de cancelación
+**And** el motivo de cancelación es uno de un catálogo cerrado (`TIEMPO_AGOTADO`, `PAGO_RECHAZADO`, `PAGO_ANULADO`), no texto libre
+
+---
+
+### Criterios transversales
+
+- El cómputo de los 10 minutos usa **hora del servidor**, no del dispositivo, y sobrevive a cierres de la app y cambios de red.
+- El estado mostrado es idéntico en app, web y panel de operaciones para el mismo pedido.
+- Si el cliente cierra la app durante la espera, al reabrirla ve el estado real actualizado (no un "pendiente" falso).
+- El timer y los mensajes cumplen accesibilidad básica: contraste AA, textos legibles por lector de pantalla y el estado no se comunica solo por color.
+- Si el servicio de Yape no responde a la consulta de estado, el pedido **no** se marca `PAGADO` por defecto: se mantiene pendiente hasta agotar el tiempo y luego se cancela con motivo `TIEMPO_AGOTADO`.
+
+---
+
+### Supuestos y preguntas abiertas
+
+1. ¿Los 10 minutos corren desde que el cliente escanea el QR o desde que se crea el pedido? Asumí lo segundo; conviene confirmarlo.
+2. ¿Qué pasa con el dinero si Yape sí cobró pero el pedido se canceló? El CA-4 asume reembolso manual vía soporte; falta definir si hay reembolso automático.
+3. ¿El cliente puede pagar de nuevo sobre el mismo pedido tras el timeout, o debe crear uno nuevo? El CA-2 asume pedido nuevo.
+4. ¿Existe un valor configurable del timeout por ambiente (shorter en QA para pruebas)?

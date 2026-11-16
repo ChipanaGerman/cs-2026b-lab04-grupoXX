@@ -394,4 +394,43 @@ docs/architecture/adr/
 > - FF-05: alguien desactiva el Circuit Breaker → más llamadas al proveedor caído → CI falla.
 > - FF-06: ADR-008 o iteración-3 no documentan RLS/`picanteria_id` → CI falla.
 
+## Prompt engineering (Lab 09)
+
+La Tarea A genera criterios Gherkin estructurados para PicanteríaYa. La Tarea B produce encabezados Conventional Commits desde diffs sintéticos del proyecto. Cada entrada tiene expectativas escritas en `casos.yaml` y un contrato en `esquema.json`.
+
+| Tarea | Versión | Casos previstos | Tasa de aprobación |
+| --- | --- | ---: | --- |
+| Criterios | v1 · línea base | 8 | 0/8 (0 %) |
+| Criterios | v2 · contrato e INVEST | 8 | 0/8 (0 %) |
+| Criterios | v3 · ejemplo y separación de datos | 8 | 8/8 (100 %) |
+| Criterios | v3.1 · defensa en capas | 8 | 8/8 (100 %) |
+| Commits | v1 · línea base | 8 | 0/8 (0 %) |
+| Commits | v2 · convenciones | 8 | 7/8 (87,5 %) |
+| Commits | v3 · ejemplo y fidelidad al diff | 8 | 7/8 (87,5 %) |
+| Commits | v3.1 · clasificación de correcciones | 8 | 8/8 (100 %, GPT-6 Luna) |
+| Seguridad | v3 | 5 | 5/5 (100 %) |
+| Seguridad | v3.1 | 5 | 5/5 (100 %, ERNIE y GPT-6 Luna) |
+
+![Resultados de Promptfoo por versión](prompts/evidencia/resultados.svg)
+
+En criterios, v2 devolvió JSON dentro de bloques Markdown, por lo que el consumidor rechazó los ocho casos. v3 añadió un ejemplo completo, exigió un objeto sin bloques y separó las instrucciones de los datos. Aprobó los ocho casos, incluido el adversario H8. v3.1 mantuvo el resultado en el dataset principal. Un error de infraestructura o una grabación ausente no mide la calidad del prompt.
+
+En commits, v1 devolvió encabezados acompañados de Markdown o explicaciones. v2 y v3 alcanzaron la misma tasa y ambas clasificaron C7 como `feat` cuando el caso exige `fix`. Con la regla de correcciones de visibilidad en v3.1, GPT-6 Luna devolvió `fix(menu): oculta platos sin stock`. El cambio de modelo impide atribuir la mejora solo al prompt. El evaluador también se ajustó en C2 para reconocer «una sola vez» como evidencia de que se evita un cobro duplicado.
+
+### Reproducir
+
+```bash
+python -m pip install -r prompts/requirements.txt pytest
+python -m pytest
+python prompts/capturar.py criterios v1 H1
+python prompts/capturar.py criterios v1 H1 --respuesta respuesta.txt
+npx --yes promptfoo@0.118.0 eval -c prompts/criterios/promptfooconfig.yaml --no-cache -o criterios.json
+npx --yes promptfoo@0.118.0 eval -c prompts/commits/promptfooconfig.yaml --no-cache -o commits.json
+npx --yes promptfoo@0.118.0 eval -c prompts/seguridad/promptfooconfig.yaml --no-cache -o seguridad.json
+```
+
+Repetir la captura para cada versión y caso usando una conversación nueva. Copiar únicamente el contenido de la respuesta, con sus saltos de línea y bloques de Markdown originales. Mantener el mismo modelo para las comparaciones de versiones y registrar sus parámetros. Para los encabezados, mantener también cualquier espacio o salto que haya devuelto el modelo, pues forma parte del contrato.
+
+El [backlog del Lab 09](prompts/criterios/backlog.md) reúne HU-01 y cinco historias nuevas derivadas del diseño. La [muestra exploratoria de ChatGPT web](prompts/criterios/muestra-chatgpt/) contiene H1, H2 y H3. Las cuatro versiones de criterios usan ERNIE 5.5 Flash Preview. Ante el límite anónimo de Kilo, se usó GPT-6 Luna en Duck.ai para las capturas pendientes y para el reto. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
+
 

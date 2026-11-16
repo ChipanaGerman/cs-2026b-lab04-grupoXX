@@ -1,0 +1,7 @@
+{
+  "modelo_solicitado": "baidu/ernie-5.5-flash-preview:free",
+  "modelo_reportado": "baidu/ernie-5.5-flash-preview:free",
+  "latencia_ms": 4945,
+  "costo_usd": 0,
+  "fin": "stop"
+}

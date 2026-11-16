@@ -1,0 +1,2 @@
+Sugiere un mensaje de commit para el diff de PicanteríaYa.
+{{entrada}}

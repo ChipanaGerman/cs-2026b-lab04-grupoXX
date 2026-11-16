@@ -1,0 +1,1 @@
+refactor(pedidos): extrae cálculo de total a función total_lineas

@@ -1,0 +1,43 @@
+## Criterios de aceptación – H3: Aviso de plato agotado al confirmar
+
+1. **Todos los platos disponibles**
+   - **Dado** que el cliente tiene un pedido con uno o más platos y todos están disponibles  
+   - **Cuando** confirma el pedido  
+   - **Entonces** el sistema valida correctamente la disponibilidad y habilita/muestra la opción de continuar al pago  
+   - **Y** no se muestra ningún mensaje de plato agotado.
+
+2. **Un plato agotado al confirmar**
+   - **Dado** que el cliente confirma un pedido que incluye al menos un plato agotado  
+   - **Cuando** el sistema valida la disponibilidad  
+   - **Entonces** muestra un mensaje claro con el nombre exacto del plato agotado  
+   - **Y** bloquea el paso al pago  
+   - **Y** no procesa el pago ni genera ningún cargo.
+
+3. **Varios platos agotados**
+   - **Dado** que el pedido incluye dos o más platos agotados  
+   - **Cuando** el cliente confirma el pedido  
+   - **Entonces** el sistema muestra el nombre de todos los platos agotados  
+   - **Y** no permite continuar al pago.
+
+4. **El pago no se procesa**
+   - **Dado** que existe al menos un plato agotado al confirmar  
+   - **Cuando** el cliente intenta avanzar al pago  
+   - **Entonces** el sistema no envía la transacción a la pasarela de pagos  
+   - **Y** no se realiza ningún cobro  
+   - **Y** el pedido no cambia a estado “pagado”.
+
+5. **Corrección del pedido**
+   - **Dado** que el cliente recibe el aviso de plato agotado  
+   - **Cuando** elimina o reemplaza el/los plato(s) agotado(s) y vuelve a confirmar  
+   - **Entonces** si todos los platos quedan disponibles, puede pasar al pago  
+   - **Y** si persiste algún plato agotado, se vuelve a mostrar su nombre y el pago permanece bloqueado.
+
+6. **Mensaje visible y trazable**
+   - **Dado** que un plato se agota al confirmar  
+   - **Entonces** el mensaje debe ser visible, comprensible y mostrar el nombre exacto del plato  
+   - **Y** el sistema debe registrar el intento de confirmación bloqueado para trazabilidad, sin cobrar.
+
+7. **Disponibilidad al momento de confirmar**
+   - **Dado** que un plato estaba disponible en el carrito pero se agota antes de confirmar  
+   - **Cuando** el cliente confirma el pedido  
+   - **Entonces** el sistema debe detectar el agotamiento, mostrar el nombre del plato y no procesar el pago.

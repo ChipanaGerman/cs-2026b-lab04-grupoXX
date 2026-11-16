@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "string",
+  "maxLength": 72,
+  "pattern": "^(feat|fix|docs|test|refactor|perf|chore|ci|build|style|revert)\\([a-z][a-z0-9-]*\\): [^\\s\\r\\n][^\\r\\n]*$(?![\\s\\S])"
+}

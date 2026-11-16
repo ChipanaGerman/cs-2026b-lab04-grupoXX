@@ -1,0 +1,29 @@
+## Mensaje sugerido
+
+```
+refactor(pedidos): extraer el cálculo del total a total_lineas
+
+Sustituye la suma inline de los precios de las líneas por la llamada
+a total_lineas(pedido.lineas), centralizando el cálculo del total
+del pedido.
+```
+
+## Alternativas
+
+**Más breve (una sola línea):**
+```
+refactor(pedidos): usar total_lineas en lugar de sumar precios inline
+```
+
+**Si el cambio viene acompañado de tests o de la nueva función:**
+```
+refactor(pedidos): centralizar el total del pedido en total_lineas
+
+- Se añade total_lineas() como función reutilizable.
+- El cálculo del total deja de estar duplicado en el flujo de pedidos.
+```
+
+## Notas
+
+- El diff solo muestra el cambio en el *call site*; si `total_lineas` se define en otro archivo o en el mismo commit, conviene mencionarlo en el cuerpo (como en la tercera opción) para que el historial sea autoexplicativo.
+- Si el proyecto usa *Conventional Commits* con *scope* distinto (p. ej. `pedido` en singular), ajusta el scope a la convención ya establecida en el repo.

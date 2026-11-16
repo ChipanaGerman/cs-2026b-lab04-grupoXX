@@ -1,0 +1,31 @@
+description: Reto Lab 09 · evaluación reproducible de dos modelos
+prompts:
+  - file://../criterios/v3.1.txt
+providers:
+  - id: file://../proveedor_grabado.py
+    label: ernie
+    config: { tarea: reto, version: ernie }
+  - id: file://../proveedor_grabado.py
+    label: luna
+    config: { tarea: reto, version: luna }
+tests: file://../casos_promptfoo.py:criterios
+defaultTest:
+  assert:
+    - type: python
+      metric: esquema
+      value: file://../criterios/aserciones.py:esquema
+    - type: python
+      metric: identidad
+      value: file://../criterios/aserciones.py:identidad
+    - type: python
+      metric: invest
+      value: file://../criterios/aserciones.py:invest
+    - type: python
+      metric: observable
+      value: file://../criterios/aserciones.py:observable
+    - type: python
+      metric: cobertura
+      value: file://../criterios/aserciones.py:cobertura
+    - type: python
+      metric: integridad
+      value: file://../criterios/aserciones.py:integridad
