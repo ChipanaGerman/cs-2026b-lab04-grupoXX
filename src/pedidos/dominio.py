@@ -134,6 +134,8 @@ class Pedido:
     fecha: datetime = field(default_factory=datetime.now)
     id: UUID = field(default_factory=uuid.uuid4)
 
+    costo_delivery: Decimal = Decimal("0.00")
+
     def agregar_linea(self, plato: Plato, cantidad: int) -> None:
         """Agrega una línea al pedido, verificando stock."""
         if not plato.hay_stock(cantidad):
@@ -147,7 +149,7 @@ class Pedido:
 
     def calcular_total(self) -> Decimal:
         """Calcula y almacena el total del pedido."""
-        self.total_calculado = sum(l.subtotal() for l in self.lineas)
+        self.total_calculado = sum((l.subtotal() for l in self.lineas), Decimal("0.00")) + self.costo_delivery
         return self.total_calculado
 
     def confirmar(self) -> None:

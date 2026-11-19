@@ -1,0 +1,12 @@
+{
+  "origen": "ModeloInteractivo",
+  "decisiones": [
+    "{\"pensamiento\":\"Leer el issue antes de modificar.\",\"accion\":\"leer_archivo\",\"args\":{\"ruta\":\"issues/ISSUE-01.md\"}}",
+    "{\"pensamiento\":\"Reproducir la pérdida del delivery y el tipo del total vacío.\",\"accion\":\"ejecutar_pruebas\",\"args\":{\"seleccion\":\"01\"}}",
+    "{\"pensamiento\":\"Inspeccionar modelo y campos para un cambio compatible.\",\"accion\":\"leer_archivo\",\"args\":{\"ruta\":\"src/pedidos/dominio.py\"}}",
+    "{\"pensamiento\":\"Agregar delivery al final del dataclass para conservar argumentos posicionales.\",\"accion\":\"editar_archivo\",\"args\":{\"ruta\":\"src/pedidos/dominio.py\",\"antes\":\"    def agregar_linea(self, plato: Plato, cantidad: int) -> None:\",\"despues\":\"    costo_delivery: Decimal = Decimal(\\\"0.00\\\")\\n\\n    def agregar_linea(self, plato: Plato, cantidad: int) -> None:\"}}",
+    "{\"pensamiento\":\"Sumar con Decimal y agregar delivery una vez desde las líneas originales.\",\"accion\":\"editar_archivo\",\"args\":{\"ruta\":\"src/pedidos/dominio.py\",\"antes\":\"        self.total_calculado = sum(l.subtotal() for l in self.lineas)\",\"despues\":\"        self.total_calculado = sum((l.subtotal() for l in self.lineas), Decimal(\\\"0.00\\\")) + self.costo_delivery\"}}",
+    "{\"pensamiento\":\"Verificar los dos casos de delivery con ejecución real.\",\"accion\":\"ejecutar_pruebas\",\"args\":{\"seleccion\":\"01\"}}",
+    "{\"pensamiento\":\"Pruebas del issue pasan; documentar alcance y aprobación pendiente.\",\"final\":\"ISSUE-01 resuelto en sandbox: 2 pruebas pasan. Delivery Decimal sin acumulación. Otros issues aún pendientes. Aprobaciones de consola introducidas por Codex bajo autorización de sesión, no por un integrante humano; requiere demostración humana y revisión del PR.\"}"
+  ]
+}
