@@ -1,0 +1,176 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.3, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\Users\User\German_UNSA\TERCER_ANIO\B\CONSTRUCCION_SOFTWARE\Labs\Lab4\cs-2026b-lab04-grupoXX
+configfile: pytest.ini
+collected 11 items
+
+tests\test_issue_01.py FF                                                [ 18%]
+tests\test_issue_02.py FFFFFF.                                           [ 81%]
+tests\test_issue_03.py FF                                                [100%]
+
+================================== FAILURES ===================================
+________________ test_issue_01_total_incluye_delivery_una_vez _________________
+
+    def test_issue_01_total_incluye_delivery_una_vez():
+        pedido = pedido_base()
+        pedido.costo_delivery = Decimal('5.50')
+        pedido.agregar_linea(Plato('Rocoto', '', Decimal('20.00'), 10), 2)
+>       assert pedido.calcular_total() == Decimal('45.50')
+E       AssertionError: assert Decimal('40.00') == Decimal('45.50')
+E        +  where Decimal('40.00') = calcular_total()
+E        +    where calcular_total = Pedido(cliente=Cliente(nombre='Cliente ficticio', telefono='000000000', distrito='Cayma', id=UUID('0c535dcc-604f-4711-...al('40.00'), fecha=datetime.datetime(2026, 11, 19, 7, 36, 21, 892470), id=UUID('e71252b7-b2bd-471c-99a6-38f107a4e9df')).calcular_total
+E        +  and   Decimal('45.50') = Decimal('45.50')
+
+tests\test_issue_01.py:14: AssertionError
+_________________ test_issue_01_pedido_vacio_conserva_decimal _________________
+
+    def test_issue_01_pedido_vacio_conserva_decimal():
+>       assert isinstance(pedido_base().calcular_total(), Decimal)
+E       AssertionError: assert False
+E        +  where False = isinstance(0, Decimal)
+E        +    where 0 = calcular_total()
+E        +      where calcular_total = Pedido(cliente=Cliente(nombre='Cliente ficticio', telefono='000000000', distrito='Cayma', id=UUID('0c1181a3-7d2e-4440-...calculado=0, fecha=datetime.datetime(2026, 11, 19, 7, 36, 21, 972294), id=UUID('55285408-a4d1-4e36-8fcb-0a26e179f715')).calcular_total
+E        +        where Pedido(cliente=Cliente(nombre='Cliente ficticio', telefono='000000000', distrito='Cayma', id=UUID('0c1181a3-7d2e-4440-...calculado=0, fecha=datetime.datetime(2026, 11, 19, 7, 36, 21, 972294), id=UUID('55285408-a4d1-4e36-8fcb-0a26e179f715')) = pedido_base()
+
+tests\test_issue_01.py:19: AssertionError
+____________ test_issue_02_rechaza_cantidad_invalida_sin_mutar[0] _____________
+
+cantidad = 0
+
+    @pytest.mark.parametrize('cantidad', [0, -1, True, 1.5, '2', None])
+    def test_issue_02_rechaza_cantidad_invalida_sin_mutar(cantidad):
+        pedido = pedido_base()
+        plato = Plato('Adobo', '', Decimal('18.00'), 8)
+>       with pytest.raises(ValueError, match='entero positivo'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_issue_02.py:11: Failed
+____________ test_issue_02_rechaza_cantidad_invalida_sin_mutar[-1] ____________
+
+cantidad = -1
+
+    @pytest.mark.parametrize('cantidad', [0, -1, True, 1.5, '2', None])
+    def test_issue_02_rechaza_cantidad_invalida_sin_mutar(cantidad):
+        pedido = pedido_base()
+        plato = Plato('Adobo', '', Decimal('18.00'), 8)
+>       with pytest.raises(ValueError, match='entero positivo'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_issue_02.py:11: Failed
+___________ test_issue_02_rechaza_cantidad_invalida_sin_mutar[True] ___________
+
+cantidad = True
+
+    @pytest.mark.parametrize('cantidad', [0, -1, True, 1.5, '2', None])
+    def test_issue_02_rechaza_cantidad_invalida_sin_mutar(cantidad):
+        pedido = pedido_base()
+        plato = Plato('Adobo', '', Decimal('18.00'), 8)
+>       with pytest.raises(ValueError, match='entero positivo'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_issue_02.py:11: Failed
+___________ test_issue_02_rechaza_cantidad_invalida_sin_mutar[1.5] ____________
+
+cantidad = 1.5
+
+    @pytest.mark.parametrize('cantidad', [0, -1, True, 1.5, '2', None])
+    def test_issue_02_rechaza_cantidad_invalida_sin_mutar(cantidad):
+        pedido = pedido_base()
+        plato = Plato('Adobo', '', Decimal('18.00'), 8)
+>       with pytest.raises(ValueError, match='entero positivo'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_issue_02.py:11: Failed
+____________ test_issue_02_rechaza_cantidad_invalida_sin_mutar[2] _____________
+
+cantidad = '2'
+
+    @pytest.mark.parametrize('cantidad', [0, -1, True, 1.5, '2', None])
+    def test_issue_02_rechaza_cantidad_invalida_sin_mutar(cantidad):
+        pedido = pedido_base()
+        plato = Plato('Adobo', '', Decimal('18.00'), 8)
+        with pytest.raises(ValueError, match='entero positivo'):
+>           pedido.agregar_linea(plato, cantidad)
+
+tests\test_issue_02.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\pedidos\dominio.py:139: in agregar_linea
+    if not plato.hay_stock(cantidad):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Plato(nombre='Adobo', descripcion='', precio_unitario=Decimal('18.00'), stock_disponible=8, id=UUID('98b67549-8588-4a64-869f-a0a654f1d35c'))
+cantidad = '2'
+
+    def hay_stock(self, cantidad: int) -> bool:
+>       return self.stock_disponible >= cantidad
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'int' and 'str'
+
+src\pedidos\dominio.py:78: TypeError
+___________ test_issue_02_rechaza_cantidad_invalida_sin_mutar[None] ___________
+
+cantidad = None
+
+    @pytest.mark.parametrize('cantidad', [0, -1, True, 1.5, '2', None])
+    def test_issue_02_rechaza_cantidad_invalida_sin_mutar(cantidad):
+        pedido = pedido_base()
+        plato = Plato('Adobo', '', Decimal('18.00'), 8)
+        with pytest.raises(ValueError, match='entero positivo'):
+>           pedido.agregar_linea(plato, cantidad)
+
+tests\test_issue_02.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\pedidos\dominio.py:139: in agregar_linea
+    if not plato.hay_stock(cantidad):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Plato(nombre='Adobo', descripcion='', precio_unitario=Decimal('18.00'), stock_disponible=8, id=UUID('d4c64c47-90f3-4142-a276-643b805f7ef6'))
+cantidad = None
+
+    def hay_stock(self, cantidad: int) -> bool:
+>       return self.stock_disponible >= cantidad
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: '>=' not supported between instances of 'int' and 'NoneType'
+
+src\pedidos\dominio.py:78: TypeError
+____________________ test_issue_03_ocupado_no_muta_pedido _____________________
+
+    def test_issue_03_ocupado_no_muta_pedido():
+        pedido = pedido_base()
+        repartidor = Repartidor('Repartidor ficticio', '000000000', -16.4, -71.5, False)
+>       with pytest.raises(ValueError, match='ocupado'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_issue_03.py:9: Failed
+________ test_issue_03_disponible_se_ocupa_y_no_admite_segundo_pedido _________
+
+    def test_issue_03_disponible_se_ocupa_y_no_admite_segundo_pedido():
+        primero, segundo = pedido_base(), pedido_base()
+        repartidor = Repartidor('Repartidor ficticio', '000000000', -16.4, -71.5)
+        repartidor.asignar_pedido(primero)
+        assert primero.estado is EstadoPedido.PREPARANDO
+        assert repartidor.disponible is False
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_issue_03.py:21: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_issue_01.py::test_issue_01_total_incluye_delivery_una_vez
+FAILED tests/test_issue_01.py::test_issue_01_pedido_vacio_conserva_decimal - ...
+FAILED tests/test_issue_02.py::test_issue_02_rechaza_cantidad_invalida_sin_mutar[0]
+FAILED tests/test_issue_02.py::test_issue_02_rechaza_cantidad_invalida_sin_mutar[-1]
+FAILED tests/test_issue_02.py::test_issue_02_rechaza_cantidad_invalida_sin_mutar[True]
+FAILED tests/test_issue_02.py::test_issue_02_rechaza_cantidad_invalida_sin_mutar[1.5]
+FAILED tests/test_issue_02.py::test_issue_02_rechaza_cantidad_invalida_sin_mutar[2]
+FAILED tests/test_issue_02.py::test_issue_02_rechaza_cantidad_invalida_sin_mutar[None]
+FAILED tests/test_issue_03.py::test_issue_03_ocupado_no_muta_pedido - Failed:...
+FAILED tests/test_issue_03.py::test_issue_03_disponible_se_ocupa_y_no_admite_segundo_pedido
+======================== 10 failed, 1 passed in 0.23s =========================
