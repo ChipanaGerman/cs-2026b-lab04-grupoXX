@@ -1,0 +1,11 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.3, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\Users\User\German_UNSA\TERCER_ANIO\B\CONSTRUCCION_SOFTWARE\Labs\Lab4\cs-2026b-lab04-grupoXX\agentes\reto\sandbox_codex
+configfile: pytest.ini
+collected 52 items
+
+tests\test_issue_03.py ..                                                [  3%]
+tests\test_comportamiento.py ............                                [ 26%]
+tests\test_patrones.py ......................................            [100%]
+
+============================= 52 passed in 0.20s ==============================

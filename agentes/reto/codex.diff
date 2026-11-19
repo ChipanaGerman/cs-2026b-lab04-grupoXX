@@ -1,0 +1,14 @@
+--- a/src/pedidos/dominio.py
++++ b/src/pedidos/dominio.py
+@@ -197,8 +197,10 @@
+ 
+     def asignar_pedido(self, pedido: Pedido) -> None:
+         """Asigna este repartidor al pedido y lo marca como no disponible."""
++        if not self.disponible:
++            raise ValueError("Repartidor ocupado")
++        pedido.marcar_preparando()
+         self.disponible = False
+-        pedido.marcar_preparando()
+ 
+ 
+ # ─────────────────────────────────────────────────────────────────────────────
