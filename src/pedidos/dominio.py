@@ -138,6 +138,8 @@ class Pedido:
 
     def agregar_linea(self, plato: Plato, cantidad: int) -> None:
         """Agrega una línea al pedido, verificando stock."""
+        if type(cantidad) is not int or cantidad <= 0:
+            raise ValueError("La cantidad debe ser un entero positivo")
         if not plato.hay_stock(cantidad):
             raise ValueError(f"Stock insuficiente para '{plato.nombre}'")
         linea = LineaPedido(
@@ -199,8 +201,10 @@ class Repartidor:
 
     def asignar_pedido(self, pedido: Pedido) -> None:
         """Asigna este repartidor al pedido y lo marca como no disponible."""
-        self.disponible = False
+        if not self.disponible:
+            raise ValueError("Repartidor ocupado")
         pedido.marcar_preparando()
+        self.disponible = False
 
 
 # ─────────────────────────────────────────────────────────────────────────────

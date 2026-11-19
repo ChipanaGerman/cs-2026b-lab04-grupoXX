@@ -1,0 +1,49 @@
+name: Sistemas agenticos Lab 10
+on:
+  pull_request:
+    paths:
+      - 'agentes/**'
+      - 'src/pedidos/dominio.py'
+      - 'tests/test_issue_*.py'
+      - '.github/workflows/agentes.yml'
+  push:
+    branches: ['codex/lab10-sistemas-agenticos']
+permissions:
+  contents: read
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests agentes/pruebas_agente
+      - run: python -m agentes.experimentos
+      - run: python -m agentes.orquestador --replay-aprobado
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trazas-lab10
+          path: |
+            agentes/trazas/*.jsonl
+            agentes/trazas/*.mmd
+            agentes/trayectorias/*.json
+  etiqueta-entrega:
+    needs: pruebas
+    if: github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Reto B:')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Etiquetar el commit final verificado
+        run: |
+          if git rev-parse --verify refs/tags/v1.0-agentes >/dev/null 2>&1; then
+            test "$(git rev-list -n 1 v1.0-agentes)" = "$GITHUB_SHA"
+          else
+            git tag v1.0-agentes "$GITHUB_SHA"
+            git push origin refs/tags/v1.0-agentes
+          fi

@@ -36,6 +36,9 @@ def comparar(aprobador=aprobar_consola):
         raiz = Path(t)
         preparar(raiz)
         resultado, agente = ejecutar('issue02-unico', raiz, secuencia_unico(), aprobador=aprobador)
+        pruebas = [e for e in agente.eventos if e['estado'] == 'OBSERVANDO' and e.get('accion') == 'ejecutar_pruebas']
+        if not pruebas or not pruebas[-1]['observacion'].startswith('EXIT=0\n'):
+            resultado = 'NO RESUELTO: aprobación rechazada o prueba fallida; requiere intervención humana'
         resultados['unico'] = resultado
         unico_final = (raiz/RUTA).read_text(encoding='utf-8')
     with tempfile.TemporaryDirectory(prefix='picanteria-multi-') as t:
@@ -68,7 +71,8 @@ def comparar(aprobador=aprobar_consola):
             if ronda == 2:
                 resultados['actor_critico'] = 'NO APROBADO: requiere intervención humana'
         multi_final = (raiz/RUTA).read_text(encoding='utf-8')
-        assert multi_final == unico_final, 'Los experimentos deben llegar al mismo parche'
+        if resultados['actor_critico'].startswith('APROBADO:') and not resultado.startswith('NO RESUELTO'):
+            assert multi_final == unico_final, 'Los experimentos aprobados deben llegar al mismo parche'
         (ROOT/'agentes/evidencia/issue02-final-dominio.py.txt').write_text(multi_final, encoding='utf-8')
     return resultados
 

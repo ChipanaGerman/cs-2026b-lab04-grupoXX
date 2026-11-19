@@ -40,7 +40,7 @@ def diagramas():
                     lineas += ['Control -> Herramientas : '+e['accion'], 'Herramientas --> Control : resultado registrado']
         p.with_suffix('.puml').write_text('\n'.join(lineas+['@enduml'])+'\n', encoding='utf-8')
     archivos = [str(p) for p in (ROOT/'agentes/trazas').glob('*.puml')]+[str(ROOT/'agentes/diseno/estados.puml')]
-    subprocess.run(['java', '-jar', str(ROOT/'plantuml.jar'), '-tpng', *archivos], check=True, timeout=60)
+    subprocess.run(['java', '-jar', str(ROOT/'plantuml.jar'), '-charset', 'UTF-8', '-tpng', *archivos], check=True, timeout=60)
 
 
 def main():

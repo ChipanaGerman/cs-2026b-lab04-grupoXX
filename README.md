@@ -434,3 +434,30 @@ Repetir la captura para cada versión y caso usando una conversación nueva. Cop
 El [backlog del Lab 09](prompts/criterios/backlog.md) reúne HU-01 y cinco historias nuevas derivadas del diseño. La [muestra exploratoria de ChatGPT web](prompts/criterios/muestra-chatgpt/) contiene H1, H2 y H3. Las cuatro versiones de criterios usan ERNIE 5.5 Flash Preview. Ante el límite anónimo de Kilo, se usó GPT-6 Luna en Duck.ai para las capturas pendientes y para el reto. El repositorio incluye el [cuestionario y la lista de entrega](prompts/entrega.md), la [bitácora](prompts/bitacora-ia.md), las [pruebas defensivas](prompts/seguridad/red-team.md) y el [reto de comparación](prompts/reto/README.md).
 
 
+
+
+## Sistemas agénticos (Lab 10)
+
+Tres issues reales de PicanteríaYa: delivery omitido, cantidad inválida y repartidor ocupado.
+Implementación y evidencias: [guía de ejecución](agentes/README.md), [observación](agentes/observacion.md), [cuestionario](agentes/cuestionario.md), [ADR-010](docs/architecture/adr/010-sistema-agentico.md), [reto B con Codex](agentes/reto/README.md).
+
+### Máquina de estados
+
+![Control ReAct](agentes/diseno/estados.png)
+
+### Trayectoria generada desde JSONL
+
+![Issue 1](agentes/trazas/issue01-interactivo.png)
+
+| Ejecución | Pasos | Rondas | Acciones | Contratos rechazados | Bloqueadas | Contexto final (car.) |
+|---|---:|---:|---:|---:|---:|---:|
+| issue01-interactivo | 7 | 1 | 6 | 0 | 0 | 16785 |
+| issue02-actor-r1 | 3 | 1 | 2 | 0 | 0 | 12742 |
+| issue02-actor-r2 | 3 | 2 | 2 | 0 | 0 | 2913 |
+| issue02-critico-r1 | 4 | 1 | 3 | 0 | 1 | 4095 |
+| issue02-critico-r2 | 3 | 2 | 2 | 0 | 0 | 3173 |
+| issue02-planificador | 2 | 1 | 1 | 0 | 0 | 2354 |
+| issue02-unico | 8 | 1 | 7 | 0 | 0 | 19511 |
+| issue03-notas | 9 | 1 | 8 | 0 | 0 | 14135 |
+
+Pruebas: python -m pytest -q tests agentes/pruebas_agente. Las aprobaciones automatizadas no sustituyen al integrante humano. Ver [delegación](agentes/delegacion.md) y [lista de entrega](agentes/entrega.md).
