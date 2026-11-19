@@ -1,0 +1,21 @@
+{
+  "origen": "Decisiones preparadas por Codex para experimento reproducible",
+  "decisiones": [
+    {
+      "pensamiento": "Ejecutar ver_cambios y observar antes de continuar.",
+      "accion": "ver_cambios",
+      "args": {}
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "02"
+      }
+    },
+    {
+      "pensamiento": "Concluir según evidencia observada.",
+      "final": "APROBADO: siete casos pasan; no se tocaron tests. Pendiente aprobación humana del PR."
+    }
+  ]
+}

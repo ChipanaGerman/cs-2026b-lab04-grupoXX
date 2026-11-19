@@ -1,0 +1,30 @@
+{
+  "origen": "Decisiones preparadas por Codex para experimento reproducible",
+  "decisiones": [
+    {
+      "pensamiento": "Ejecutar editar_archivo y observar antes de continuar.",
+      "accion": "editar_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py",
+        "antes": "return 0",
+        "despues": "return 1"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar ver_cambios y observar antes de continuar.",
+      "accion": "ver_cambios",
+      "args": {}
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "02"
+      }
+    },
+    {
+      "pensamiento": "Concluir según evidencia observada.",
+      "final": "CAMBIOS SOLICITADOS: bool es subtipo de int. True sigue aceptado; corregir a type(cantidad) is int."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{"agente": "planificador", "estado": "INICIO", "paso": 0, "objetivo": "Experimento issue02-planificador. Resolver únicamente el issue indicado; no modificar pruebas."}
+{"agente": "planificador", "estado": "DECIDIENDO", "paso": 1}
+{"agente": "planificador", "estado": "VALIDANDO_CONTRATO", "paso": 1}
+{"agente": "planificador", "estado": "EVALUANDO_POLITICA", "paso": 1}
+{"agente": "planificador", "estado": "EJECUTANDO", "paso": 1, "accion": "leer_archivo"}
+{"agente": "planificador", "estado": "OBSERVANDO", "paso": 1, "accion": "leer_archivo", "args": {"ruta": "issues/ISSUE-02.md"}, "observacion": "# ISSUE-02: Acepta cantidades inválidas\n\n**Observado:** Cantidad 0 agrega una línea; negativos y bool también pasan.\n\n**Esperado:** Rechazar no enteros o valores menores que 1 antes de mutar.\n\n**Reproducción:** python -m pytest -q tests/test_issue_02.py\n\nDatos ficticios. Error existente en src/pedidos/dominio.py. Ver agentes/evidencia/E1-rojo.txt.\n", "aprobacion": "no aplica"}
+{"agente": "planificador", "estado": "DECIDIENDO", "paso": 2}
+{"agente": "planificador", "estado": "VALIDANDO_CONTRATO", "paso": 2}
+{"agente": "planificador", "estado": "FINALIZADO", "paso": 2, "texto": "PLAN: reproducir; validar entero positivo antes del stock; revisar bool, tipo y mutación; verificar pytest; humano aprueba PR."}
+{"agente": "planificador", "estado": "METRICAS", "paso": 0, "contexto_final": 2354, "duracion_ms": 1.3}

@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant M as Modelo
+    participant C as Control
+    participant H as Herramientas
+    M->>C: 1: OBSERVANDO ver_cambios
+    C->>H: ver_cambios
+    H-->>C: Observación registrada
+    M->>C: 2: OBSERVANDO ejecutar_pruebas
+    C->>H: ejecutar_pruebas
+    H-->>C: Observación registrada
+    M->>C: 3: FINALIZADO 

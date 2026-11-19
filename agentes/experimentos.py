@@ -37,7 +37,9 @@ def ejecutar(nombre, raiz, decisiones, rol='ejecutor', aprobador=aprobar_consola
     trayectoria = ROOT/f'agentes/trayectorias/{nombre}.json'
     trayectoria.parent.mkdir(parents=True, exist_ok=True)
     trayectoria.write_text(json.dumps({'origen': 'Decisiones preparadas por Codex para experimento reproducible', 'decisiones': decisiones}, ensure_ascii=False, indent=2), encoding='utf-8')
-    agente = Agente(rol, ModeloGrabado(decisiones), Herramientas(raiz), Politica(rol, max_pasos, aprobador), f'Experimento {nombre}. Resolver únicamente el issue indicado; no modificar pruebas.', ROOT/f'agentes/trazas/{nombre}.jsonl')
+    herramientas = Herramientas(raiz)
+    herramientas.original = (ROOT/'agentes/fixtures/dominio_base.py.txt').read_text(encoding='utf-8')
+    agente = Agente(rol, ModeloGrabado(decisiones), herramientas, Politica(rol, max_pasos, aprobador), f'Experimento {nombre}. Resolver únicamente el issue indicado; no modificar pruebas.', ROOT/f'agentes/trazas/{nombre}.jsonl')
     resultado = agente.ejecutar()
     generar(agente.traza)
     (ROOT/f'agentes/evidencia/{nombre}.diff').write_text(agente.h.ver_cambios(), encoding='utf-8')
