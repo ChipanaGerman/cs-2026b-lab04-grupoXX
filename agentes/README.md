@@ -5,7 +5,7 @@
 Desde la raíz del repositorio, Python 3.10 o posterior:
 
 ```bash
-python -m pip install pytest
+python -m pip install -r prompts/requirements.txt pytest
 python -m pytest -q tests agentes/pruebas_agente
 python -m agentes.experimentos
 python -m agentes.orquestador --replay-aprobado
