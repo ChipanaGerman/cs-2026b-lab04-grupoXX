@@ -28,6 +28,9 @@ class Herramientas:
             'editar_archivo': {'descripcion': 'Sustituye un fragmento único en dominio.py tras aprobación; devuelve OK o error.', 'parametros': ['ruta', 'antes', 'despues']},
             'ejecutar_pruebas': {'descripcion': 'Ejecuta archivo test_issue_01/02/03.py o todos los tests; devuelve código y salida real.', 'parametros': ['seleccion']},
             'ver_cambios': {'descripcion': 'Diff unificado respecto al dominio al inicio de la tarea.', 'parametros': []},
+            'mapa_repo': {'descripcion': 'Devuelve rutas, líneas y firmas AST de src sin ejecutar código.', 'parametros': []},
+            'anotar': {'descripcion': 'Añade texto no vacío (máximo 2000 caracteres) a notas.md de la tarea.', 'parametros': ['texto']},
+            'leer_notas': {'descripcion': 'Lee notas.md de esta tarea, máximo 8000 caracteres.', 'parametros': []},
         }
 
     def listar_archivos(self):
@@ -59,3 +62,31 @@ class Herramientas:
     def ver_cambios(self):
         actual = self._ruta('src/pedidos/dominio.py').read_text(encoding='utf-8')
         return ''.join(difflib.unified_diff(self.original.splitlines(True), actual.splitlines(True), fromfile='a/src/pedidos/dominio.py', tofile='b/src/pedidos/dominio.py'))
+
+    def mapa_repo(self):
+        """E4: firmas AST de src; no importa ni ejecuta los módulos inspeccionados."""
+        filas = []
+        for p in sorted((self.raiz/'src').rglob('*.py')):
+            arbol = ast.parse(p.read_text(encoding='utf-8'))
+            for nodo in ast.walk(arbol):
+                if isinstance(nodo, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                    filas.append(f'{p.relative_to(self.raiz).as_posix()}:{nodo.lineno} {nodo.name}({ast.unparse(nodo.args)})')
+        return '\n'.join(filas)
+
+    def anotar(self, texto):
+        """Memoria de notas por sandbox, acotada a 8000 caracteres."""
+        if not texto.strip() or len(texto) > 2000:
+            raise ValueError('Nota no vacía de hasta 2000 caracteres')
+        p = self._ruta('notas.md')
+        previo = p.read_text(encoding='utf-8') if p.exists() else '# Notas de la tarea\n'
+        nuevo = previo+'- '+texto+'\n'
+        if len(nuevo) > 8000:
+            raise ValueError('Presupuesto de notas agotado')
+        p.write_text(nuevo, encoding='utf-8')
+        return 'OK: nota guardada'
+
+    def leer_notas(self):
+        p = self._ruta('notas.md')
+        return p.read_text(encoding='utf-8') if p.exists() else '(sin notas)'
+
+
