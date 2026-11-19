@@ -1,0 +1,11 @@
+--- a/src/pedidos/dominio.py
++++ b/src/pedidos/dominio.py
+@@ -136,6 +136,8 @@
+ 
+     def agregar_linea(self, plato: Plato, cantidad: int) -> None:
+         """Agrega una línea al pedido, verificando stock."""
++        if type(cantidad) is not int or cantidad <= 0:
++            raise ValueError("La cantidad debe ser un entero positivo")
+         if not plato.hay_stock(cantidad):
+             raise ValueError(f"Stock insuficiente para '{plato.nombre}'")
+         linea = LineaPedido(

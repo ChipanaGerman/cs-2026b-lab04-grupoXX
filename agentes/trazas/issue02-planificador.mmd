@@ -1,0 +1,8 @@
+sequenceDiagram
+    participant M as Modelo
+    participant C as Control
+    participant H as Herramientas
+    M->>C: 1: OBSERVANDO leer_archivo
+    C->>H: leer_archivo
+    H-->>C: Observación registrada
+    M->>C: 2: FINALIZADO 

@@ -1,0 +1,62 @@
+{
+  "origen": "Decisiones preparadas por Codex para experimento reproducible",
+  "decisiones": [
+    {
+      "pensamiento": "Ejecutar leer_archivo y observar antes de continuar.",
+      "accion": "leer_archivo",
+      "args": {
+        "ruta": "issues/ISSUE-02.md"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "02"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar leer_archivo y observar antes de continuar.",
+      "accion": "leer_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar editar_archivo y observar antes de continuar.",
+      "accion": "editar_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py",
+        "antes": "        if not plato.hay_stock(cantidad):\n            raise ValueError(f\"Stock insuficiente para '{plato.nombre}'\")\n        linea = LineaPedido(",
+        "despues": "        if not isinstance(cantidad, int) or cantidad <= 0:\n            raise ValueError(\"La cantidad debe ser un entero positivo\")\n        if not plato.hay_stock(cantidad):\n            raise ValueError(f\"Stock insuficiente para '{plato.nombre}'\")\n        linea = LineaPedido("
+      }
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "02"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar editar_archivo y observar antes de continuar.",
+      "accion": "editar_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py",
+        "antes": "not isinstance(cantidad, int)",
+        "despues": "type(cantidad) is not int"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "02"
+      }
+    },
+    {
+      "pensamiento": "Concluir según evidencia observada.",
+      "final": "ISSUE-02 resuelto: bool hereda de int; usar type exacto. Siete casos verdes."
+    }
+  ]
+}

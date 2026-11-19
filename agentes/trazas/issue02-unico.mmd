@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant M as Modelo
+    participant C as Control
+    participant H as Herramientas
+    M->>C: 1: OBSERVANDO leer_archivo
+    C->>H: leer_archivo
+    H-->>C: Observación registrada
+    M->>C: 2: OBSERVANDO ejecutar_pruebas
+    C->>H: ejecutar_pruebas
+    H-->>C: Observación registrada
+    M->>C: 3: OBSERVANDO leer_archivo
+    C->>H: leer_archivo
+    H-->>C: Observación registrada
+    M->>C: 4: OBSERVANDO editar_archivo
+    C->>H: editar_archivo
+    H-->>C: Observación registrada
+    M->>C: 5: OBSERVANDO ejecutar_pruebas
+    C->>H: ejecutar_pruebas
+    H-->>C: Observación registrada
+    M->>C: 6: OBSERVANDO editar_archivo
+    C->>H: editar_archivo
+    H-->>C: Observación registrada
+    M->>C: 7: OBSERVANDO ejecutar_pruebas
+    C->>H: ejecutar_pruebas
+    H-->>C: Observación registrada
+    M->>C: 8: FINALIZADO 

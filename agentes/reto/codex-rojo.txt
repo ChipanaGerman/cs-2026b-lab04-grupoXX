@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.3, pytest-9.1.1, pluggy-1.7.0
+rootdir: C:\Users\User\German_UNSA\TERCER_ANIO\B\CONSTRUCCION_SOFTWARE\Labs\Lab4\cs-2026b-lab04-grupoXX\agentes\reto\sandbox_codex
+configfile: pytest.ini
+collected 2 items
+
+tests\test_issue_03.py FF                                                [100%]
+
+================================== FAILURES ===================================
+____________________ test_issue_03_ocupado_no_muta_pedido _____________________
+tests\test_issue_03.py:9: in test_issue_03_ocupado_no_muta_pedido
+    with pytest.raises(ValueError, match='ocupado'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+________ test_issue_03_disponible_se_ocupa_y_no_admite_segundo_pedido _________
+tests\test_issue_03.py:21: in test_issue_03_disponible_se_ocupa_y_no_admite_segundo_pedido
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_issue_03.py::test_issue_03_ocupado_no_muta_pedido - Failed:...
+FAILED tests/test_issue_03.py::test_issue_03_disponible_se_ocupa_y_no_admite_segundo_pedido
+============================== 2 failed in 0.22s ==============================

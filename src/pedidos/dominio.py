@@ -134,8 +134,12 @@ class Pedido:
     fecha: datetime = field(default_factory=datetime.now)
     id: UUID = field(default_factory=uuid.uuid4)
 
+    costo_delivery: Decimal = Decimal("0.00")
+
     def agregar_linea(self, plato: Plato, cantidad: int) -> None:
         """Agrega una línea al pedido, verificando stock."""
+        if type(cantidad) is not int or cantidad <= 0:
+            raise ValueError("La cantidad debe ser un entero positivo")
         if not plato.hay_stock(cantidad):
             raise ValueError(f"Stock insuficiente para '{plato.nombre}'")
         linea = LineaPedido(
@@ -147,7 +151,7 @@ class Pedido:
 
     def calcular_total(self) -> Decimal:
         """Calcula y almacena el total del pedido."""
-        self.total_calculado = sum(l.subtotal() for l in self.lineas)
+        self.total_calculado = sum((l.subtotal() for l in self.lineas), Decimal("0.00")) + self.costo_delivery
         return self.total_calculado
 
     def confirmar(self) -> None:
@@ -197,8 +201,10 @@ class Repartidor:
 
     def asignar_pedido(self, pedido: Pedido) -> None:
         """Asigna este repartidor al pedido y lo marca como no disponible."""
-        self.disponible = False
+        if not self.disponible:
+            raise ValueError("Repartidor ocupado")
         pedido.marcar_preparando()
+        self.disponible = False
 
 
 # ─────────────────────────────────────────────────────────────────────────────

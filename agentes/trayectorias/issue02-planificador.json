@@ -1,0 +1,16 @@
+{
+  "origen": "Decisiones preparadas por Codex para experimento reproducible",
+  "decisiones": [
+    {
+      "pensamiento": "Ejecutar leer_archivo y observar antes de continuar.",
+      "accion": "leer_archivo",
+      "args": {
+        "ruta": "issues/ISSUE-02.md"
+      }
+    },
+    {
+      "pensamiento": "Concluir según evidencia observada.",
+      "final": "PLAN: reproducir; validar entero positivo antes del stock; revisar bool, tipo y mutación; verificar pytest; humano aprueba PR."
+    }
+  ]
+}

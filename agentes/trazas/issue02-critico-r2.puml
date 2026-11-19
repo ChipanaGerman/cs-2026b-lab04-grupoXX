@@ -1,0 +1,13 @@
+@startuml
+title issue02-critico-r2
+participant Modelo
+participant Control
+participant Herramientas
+Modelo -> Control : 1: OBSERVANDO ver_cambios
+Control -> Herramientas : ver_cambios
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 2: OBSERVANDO ejecutar_pruebas
+Control -> Herramientas : ejecutar_pruebas
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 3: FINALIZADO 
+@enduml
