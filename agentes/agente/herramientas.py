@@ -40,7 +40,7 @@ class Herramientas:
         return self._ruta(ruta).read_text(encoding='utf-8')[:24000]
 
     def buscar(self, texto):
-        return '\n'.join(f'{p.relative_to(self.raiz).as_posix()}:{n}: {line}' for p in sorted((self.raiz/'src').rglob('*.py')) for n, line in enumerate(p.read_text(encoding='utf-8').splitlines(), 1) if texto in line)
+        return '\n'.join(f'{p.relative_to(self.raiz).as_posix()}:{n}: {line}' for p in sorted((self.raiz/'src').rglob('*.py')) for n, line in enumerate(self._ruta(p.relative_to(self.raiz)).read_text(encoding='utf-8').splitlines(), 1) if texto in line)
 
     def editar_archivo(self, ruta, antes, despues):
         p = self._ruta(ruta)
@@ -67,7 +67,7 @@ class Herramientas:
         """E4: firmas AST de src; no importa ni ejecuta los módulos inspeccionados."""
         filas = []
         for p in sorted((self.raiz/'src').rglob('*.py')):
-            arbol = ast.parse(p.read_text(encoding='utf-8'))
+            arbol = ast.parse(self._ruta(p.relative_to(self.raiz)).read_text(encoding='utf-8'))
             for nodo in ast.walk(arbol):
                 if isinstance(nodo, (ast.FunctionDef, ast.AsyncFunctionDef)):
                     filas.append(f'{p.relative_to(self.raiz).as_posix()}:{nodo.lineno} {nodo.name}({ast.unparse(nodo.args)})')

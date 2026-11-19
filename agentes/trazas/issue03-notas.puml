@@ -1,0 +1,31 @@
+@startuml
+title issue03-notas
+participant Modelo
+participant Control
+participant Herramientas
+Modelo -> Control : 1: OBSERVANDO leer_archivo
+Control -> Herramientas : leer_archivo
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 2: OBSERVANDO mapa_repo
+Control -> Herramientas : mapa_repo
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 3: OBSERVANDO buscar
+Control -> Herramientas : buscar
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 4: OBSERVANDO anotar
+Control -> Herramientas : anotar
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 5: OBSERVANDO leer_notas
+Control -> Herramientas : leer_notas
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 6: OBSERVANDO ejecutar_pruebas
+Control -> Herramientas : ejecutar_pruebas
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 7: OBSERVANDO editar_archivo
+Control -> Herramientas : editar_archivo
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 8: OBSERVANDO ejecutar_pruebas
+Control -> Herramientas : ejecutar_pruebas
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 9: FINALIZADO 
+@enduml

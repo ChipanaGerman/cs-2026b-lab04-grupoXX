@@ -1,0 +1,97 @@
+{
+  "issue01-interactivo": {
+    "pasos": 7,
+    "acciones": 6,
+    "bloqueadas": 0,
+    "invalidas": 0,
+    "herramientas": [
+      "editar_archivo",
+      "ejecutar_pruebas",
+      "leer_archivo"
+    ],
+    "contexto": 16785
+  },
+  "issue02-actor-r1": {
+    "pasos": 3,
+    "acciones": 2,
+    "bloqueadas": 0,
+    "invalidas": 0,
+    "herramientas": [
+      "editar_archivo",
+      "leer_archivo"
+    ],
+    "contexto": 12742
+  },
+  "issue02-actor-r2": {
+    "pasos": 3,
+    "acciones": 2,
+    "bloqueadas": 0,
+    "invalidas": 0,
+    "herramientas": [
+      "editar_archivo",
+      "ejecutar_pruebas"
+    ],
+    "contexto": 2913
+  },
+  "issue02-critico-r1": {
+    "pasos": 4,
+    "acciones": 3,
+    "bloqueadas": 1,
+    "invalidas": 0,
+    "herramientas": [
+      "editar_archivo",
+      "ejecutar_pruebas",
+      "ver_cambios"
+    ],
+    "contexto": 4095
+  },
+  "issue02-critico-r2": {
+    "pasos": 3,
+    "acciones": 2,
+    "bloqueadas": 0,
+    "invalidas": 0,
+    "herramientas": [
+      "ejecutar_pruebas",
+      "ver_cambios"
+    ],
+    "contexto": 3173
+  },
+  "issue02-planificador": {
+    "pasos": 2,
+    "acciones": 1,
+    "bloqueadas": 0,
+    "invalidas": 0,
+    "herramientas": [
+      "leer_archivo"
+    ],
+    "contexto": 2354
+  },
+  "issue02-unico": {
+    "pasos": 8,
+    "acciones": 7,
+    "bloqueadas": 0,
+    "invalidas": 0,
+    "herramientas": [
+      "editar_archivo",
+      "ejecutar_pruebas",
+      "leer_archivo"
+    ],
+    "contexto": 19511
+  },
+  "issue03-notas": {
+    "pasos": 9,
+    "acciones": 8,
+    "bloqueadas": 0,
+    "invalidas": 0,
+    "herramientas": [
+      "anotar",
+      "buscar",
+      "editar_archivo",
+      "ejecutar_pruebas",
+      "leer_archivo",
+      "leer_notas",
+      "mapa_repo"
+    ],
+    "contexto": 14135
+  }
+}
