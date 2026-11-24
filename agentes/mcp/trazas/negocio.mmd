@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant C as Agente / cliente
+    participant S as Picantería MCP
+    actor H as Humano
+    C->>S: id=1 server/discover
+    S-->>C: id=1 complete (531 bytes)
+    C->>S: id=2 tools/list
+    S-->>C: id=2 complete (2711 bytes)
+    C->>S: id=3 tools/call: menu_del_dia
+    S-->>C: id=3 isError (283 bytes)
+    C->>S: id=4 tools/call: menu_del_dia
+    S-->>C: id=4 complete (733 bytes)
+    C->>S: id=5 tools/call: pedidos_por_estado
+    S-->>C: id=5 complete (504 bytes)
+    C->>S: id=6 tools/call: registrar_reclamo
+    S-->>C: id=6 input_required (851 bytes)
+    C->>H: ¿Crear este reclamo?
+    H-->>C: Aprobación explícita registrada
+    C->>S: id=7 tools/call: registrar_reclamo
+    S-->>C: id=7 complete (367 bytes)

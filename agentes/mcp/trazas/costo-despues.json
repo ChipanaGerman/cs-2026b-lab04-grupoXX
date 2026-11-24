@@ -1,0 +1,6 @@
+{
+  "caracteres": 2473,
+  "bytes_utf8": 2476,
+  "tokens_estimados": 619,
+  "metodo": "ceil(caracteres JSON compacto / 4); estimación, no tokenizer del host"
+}

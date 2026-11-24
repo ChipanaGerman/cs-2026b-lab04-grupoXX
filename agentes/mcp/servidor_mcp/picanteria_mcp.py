@@ -61,13 +61,13 @@ def negocio(funcion, *args):
 @mcp.tool(annotations=LECTURA)
 def menu_del_dia(fecha: Annotated[str, Field(min_length=10, max_length=10)],
                  picanteria: Annotated[str, Field(min_length=1, max_length=80)]) -> MenuSalida:
-    """Menú disponible y precios S/. fecha AAAA-MM-DD (datos: 2026-11-24); picanteria: La Tradición."""
+    """Platos, stock y precios S/. fecha: 2026-11-24 (AAAA-MM-DD); picanteria: La Tradición."""
     return MenuSalida(**negocio(servicio.menu_del_dia, fecha, picanteria))
 
 
 @mcp.tool(annotations=LECTURA)
 def pedidos_por_estado(estado: Annotated[str, Field(min_length=1, max_length=20)]) -> PedidosSalida:
-    """Hasta 20 pedidos sin datos personales. estado: RECIBIDO, PAGADO, PREPARANDO, EN_CAMINO, ENTREGADO o CANCELADO."""
+    """Hasta 20 pedidos, UUID y total S/. estado: RECIBIDO|PAGADO|PREPARANDO|EN_CAMINO|ENTREGADO|CANCELADO."""
     return PedidosSalida(**negocio(servicio.pedidos_por_estado, estado))
 
 
@@ -75,7 +75,7 @@ def pedidos_por_estado(estado: Annotated[str, Field(min_length=1, max_length=20)
 def registrar_reclamo(pedido_id: Annotated[str, Field(min_length=36, max_length=36)],
                       descripcion: Annotated[str, Field(min_length=10, max_length=1000)],
                       ctx: Context) -> CallToolResult | InputRequiredResult:
-    """Crea un reclamo local nuevo; pedido_id UUID existente, descripcion 10–1000 caracteres. Requiere aprobación humana."""
+    """Crea reclamo con permiso humano. pedido_id: UUID existente; descripcion: 10–1000 caracteres."""
     datos = negocio(servicio.validar_reclamo, pedido_id, descripcion)
     if ctx.protocol_version != '2026-07-28':
         raise ToolError('La escritura requiere protocolo 2026-07-28 y cliente con confirmación MRTR')

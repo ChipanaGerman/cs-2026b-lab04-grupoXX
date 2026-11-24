@@ -1,0 +1,26 @@
+{
+  "origen": "agentes\\mcp\\trazas\\negocio.jsonl",
+  "mensajes": 14,
+  "bytes": 8327,
+  "errores": 1,
+  "latencia_ms_por_metodo": {
+    "server/discover": {
+      "n": 1,
+      "media": 2666.324,
+      "min": 2666.324,
+      "max": 2666.324
+    },
+    "tools/list": {
+      "n": 1,
+      "media": 5.984,
+      "min": 5.984,
+      "max": 5.984
+    },
+    "tools/call": {
+      "n": 5,
+      "media": 44.59,
+      "min": 5.225,
+      "max": 182.631
+    }
+  }
+}
