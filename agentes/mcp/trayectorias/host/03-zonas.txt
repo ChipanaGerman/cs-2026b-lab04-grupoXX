@@ -1,0 +1,11 @@
+														3852 list item (elemento de lista) Consulta exclusivamente pedidos_por_estado del servidor MCP picanteria-ya para CANCELADO. Devuelve UUID y total. No ejecutes comandos ni leas archivos. ID: list_id_2_2
+														3862 list item (elemento de lista) Search Tools pedidos_por_estado Completed with input: { "estado": "CANCELADO" } UUID: `00000000-0000-0000-0000-000000000001` — Total: S/ 25.00 Inspect this in the accessible view with Alt+F2 ID: list_id_2_3
+																3938 group (grupo) Completed 24/11/2026, 11:35 a. m., Elapsed time 15s, Copilot Fusion (gpt-6-luna) • 0.1 credits, Response details. Model: gpt-6-luna. Input tokens: 65127. Cached input tokens: 63179. Output tokens: 113
+																	3953 text (texto) Copilot Fusion (gpt-6-luna) • 0.1 credits
+														3954 list item (elemento de lista) Lee exclusivamente el recurso MCP picanteria://zonas del servidor picanteria-ya y dime los distritos de delivery. No uses archivos, comandos ni herramientas ajenas. ID: list_id_2_4
+														3964 list item (elemento de lista) Read MCP resource `picanteria://zonas` Completed with input: { "server": "picanteria-ya", "uri": "picanteria://zonas" } Los distritos de delivery son Yanahuara, Cayma y Cercado. Inspect this in the accessible view with Alt+F2 ID: list_id_2_5
+																4005 button (botón) Read MCP resource picanteria://zonas
+																4018 group (grupo) Completed 24/11/2026, 11:36 a. m., Elapsed time 8s, Copilot Fusion (gpt-6-luna) • 0.1 credits, Response details. Model: gpt-6-luna. Input tokens: 45079. Cached input tokens: 44786. Output tokens: 97
+																	4022 text (texto) Copilot Fusion (gpt-6-luna) • 0.1 credits
+															3991 list item (elemento de lista) Consulta exclusivamente pedidos_por_estado del servidor MCP picanteria-ya para CANCELADO. Devuelve UUID y total. No ejecutes comandos ni leas archivos. ID: list_id_2_2
+													4025 text (texto) Read MCP resource picanteria://zonas Completed with input: { "server": "picanteria-ya", "uri": "picanteria://zonas" } Los distritos de delivery son Yanahuara, Cayma y Cercado.

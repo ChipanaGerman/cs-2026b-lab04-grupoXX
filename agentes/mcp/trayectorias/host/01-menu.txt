@@ -1,0 +1,10 @@
+														3696 list item (elemento de lista) Usa exclusivamente la herramienta menu_del_dia del servidor MCP picanteria-ya para consultar el menú de La Tradición del 2026-11-24. No leas archivos ni ejecutes comandos. Si MCP no está disponible, informa el bloqueo. ID: list_id_2_0
+																	3820 text (texto) Usa exclusivamente la herramienta menu_del_dia del servidor MCP picanteria-ya para consultar el menú de La Tradición del 2026-11-24. No leas archivos ni ejecutes comandos. Si MCP no está disponible, informa el bloqueo.
+														3704 list item (elemento de lista) Search Tools menu_del_dia Completed with input: { "fecha": "2026-11-24", "picanteria": "La Tradición" } Menú de **La Tradición** para el 24 de noviembre de 2026: - Rocoto relleno — S/ 25.00 (stock: 12) - Chupe de camarones — S/ 35.50 (stock: 8) Inspect this in the accessible view with Alt+F2 ID: list_id_2_1
+																	3824 button (disclosure triangle) Completed 2 steps in 33s
+																		3825 text (texto) Completed 2 steps in 33s
+																		3815 list item (elemento de lista) Rocoto relleno — S/ 25.00 (stock: 12)
+																		3816 list item (elemento de lista) Chupe de camarones — S/ 35.50 (stock: 8)
+																3827 group (grupo) Completed 24/11/2026, 11:34 a. m., Elapsed time 33s, Copilot Fusion (gpt-6-luna) • 0.3 credits, Response details. Model: gpt-6-luna. Input tokens: 59327. Cached input tokens: 38916. Output tokens: 151
+																	3831 text (texto) Copilot Fusion (gpt-6-luna) • 0.3 credits
+													3834 text (texto) Search Tools menu_del_dia Completed with input: { "fecha": "2026-11-24", "picanteria": "La Tradición" } Menú de La Tradición para el 24 de noviembre de 2026: Rocoto relleno — S/ 25.00 (stock: 12) Chupe de camarones — S/ 35.50 (stock: 8)
