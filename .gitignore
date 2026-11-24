@@ -1,0 +1,5 @@
+.venv-mcp/
+__pycache__/
+.pytest_cache/
+agentes/mcp/datos/reclamos/
+node_modules/
