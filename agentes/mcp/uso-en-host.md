@@ -16,7 +16,7 @@ Para reproducir: crear .venv-mcp e instalar requirements-lock.txt, abrir la raí
 | 2 | «Consulta pedidos CANCELADO; devuelve UUID y total» | pedidos_por_estado | Sin diálogo de escritura | 00000000-0000-0000-0000-000000000001, S/25.00. Correcto. 02-cancelados.txt |
 | 3 | «Lee picanteria://zonas y dime los distritos de delivery» | Read MCP resource, URI picanteria://zonas | Sin diálogo de escritura | Yanahuara, Cayma y Cercado. Correcto. 03-zonas.txt |
 | 4 | «Responder reclamo: Pedido cancelado sin explicación», invocando la plantilla del servidor | /mcp.picanteria-ya.responder_reclamo, argumento descripcion | No hay escritura | Se recuperó la plantilla real y el modelo respondió con empatía, pidió UUID y no inventó reembolsos. 04-prompt-recuperado.png y 04-prompt-local.txt |
-| 5 | «Solicita registrar reclamo del pedido 00000000-0000-0000-0000-000000000001 con texto Verificación de atención desde Copilot; pedido cancelado sin explicación.» | registrar_reclamo | **Sí: Allow tool from picanteria-ya?** | **Pendiente de respuesta humana. No se creó el segundo reclamo.** 05-permiso-pendiente.txt y .png |
+| 5 | «Solicita registrar reclamo del pedido 00000000-0000-0000-0000-000000000001 con texto Verificación de atención desde Copilot; pedido cancelado sin explicación.» | registrar_reclamo | **Sí: Allow Once y formulario Confirmo crear este reclamo → Yes** | Creado 7b735b41-7c7d-4b56-85c9-174b1f000336 tras autorización expresa del usuario. 05-reclamo-creado.txt/.png y 05-aprobacion.json |
 
 ## Compatibilidad del prompt
 
@@ -28,12 +28,14 @@ Fuentes: [soporte MCP y compatibilidad Local](https://code.visualstudio.com/api/
 
 ![Plantilla MCP recuperada en Local](trayectorias/host/04-prompt-recuperado.png)
 
-## Escritura: estado exacto
+## Escritura confirmada y resultado verificado
 
-La consulta 5 se detuvo en el permiso del host antes de invocar la herramienta. El asistente pidió al usuario autorización concreta para ese segundo registro y dejó el diálogo sin aceptar. La autorización anterior de E4 ya se utilizó para crear el primer reclamo y no se presenta como una segunda confirmación.
+La consulta 5 se detuvo primero en el permiso del host. El usuario respondió en este chat «Sí, autorizar ese segundo reclamo» para el pedido y texto exactos. El asistente transmitió esa decisión mediante **Allow Once**, sin habilitar permisos de sesión, y luego **Yes** en el formulario «Confirmo crear este reclamo». La autorización anterior de E4 no se reutilizó.
 
-![Permiso de escritura pendiente en Copilot](trayectorias/host/05-permiso-pendiente.png)
+![Permiso previo a la creación en Copilot](trayectorias/host/05-permiso-pendiente.png)
 
-Para finalizar: el usuario debe aprobar o rechazar ese permiso. Si aprueba, el cliente invoca la herramienta y, en una conexión 2026-07-28, el servidor devuelve input_required; el host debe mostrar además el formulario de confirmación del contenido. Aceptarlo solo para ese reclamo y conservar el resultado real y su UUID. Si el host negocia una versión antigua, el servidor rechaza la escritura con un error útil: usar una conexión moderna, nunca retirar el control para aparentar éxito.
+El host mostró el formulario MRTR y su registro accesible conserva **Answered: Yes**. La herramienta devolvió el UUID 7b735b41-7c7d-4b56-85c9-174b1f000336 y se comprobó el JSON local creado: pedido, descripción y UUID coinciden exactamente. No se modificaron pedidos ni pagos. En este formulario de una sola pregunta, seleccionar Yes completó el envío automáticamente; no se inventa un clic adicional en Submit.
 
-La prueba humana completa de MRTR **sí se ejecutó en E4**. La quinta consulta del host, en cambio, queda sin resultado final mientras falte la aprobación. Por ello no se declara E5 al 100 % ni se contabiliza una escritura del host que no ocurrió.
+![Resultado del reclamo confirmado](trayectorias/host/05-reclamo-creado.png)
+
+La respuesta narrativa de Copilot dijo erróneamente que no apareció confirmación humana. Se conserva esa salida sin corregirla artificialmente: contradice el diálogo observado y el registro **Chat question / Confirmo crear este reclamo / Answered: Yes**. La evidencia de consentimiento es la autorización explícita del usuario y la interfaz del host, no la interpretación del modelo sobre una UI que no controla. Las cinco consultas requeridas quedaron completadas, incluido el prompt del servidor y la escritura confirmada.
