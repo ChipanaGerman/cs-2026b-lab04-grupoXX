@@ -1,0 +1,12 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.3, pytest-9.2.0, pluggy-1.7.0
+rootdir: C:\Users\User\German_UNSA\TERCER_ANIO\B\CONSTRUCCION_SOFTWARE\Labs\Lab4\cs-2026b-lab04-grupoXX
+configfile: pytest.ini
+plugins: anyio-4.16.0
+collected 29 items
+
+agentes\mcp\pruebas\test_auditor.py .....                                [ 17%]
+agentes\mcp\pruebas\test_mrtr.py .......                                 [ 41%]
+agentes\mcp\pruebas\test_servidor_mcp.py .................               [100%]
+
+============================= 29 passed in 20.76s =============================
