@@ -1,4 +1,4 @@
-Browser tab: 1, Title: "MCP Inspector", URL: "http://127.0.0.1:6274/?MCP_INSPECTOR_API_TOKEN=c445592c7884121c952d091d303fecf9f3519e2220ad8dc6d5d414a6acf04e20".
+Browser tab: 1, Title: "MCP Inspector", URL: "http://127.0.0.1:6274/?MCP_INSPECTOR_API_TOKEN=REDACTADO".
 The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
 Removed element IDs: 247-265
 +				297 container
@@ -20,4 +20,4 @@ Removed element IDs: 247-265
 +							313 image
 +						314 button Clear
 +							315 image
-The focused UI element is 0 AXWebArea MCP Inspector, URL: 127.0.0.1:6274/?MCP_INSPECTOR_API_TOKEN=c445592c7884121c952d091d303fecf9f3519e2220ad8dc6d5d414a6acf04e20
+The focused UI element is 0 AXWebArea MCP Inspector, URL: 127.0.0.1:6274/?MCP_INSPECTOR_API_TOKEN=REDACTADO
