@@ -1,0 +1,15 @@
+{"agente": "revisor", "estado": "INICIO", "paso": 0, "objetivo": "Experimento issue02-critico-r2. Resolver únicamente el issue indicado; no modificar pruebas."}
+{"agente": "revisor", "estado": "DECIDIENDO", "paso": 1}
+{"agente": "revisor", "estado": "VALIDANDO_CONTRATO", "paso": 1}
+{"agente": "revisor", "estado": "EVALUANDO_POLITICA", "paso": 1}
+{"agente": "revisor", "estado": "EJECUTANDO", "paso": 1, "accion": "ver_cambios"}
+{"agente": "revisor", "estado": "OBSERVANDO", "paso": 1, "accion": "ver_cambios", "args": {}, "observacion": "--- a/src/pedidos/dominio.py\n+++ b/src/pedidos/dominio.py\n@@ -136,6 +136,8 @@\n \n     def agregar_linea(self, plato: Plato, cantidad: int) -> None:\n         \"\"\"Agrega una línea al pedido, verificando stock.\"\"\"\n+        if type(cantidad) is not int or cantidad <= 0:\n+            raise ValueError(\"La cantidad debe ser un entero positivo\")\n         if not plato.hay_stock(cantidad):\n             raise ValueError(f\"Stock insuficiente para '{plato.nombre}'\")\n         linea = LineaPedido(\n", "aprobacion": "no aplica"}
+{"agente": "revisor", "estado": "DECIDIENDO", "paso": 2}
+{"agente": "revisor", "estado": "VALIDANDO_CONTRATO", "paso": 2}
+{"agente": "revisor", "estado": "EVALUANDO_POLITICA", "paso": 2}
+{"agente": "revisor", "estado": "EJECUTANDO", "paso": 2, "accion": "ejecutar_pruebas"}
+{"agente": "revisor", "estado": "OBSERVANDO", "paso": 2, "accion": "ejecutar_pruebas", "args": {"seleccion": "02"}, "observacion": "EXIT=0\n============================= test session starts =============================\nplatform win32 -- Python 3.13.3, pytest-9.1.1, pluggy-1.7.0\nrootdir: C:\\Users\\User\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\AC\\#!sandbox.{f83638cd-f10a-46a7-89df-bc993df33ee6}\\Temp\\picanteria-multi-g0vw2yzx\nconfigfile: pytest.ini\ncollected 7 items\n\ntests\\test_issue_02.py .......                                           [100%]\n\n============================== 7 passed in 0.06s ==============================\n\n", "aprobacion": "no aplica"}
+{"agente": "revisor", "estado": "DECIDIENDO", "paso": 3}
+{"agente": "revisor", "estado": "VALIDANDO_CONTRATO", "paso": 3}
+{"agente": "revisor", "estado": "FINALIZADO", "paso": 3, "texto": "APROBADO: siete casos pasan; no se tocaron tests. Pendiente aprobación humana del PR."}
+{"agente": "revisor", "estado": "METRICAS", "paso": 0, "contexto_final": 3173, "duracion_ms": 576.9}

@@ -1,0 +1,25 @@
+{
+  "origen": "Decisiones preparadas por Codex",
+  "decisiones": [
+    {
+      "pensamiento": "Ejecutar editar_archivo y observar antes de continuar.",
+      "accion": "editar_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py",
+        "antes": "not isinstance(cantidad, int)",
+        "despues": "type(cantidad) is not int"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "02"
+      }
+    },
+    {
+      "pensamiento": "Concluir según evidencia observada.",
+      "final": "Corregida aceptación de bool; pruebas verdes."
+    }
+  ]
+}

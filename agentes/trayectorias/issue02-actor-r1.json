@@ -1,0 +1,25 @@
+{
+  "origen": "Decisiones preparadas por Codex",
+  "decisiones": [
+    {
+      "pensamiento": "Ejecutar leer_archivo y observar antes de continuar.",
+      "accion": "leer_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar editar_archivo y observar antes de continuar.",
+      "accion": "editar_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py",
+        "antes": "        if not plato.hay_stock(cantidad):\n            raise ValueError(f\"Stock insuficiente para '{plato.nombre}'\")\n        linea = LineaPedido(",
+        "despues": "        if not isinstance(cantidad, int) or cantidad <= 0:\n            raise ValueError(\"La cantidad debe ser un entero positivo\")\n        if not plato.hay_stock(cantidad):\n            raise ValueError(f\"Stock insuficiente para '{plato.nombre}'\")\n        linea = LineaPedido("
+      }
+    },
+    {
+      "pensamiento": "Concluir según evidencia observada.",
+      "final": "Propuesta de cantidad positiva; falta verificación del crítico."
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "origen": "Decisiones preparadas por Codex para experimento reproducible",
+  "decisiones": [
+    {
+      "pensamiento": "Ejecutar leer_archivo y observar antes de continuar.",
+      "accion": "leer_archivo",
+      "args": {
+        "ruta": "issues/ISSUE-03.md"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar mapa_repo y observar antes de continuar.",
+      "accion": "mapa_repo",
+      "args": {}
+    },
+    {
+      "pensamiento": "Ejecutar buscar y observar antes de continuar.",
+      "accion": "buscar",
+      "args": {
+        "texto": "self.disponible"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar anotar y observar antes de continuar.",
+      "accion": "anotar",
+      "args": {
+        "texto": "Hipótesis: asignar_pedido no consulta disponible. Editar solo la guardia; conservar estado al rechazar."
+      }
+    },
+    {
+      "pensamiento": "Ejecutar leer_notas y observar antes de continuar.",
+      "accion": "leer_notas",
+      "args": {}
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "03"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar editar_archivo y observar antes de continuar.",
+      "accion": "editar_archivo",
+      "args": {
+        "ruta": "src/pedidos/dominio.py",
+        "antes": "        self.disponible = False\n        pedido.marcar_preparando()",
+        "despues": "        if not self.disponible:\n            raise ValueError(\"Repartidor ocupado\")\n        pedido.marcar_preparando()\n        self.disponible = False"
+      }
+    },
+    {
+      "pensamiento": "Ejecutar ejecutar_pruebas y observar antes de continuar.",
+      "accion": "ejecutar_pruebas",
+      "args": {
+        "seleccion": "03"
+      }
+    },
+    {
+      "pensamiento": "Concluir según evidencia observada.",
+      "final": "ISSUE-03 corregido. Dos pruebas pasan; nota persistente conserva la hipótesis. Aprobación automatizada de replay; requiere revisión humana."
+    }
+  ]
+}

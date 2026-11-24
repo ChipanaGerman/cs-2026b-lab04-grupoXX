@@ -1,0 +1,45 @@
+{
+  "agente": "Codex, sesión Work Mode del 19/11/2026",
+  "origen": "Resumen de cuatro invocaciones reales de herramientas de esta sesión; no log nativo del proveedor",
+  "instrucciones": "agentes/reto/AGENTS.md",
+  "aprobacion": "Autorización general del usuario; no aprobación humana individual de cada edición",
+  "base_sha256": "1cd3d77ed32b72868442689528e2e878875af7830cd61360f515774b3b5ea027",
+  "pasos": [
+    {
+      "invocacion": 1,
+      "herramienta": "exec_command",
+      "operaciones": [
+        "preparar copia",
+        "leer AGENTS.md",
+        "leer ISSUE-03.md"
+      ]
+    },
+    {
+      "invocacion": 2,
+      "herramienta": "exec_command",
+      "operaciones": [
+        "pytest issue03",
+        "leer Repartidor"
+      ],
+      "resultado": "2 failed, exit 1"
+    },
+    {
+      "invocacion": 3,
+      "herramienta": "apply_patch",
+      "operaciones": [
+        "guardia de disponible previa a mutar",
+        "ordenar transición antes de cambiar disponibilidad"
+      ]
+    },
+    {
+      "invocacion": 4,
+      "herramienta": "exec_command",
+      "operaciones": [
+        "pytest issue03 y regresiones",
+        "diff",
+        "comparar bytes de tests"
+      ],
+      "resultado": "52 passed, exit 0; tests intactos"
+    }
+  ]
+}

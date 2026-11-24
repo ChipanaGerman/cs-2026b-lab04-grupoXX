@@ -1,6 +1,6 @@
 # Backlog de PicanteríaYa para el Laboratorio 9
 
-HU-01 procede del diseño existente. Las cinco historias siguientes se incorporan como propuestas del equipo para este laboratorio, con trazabilidad al diseño. H7 y H8 son casos de evaluación.
+Este archivo es el Product Backlog de PicanteríaYa para el alcance del Lab 09. Las seis historias quedan registradas en el repositorio. H7 y H8 pertenecen al dataset de evaluación.
 
 | Historia | Caso | Como | Quiero | Para | Aceptación |
 | --- | --- | --- | --- | --- | --- |
@@ -11,4 +11,17 @@ HU-01 procede del diseño existente. Las cinco historias siguientes se incorpora
 | HU-05 | H5 | Cliente | Seguir el reparto en el mapa | Saber dónde está mi pedido | Ver la posición actualizada si hay señal o la última posición con un aviso si se pierde. |
 | HU-06 | H6 | Cliente | Conocer el resultado del pago pendiente | Saber si debo volver a pedir | Ver el pedido pagado si se aprueba antes de diez minutos o ver la cancelación y su motivo al cumplirse el plazo sin respuesta. |
 
-Fuentes de diseño en [el dataset](casos.yaml). Las propuestas HU-02 a HU-06 se documentan en este repositorio y su publicación en Jira queda fuera de la evidencia disponible.
+## Orden inicial y fuentes
+
+El orden inicial sigue el recorrido del cliente, desde consultar el menú hasta seguir el reparto. El equipo puede reordenar las historias durante el refinamiento. La incorporación al backlog registra el trabajo del producto y no implica que se haya desarrollado o asignado a un sprint.
+
+| Orden | Historia | Estado inicial | Fuente |
+| ---: | --- | --- | --- |
+| 1 | HU-02 | Por refinar | [Descripción del caso](../../README.md#caso) |
+| 2 | HU-03 | Por refinar | [HU-01, escenario de stock insuficiente](../../docs/design/historia.md) |
+| 3 | HU-01 | Definida | [Historia y criterios originales](../../docs/design/historia.md) |
+| 4 | HU-06 | Por refinar | [HU-01, escenario de pago rechazado o sin respuesta](../../docs/design/historia.md) |
+| 5 | HU-04 | Por refinar | [Flujo de asignación de repartidor](../../docs/design/actividades-asignacion-repartidor.puml) |
+| 6 | HU-05 | Por refinar | [Seguimiento en tiempo real](../../docs/architecture/adr/003-comunicacion-tiempo-real.md) |
+
+HU-01 procede del diseño previo. HU-02 a HU-06 se formalizaron a partir del diseño al organizar el backlog del laboratorio. Los identificadores H1 a H6 permiten rastrear cada historia al [dataset de Promptfoo](casos.yaml).

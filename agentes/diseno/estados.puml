@@ -1,0 +1,29 @@
+@startuml
+title PicanteríaYa - Control ReAct
+[*] --> INICIO
+INICIO --> DECIDIENDO
+DECIDIENDO --> VALIDANDO_CONTRATO : decisión recibida
+DECIDIENDO --> LIMITE_ALCANZADO : modelo agotado
+VALIDANDO_CONTRATO --> CONTRATO_INVALIDO : inválida
+CONTRATO_INVALIDO --> DECIDIENDO : observación / consume paso
+VALIDANDO_CONTRATO --> FINALIZADO : final válido
+VALIDANDO_CONTRATO --> EVALUANDO_POLITICA : acción válida
+EVALUANDO_POLITICA --> BLOQUEADO : permiso denegado
+EVALUANDO_POLITICA --> ESPERANDO_APROBACION : edición permitida
+ESPERANDO_APROBACION --> BLOQUEADO : rechazo o EOF
+ESPERANDO_APROBACION --> EJECUTANDO : aprobación
+EVALUANDO_POLITICA --> EJECUTANDO : lectura o prueba
+EJECUTANDO --> OBSERVANDO : resultado o excepción
+OBSERVANDO --> DECIDIENDO : queda presupuesto
+BLOQUEADO --> DECIDIENDO : queda presupuesto
+OBSERVANDO --> LIMITE_ALCANZADO : sin presupuesto
+BLOQUEADO --> LIMITE_ALCANZADO : sin presupuesto
+CONTRATO_INVALIDO --> LIMITE_ALCANZADO : sin presupuesto
+FINALIZADO --> [*]
+LIMITE_ALCANZADO --> [*]
+note right of DECIDIENDO
+Máximo 12 decisiones del actor,
+8 del crítico y 2 rondas.
+METRICAS es evento, no estado.
+end note
+@enduml

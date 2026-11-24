@@ -1,0 +1,10 @@
+@startuml
+title issue02-planificador
+participant Modelo
+participant Control
+participant Herramientas
+Modelo -> Control : 1: OBSERVANDO leer_archivo
+Control -> Herramientas : leer_archivo
+Herramientas --> Control : resultado registrado
+Modelo -> Control : 2: FINALIZADO 
+@enduml
