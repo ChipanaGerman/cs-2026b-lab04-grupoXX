@@ -1,0 +1,10 @@
+{
+  "origen": "ModeloInteractivo",
+  "decisiones": [
+    "{\"pensamiento\":\"Consultar el menú solicitado; probar formato de fecha para registrar corrección ante error.\",\"accion\":\"menu_del_dia\",\"args\":{\"fecha\":\"24/11/2026\",\"picanteria\":\"La Tradición\"}}",
+    "{\"pensamiento\":\"La herramienta indica AAAA-MM-DD; corrijo la fecha a 2026-11-24.\",\"accion\":\"menu_del_dia\",\"args\":{\"fecha\":\"2026-11-24\",\"picanteria\":\"La Tradición\"}}",
+    "{\"pensamiento\":\"Ya conozco el menú; consulto pedidos cancelados para identificar el reclamo.\",\"accion\":\"pedidos_por_estado\",\"args\":{\"estado\":\"CANCELADO\"}}",
+    "{\"pensamiento\":\"El pedido consultado está cancelado; solicito la creación del reclamo mediante confirmación MRTR.\",\"accion\":\"registrar_reclamo\",\"args\":{\"pedido_id\":\"00000000-0000-0000-0000-000000000001\",\"descripcion\":\"Pedido cancelado sin explicación; solicito revisión.\"}}",
+    "{\"pensamiento\":\"La confirmación humana fue aceptada y el servidor devolvió creado=true.\",\"final\":\"Menú: rocoto relleno S/25.00 (12 disponibles) y chupe de camarones S/35.50 (8). Un pedido cancelado de S/25.00. Tras aprobación explícita se creó el reclamo e73a1d0d-e009-4f04-9fb5-cb5d4185c8e2; no se modificó el pedido.\"}"
+  ]
+}

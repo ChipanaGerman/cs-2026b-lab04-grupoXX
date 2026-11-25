@@ -1,0 +1,23 @@
+Browser tab: 1, Title: "MCP Inspector", URL: "http://127.0.0.1:6274/?MCP_INSPECTOR_API_TOKEN=REDACTADO".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 247-265
++				297 container
++					298 text Menú disponible y precios S/. fecha AAAA-MM-DD (datos: 2026-11-24); picanteria: La Tradición.
++					299 container
++						300 switch (settable, boolean) Description: Edit as JSON, Value: 0, ID: mantine-8wg3xb9i3
++						301 text Edit as JSON
++					302 text Fecha
++					303 text field (settable) Fecha, Value: 2026-02-30, ID: mantine-vcr3yk3d5
++					304 container
++						305 button Enlarge Fecha
++							306 image
++						307 button Clear
++							308 image
++					309 text Picanteria
++					310 text field (settable) Picanteria, Value: La Tradición, ID: mantine-d7rwwcdse
++					311 container
++						312 button Enlarge Picanteria
++							313 image
++						314 button Clear
++							315 image
+The focused UI element is 0 AXWebArea MCP Inspector, URL: 127.0.0.1:6274/?MCP_INSPECTOR_API_TOKEN=REDACTADO

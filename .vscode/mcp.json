@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "picanteria-ya": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.venv-mcp/Scripts/python.exe",
+      "args": ["-X", "utf8", "-B", "${workspaceFolder}/agentes/mcp/servidor_mcp/picanteria_mcp.py"]
+    }
+  }
+}

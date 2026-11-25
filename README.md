@@ -461,3 +461,24 @@ Implementación y evidencias: [guía de ejecución](agentes/README.md), [observa
 | issue03-notas | 9 | 1 | 8 | 0 | 0 | 14135 |
 
 Pruebas: python -m pytest -q tests agentes/pruebas_agente. Las aprobaciones automatizadas no sustituyen al integrante humano. Ver [delegación](agentes/delegacion.md) y [lista de entrega](agentes/entrega.md).
+
+## Servidor MCP (Lab 11)
+
+Picantería Ya publica `menu_del_dia`, `pedidos_por_estado` y **`registrar_reclamo` como única escritura**, con confirmación humana MRTR antes de crear. Incluye dos recursos, plantilla de ADR y el prompt `responder_reclamo`. SDK oficial Python MCP 2.3.0, protocolo 2026-07-28 y stdio; datos ficticios sin pagos ni información personal.
+
+Instalar y explorar desde la raíz:
+
+```powershell
+python -m venv .venv-mcp
+./.venv-mcp/Scripts/python.exe -m pip install -r agentes/mcp/requirements-lock.txt
+./.venv-mcp/Scripts/python.exe -X utf8 -B -m agentes.mcp.cliente.explorar
+./.venv-mcp/Scripts/python.exe -X utf8 -B -m pytest -q -p no:cacheprovider agentes/mcp/pruebas
+```
+
+Conectar con VS Code y Copilot en modo Agent usando [.vscode/mcp.json](.vscode/mcp.json), revisar el catálogo e iniciar `picanteria-ya`. Se necesita una versión del host compatible con MCP y confirmación MRTR; la configuración Windows usa el entorno virtual anterior.
+
+[Guía y catálogo completos](agentes/mcp/README.md) · [Consultas en el host](agentes/mcp/uso-en-host.md) · [Inspector y contratos](agentes/mcp/pruebas/inspector.md) · [Agente Lab 10](agentes/mcp/agente/README.md) · [Protocolo y mediciones](agentes/mcp/protocolo.md) · [Seguridad](agentes/mcp/seguridad.md) · [Reto B](agentes/mcp/reto/README.md) · [ADR-011](docs/architecture/adr/011-servidor-mcp.md) · [Matriz de entrega](agentes/mcp/entrega.md).
+
+![Secuencia generada desde tráfico JSON-RPC real](agentes/mcp/trazas/negocio.svg)
+
+E4: 14 mensajes, 8327 bytes y un error corregido. Optimización del catálogo: 629 → 619 tokens estimados por longitud. Versionado de entrega: `v1.1-mcp`; revisar la matriz para distinguir evidencias realizadas de actividades externas pendientes.

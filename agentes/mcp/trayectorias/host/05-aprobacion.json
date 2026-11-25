@@ -1,0 +1,13 @@
+{
+  "fecha": "2026-11-24",
+  "origen": "respuesta explícita del usuario en este chat",
+  "respuesta_literal": "Sí, autorizar ese segundo reclamo",
+  "pedido_id": "00000000-0000-0000-0000-000000000001",
+  "descripcion": "Verificación de atención desde Copilot; pedido cancelado sin explicación.",
+  "permiso_host": "Allow Once",
+  "formulario_mrtr": "Confirmo crear este reclamo",
+  "respuesta_formulario": "Yes",
+  "registro_accesible": "Answered: Yes",
+  "reclamo_id": "7b735b41-7c7d-4b56-85c9-174b1f000336",
+  "verificacion": "JSON local de reclamo creado coincide con pedido, descripción y UUID"
+}

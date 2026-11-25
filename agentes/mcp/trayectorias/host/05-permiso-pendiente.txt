@@ -1,0 +1,10 @@
+														4160 list item (elemento de lista) Solicita mediante registrar_reclamo del servidor MCP picanteria-ya un reclamo ficticio para pedido_id="00000000-0000-0000-0000-000000000001" y descripcion="Verificación de atención desde Copilot; pedido cancelado sin explicación.". Debes detenerte en la confirmación humana. No aceptes formularios ni confirmes por tu cuenta. No uses archivos ni comandos. ID: list_id_2_8
+																	4167 text (texto) Solicita mediante registrar_reclamo del servidor MCP picanteria-ya un reclamo ficticio para pedido_id="00000000-0000-0000-0000-000000000001" y descripcion="Verificación de atención desde Copilot; pedido cancelado sin explicación.". Debes detenerte en la confirmación humana. No aceptes formularios ni confirmes por tu cuenta. No uses archivos ni comandos.
+														4060 list item (elemento de lista) Chat confirmation required: Allow tool from picanteria-ya?: {"pedido_id":"00000000-0000-0000-0000-000000000001","descripcion":"Verificación de atención desde Copilot; pedido cancelado sin explicación."}. Press Control+Enter to accept or Alt+Backspace to cancel.picanteria-ya: registrar_reclamo Inspect this in the accessible view with Alt+F2 ID: list_id_2_9
+																	4202 text (texto) 1 confirmation pending
+													4203 group (grupo) Tool confirmation carousel
+														4204 text (texto) Allow tool from picanteria-ya?
+														4206 group (grupo) Chat Confirmation Dialog Allow tool from picanteria-ya? picanteria-ya: registrar_reclamoShow MoreInputSee more
+																4208 text (texto) picanteria-ya: registrar_reclamo
+													4217 text (texto) 1 confirmation pending
+													4218 text (texto) registrar_reclamo
